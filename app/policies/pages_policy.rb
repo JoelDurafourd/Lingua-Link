@@ -11,4 +11,8 @@ class PagesPolicy < ApplicationPolicy
     #   scope.all
     # end
   end
+
+  def show?
+    record == user
+  end
 end

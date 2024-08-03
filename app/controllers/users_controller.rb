@@ -7,8 +7,8 @@ class UsersController < ApplicationController
 
   def show
     # user profile page, can be any user referenced not just current user, see above comments
-    authorize @user
     @user = User.find(params[:id])
+    authorize @user
   end
 
   def dashboard
