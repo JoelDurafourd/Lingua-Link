@@ -3,8 +3,11 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     sessions: 'users/sessions'
   }
-  resources :users, only: [:show, :dashboard]
+  resources :users, only: [:show]
+  
   root to: "pages#home"
+
+  get 'dashboard', to: 'dashboard#show', as: :dashboard
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
