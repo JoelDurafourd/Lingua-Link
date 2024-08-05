@@ -1,1 +1,16 @@
 <h1>connected to the dashboard of: <%= @user.email %></h1>
+
+<%= link_to "Book a lesson", new_user_booking_path(@user), class: "btn btn-outline-p rounded-pill" %>
+
+<%= month_calendar(events: @user.bookings) do |date, bookings| %>
+  <%= date %>
+
+  <% bookings.each do |booking| %>
+    <div class="booking-slot">
+      <strong><%= booking.client.name %></strong>
+      <br>
+      <em><%= booking.start_time.strftime("%I:%M %p") %> - <%= booking.end_time.strftime("%I:%M %p") %></em>
+      <div class="booking-bar" style="width: <%= (booking.end_time - booking.start_time) / 60 %>px;"></div>
+    </div>
+  <% end %>
+<% end %>

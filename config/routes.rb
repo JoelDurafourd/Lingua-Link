@@ -3,8 +3,18 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     sessions: 'users/sessions'
   }
-  resources :users, only: [:show]
-  
+
+  resources :users, only: [:show] do
+    resources :bookings do
+      member do
+        get :accept
+        get :decline
+      end
+    end
+  end
+
+  resources :clients
+
   root to: "pages#home"
 
   get 'dashboard', to: 'dashboard#show', as: :dashboard
