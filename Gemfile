@@ -56,6 +56,8 @@ gem "dotenv-rails"
 gem "simple_calendar"
 gem "cloudinary"
 gem 'activestorage'
+gem 'bootstrap', '~> 5.0.2'
+gem 'jquery-rails'
 
 group :development, :test do
   gem "dotenv-rails"
