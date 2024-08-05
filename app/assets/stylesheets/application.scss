@@ -37,3 +37,26 @@
 //   margin-bottom: 10px;
 //   font-size: 18px;
 // }
+
+/* Add this to your application's CSS file */
+.booking-slot {
+  background-color: #e0f7fa; /* Light cyan background for the slot */
+  border: 1px solid #b2ebf2; /* Light cyan border */
+  padding: 4px;
+  margin-bottom: 2px;
+  border-radius: 4px;
+}
+
+.booking-slot::before {
+  content: "";
+  display: block;
+  height: 5px; /* Height of the bar */
+  background-color: #00bcd4; /* Color of the bar */
+  margin-bottom: 4px;
+}
+
+.booking-bar {
+  background-color: #00bcd4;
+  height: 20px;
+  margin: 2px 0;
+}

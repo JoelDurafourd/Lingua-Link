@@ -1,7 +1,10 @@
 class BookingsController < ApplicationController
   def index
-    # This displays all bookings regardless of which user or lesson it's attached to.
-    @bookings = Booking.all
+    # Fetch the current date or use the provided start_date parameter
+    start_date = params.fetch(:start_date, Date.today).to_date
+
+    # Query bookings for the current month, adjusting the range to cover the entire month
+    @bookings = Booking.where(start_time: start_date.beginning_of_month..start_date.end_of_month)
   end
 
   def show
@@ -83,7 +86,7 @@ class BookingsController < ApplicationController
 
   def booking_params
     # these are strong params or security params, it makes sure only these attributes are changed. Any edits to a model has to be modified here also.
-    params.require(:booking).permit(:start_date, :end_date, :client_id)
+    params.require(:booking).permit(:start_time, :end_time, :client_id)
   end
 end
 # t.datetime "start_time"
