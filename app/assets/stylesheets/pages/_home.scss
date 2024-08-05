@@ -56,3 +56,27 @@
     background: rgb(0, 102, 204);
   }
 }
+.footer {
+  background-color: white;
+  color: orange;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.footer-title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.sns-icons {
+  margin-top: 10px;
+}
+
+.sns-icons a {
+  margin: 0 10px;
+  display: inline-block;
+}
+.sns-icons img{
+  width: 50px;
+  height: 50px;
+}
