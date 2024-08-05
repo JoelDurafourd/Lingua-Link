@@ -1,5 +1,17 @@
 <h1>connected to the dashboard of: <%= @user.email %></h1>
 
 <%= month_calendar do |date| %>
-  <%= date %>
+  <div class="calendar-date">
+    <h3><%= date %></h3>
+
+    <% # Define time slots for each day (example slots: 9 AM to 5 PM, hourly) %>
+    <% (9..17).each do |hour| %>
+      <% time = Time.new(date.year, date.month, date.day, hour) %>
+      <div class="time-slot">
+        <%= time.strftime("%H:%M") %>
+      </div>
+    <% end %>
+  </div>
 <% end %>
+
+<%= link_to "Book a lesson", new_user_booking_path(@user), class: "btn btn-outline-p rounded-pill" %>
