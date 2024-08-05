@@ -2,6 +2,7 @@
 
 <%= link_to "Book a lesson", new_user_booking_path(@user), class: "btn btn-outline-p rounded-pill" %>
 
+
 <%= month_calendar(events: @user.bookings) do |date, bookings| %>
   <%= date %>
 

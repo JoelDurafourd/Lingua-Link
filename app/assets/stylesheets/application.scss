@@ -12,36 +12,9 @@
 @import "pages/index";
 @import "simple_calendar";
 
-
-/* app/assets/stylesheets/calendar.css */
-// .calendar-date {
-//   margin-bottom: 20px;
-// }
-
-// .time-slot {
-//   display: inline-block;
-//   width: 80px;
-//   padding: 5px;
-//   border: 1px solid #ccc;
-//   text-align: center;
-//   margin: 2px;
-// }
-
-// .time-slot {
-//   background-color: #f0f0f0;
-//   border-radius: 3px;
-//   font-size: 14px;
-// }
-
-// h3 {
-//   margin-bottom: 10px;
-//   font-size: 18px;
-// }
-
-/* Add this to your application's CSS file */
 .booking-slot {
-  background-color: #e0f7fa; /* Light cyan background for the slot */
-  border: 1px solid #b2ebf2; /* Light cyan border */
+  background-color: #e0f7fa;
+  border: 1px solid #b2ebf2;
   padding: 4px;
   margin-bottom: 2px;
   border-radius: 4px;
@@ -50,8 +23,8 @@
 .booking-slot::before {
   content: "";
   display: block;
-  height: 5px; /* Height of the bar */
-  background-color: #00bcd4; /* Color of the bar */
+  height: 5px;
+  background-color: #00bcd4;
   margin-bottom: 4px;
 }
 
