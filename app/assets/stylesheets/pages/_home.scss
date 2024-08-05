@@ -1,1 +1,21 @@
 // Specific CSS for your home-page
+.carousel-inner {
+  height: 600px;
+}
+
+.carousel-inner img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.description {
+  background-image: url('carousel/background-des.png'); // Ensure this path is correct
+  background-size: cover;
+  background-position: center;
+  height: 600px;
+  color: white; // Adding some text color to make any content visible
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
