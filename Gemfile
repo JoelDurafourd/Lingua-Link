@@ -54,6 +54,8 @@ gem "sassc-rails"
 gem 'line-bot-api'
 gem "dotenv-rails"
 gem "simple_calendar"
+gem "cloudinary"
+gem 'activestorage'
 
 group :development, :test do
   gem "dotenv-rails"

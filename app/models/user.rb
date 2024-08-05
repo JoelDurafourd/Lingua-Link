@@ -4,5 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  validates :first_name, presence: true, length: { in: 1..100 }
+  validates :last_name, presence: true, length: { in: 1..100 }
+
   has_many :bookings
+  has_one_attached :photo
 end
