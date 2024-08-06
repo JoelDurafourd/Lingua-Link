@@ -1,39 +1,41 @@
-<div class="container">
-<div>
-  <h1>Welcome to your dashboard, <%= @user.email %>!</h1>
-
-  <% if current_user.photo.present? %>
-    <%= cl_image_tag(current_user.photo.key, class: "avatar", alt: "User Avatar") %>
-  <% else %>
-    <%= image_tag("default_avatar.png", class: "avatar", alt: "Default Avatar") %>
-  <% end %>
-
-  <%= link_to "My Profile", new_user_booking_path(@user), class: "btn btn-info rounded-pill" %>
-
-  <%= link_to "My Messages", new_user_booking_path(@user), class: "btn btn-info rounded-pill" %>
-
-  <%= link_to "My History", new_user_booking_path(@user), class: "btn btn-info rounded-pill" %>
-
-  <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "btn btn-info rounded-pill" %>
-</div>
-
-<div>
-  <h2>My Calander</h2>
-
-  <%= month_calendar(events: @user.bookings) do |date, bookings| %>
-    <%= date %>
-    <% bookings.each do |booking| %>
-      <div class="booking-slot">
-        <strong><%= booking.client.name %></strong>
-        <br>
-        <em><%= booking.start_time.strftime("%I:%M %p") %> - <%= booking.end_time.strftime("%I:%M %p") %></em>
-        <div class="booking-bar" style="width: <%= (booking.end_time - booking.start_time) / 60 %>px;"></div>
-      </div>
+<div class="row container">
+  <div class="col-2">
+    <div>
+      <% if current_user.photo.present? %>
+        <%= cl_image_tag(current_user.photo.key, class: "avatar", alt: "User Avatar") %>
+      <% else %>
+        <%= image_tag("default_avatar.png", class: "avatar", alt: "Default Avatar") %>
+      <% end %>
+    </div>
+    <div>
+      <%= link_to "My Profile", new_user_booking_path(@user), class: "btn btn-info rounded-pill" %>
+    </div>
+    <div>
+      <%= link_to "My Messages", new_user_booking_path(@user), class: "btn btn-info rounded-pill" %>
+    </div>
+    <div>
+      <%= link_to "My History", new_user_booking_path(@user), class: "btn btn-info rounded-pill" %>
+    </div>
+    <div>
+      <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "btn btn-info rounded-pill" %>
+    </div>
+  </div>
+  <div class="row col-10">
+    <h1>Welcome to your dashboard, <%= @user.email %>!</h1>
+    <h2>My Calander</h2>
+    <%= month_calendar(events: @user.bookings) do |date, bookings| %>
+      <%= date %>
+      <% bookings.each do |booking| %>
+        <div class="booking-slot">
+          <strong><%= booking.client.name %></strong>
+          <br>
+          <em><%= booking.start_time.strftime("%I:%M %p") %> - <%= booking.end_time.strftime("%I:%M %p") %></em>
+          <div class="booking-bar" style="width: <%= (booking.end_time - booking.start_time) / 60 %>px;"></div>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
-</div>
-
-<div>
-  <h2>Most Recent Client Message</h2>
-</div>
+    <div>
+      <h2>Most Recent Client Message</h2>
+    </div>
+  </div>
 </div>
