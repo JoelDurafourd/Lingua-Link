@@ -1,9 +1,8 @@
-
-<% if @users.any? %>
-  <% @users.each do |user| %>
-    <%= link_to user.email, user_path(user) %>
-  <% end %>
-<% end %>
+<%# <% if @users.any? %>
+  <%# <% @users.each do |user| %>
+    <%# <%= link_to user.email, user_path(user) %>
+  <%# <% end %>
+<%# <% end %>
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
@@ -11,7 +10,7 @@
     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
   </ol>
-   <div class="carousel-inner">
+  <div class="carousel-inner">
     <div class="carousel-item active">
       <%= image_tag "carousel/slide1.jpg", class: 'd-block w-100', alt: 'First slide' %>
     </div>
@@ -31,12 +30,18 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
+
 <div class="description">
-<h1>cbjcbjbcj</h1>
-</div>
-<div class="signupdiv">
-  <h1>JOIN US !</h1>
-  <button class="signup-btn" style="" id="signupBtn">sign up</button>
+  <div class="container-div-description">
+  <div class="object-1"><h1>bouton1</h1></div>
+  <div class="object-2"><h1>bouton2</h1></div>
+  <div class="object-3"><h1>bouton3</h1></div>
+  <div class="object-4"><h1>bouton4</h1></div>
+  <div class="signupdiv">
+    <h1>JOIN US !</h1>
+    <button class="signup-btn" id="signupBtn">sign up</button>
+  </div>
+  </div>
 </div>
 
 <footer class="footer">
