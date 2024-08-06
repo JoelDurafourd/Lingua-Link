@@ -11,28 +11,7 @@
 @import "components/index";
 @import "pages/index";
 @import "simple_calendar";
-
-.booking-slot {
-  background-color: #e0f7fa;
-  border: 1px solid #b2ebf2;
-  padding: 4px;
-  margin-bottom: 2px;
-  border-radius: 4px;
-}
-
-.booking-slot::before {
-  content: "";
-  display: block;
-  height: 5px;
-  background-color: #00bcd4;
-  margin-bottom: 4px;
-}
-
-.booking-bar {
-  background-color: #00bcd4;
-  height: 20px;
-  margin: 2px 0;
-}
+@import "pages/dashboard";
 
 // Specific CSS for your navbar
 .navbar-brand {
