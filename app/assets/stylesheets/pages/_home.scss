@@ -8,25 +8,73 @@
   object-fit: cover;
 }
 
-.description {
-  background-image: url('carousel/background-des1.png');
-  background-size: cover;
-  background-position: center;
+.description-container {
+  display: flex;
   height: 900px;
-  color: white;
+}
+
+.button-group {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.object-button {
+  width: 150px;
+  height: 150px;
+  margin: 20px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.object-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: filter 0.2s;
+}
+
+.object-button.clicked img {
+  filter: brightness(0) saturate(100%) invert(29%) sepia(81%) saturate(5304%) hue-rotate(357deg) brightness(91%) contrast(114%);
+}
+
+.object-button.clicked {
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 16px;
+}
+
+.description {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  padding: 20px;
   text-align: center;
 }
 
-.container-div-description {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-top: 200px;
+.description-container{
+  background: url('carousel/background-des1.png') no-repeat center center;
+  background-size: cover;
+
+}
+
+.description-content {
+  display: none;
+}
+
+.description-content.active {
+  display: block;
 }
 
 .signupdiv {
@@ -90,4 +138,44 @@
 .sns-icons img {
   width: 50px;
   height: 50px;
+}
+
+.signupdiv {
+  background-color: #FFA845;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 40px;
+  padding: 20px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+.signup-btn {
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  font-size: 28px;
+  color: white;
+  padding: 14px 30px;
+  transition: 0.2s;
+  width: 335px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+  border-radius: 50px;
+  background: linear-gradient(90deg, rgb(204, 201, 0) 0%, rgb(0, 99, 204) 100%);
+  font-weight: bold;
+  border: none;
+
+  &:hover {
+    width: 337px;
+    background: rgb(0, 102, 204);
+  }
 }
