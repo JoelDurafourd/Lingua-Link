@@ -15,4 +15,8 @@ class UserPolicy < ApplicationPolicy
   def show?
     return true
   end
+
+  def month?
+    return true
+  end
 end
