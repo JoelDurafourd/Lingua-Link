@@ -1,4 +1,3 @@
-
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -29,16 +28,31 @@
 <div class="description-container">
   <div class="button-group">
     <div class="button-row">
-      <div class="object-button" data-description="description-1"><img src="path/to/image1.jpg" alt="Bouton 1"></div>
-      <div class="object-button" data-description="description-2"><img src="path/to/image2.jpg" alt="Bouton 2"></div>
+      <div class="object-button bouton-1" data-description="description-1">
+        <%= image_tag "message.png", alt: "Bouton 1", class: "button-img" %>
+        <div class="button-title">Line</div>
+      </div>
+      <div class="object-button bouton-2" data-description="description-2">
+        <%= image_tag "calendar.png", alt: "Bouton 2", class: "button-img" %>
+        <div class="button-title">calendar</div>
+      </div>
     </div>
     <div class="button-row">
-      <div class="object-button" data-description="description-3"><img src="path/to/image3.jpg" alt="Bouton 3"></div>
-      <div class="object-button" data-description="description-4"><img src="path/to/image4.jpg" alt="Bouton 4"></div>
+      <div class="object-button bouton-3" data-description="description-3">
+        <%= image_tag "message.png", alt: "Bouton 3", class: "button-img" %>
+        <div class="button-title">Title 3</div>
+      </div>
+      <div class="object-button bouton-4" data-description="description-4">
+        <%= image_tag "message.png", alt: "Bouton 4", class: "button-img" %>
+        <div class="button-title">Title 4</div>
+      </div>
     </div>
   </div>
   <div class="description">
-    <div id="description-1" class="description-content">Description for button 1</div>
+    <div id="description-1" class="description-content">
+      <h1>Line</h1>
+      <p>The booking is made through your line app and automatically registered in your dashboard calendar</p>
+    </div>
     <div id="description-2" class="description-content">Description for button 2</div>
     <div id="description-3" class="description-content">Description for button 3</div>
     <div id="description-4" class="description-content">Description for button 4</div>
@@ -66,18 +80,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
   buttons.forEach(button => {
     button.addEventListener('click', function() {
-
       descriptions.forEach(desc => desc.classList.remove('active'));
-
-
       const descriptionId = button.getAttribute('data-description');
       document.getElementById(descriptionId).classList.add('active');
-
-
       buttons.forEach(btn => btn.classList.remove('clicked'));
       button.classList.add('clicked');
     });
   });
 });
-
 </script>
