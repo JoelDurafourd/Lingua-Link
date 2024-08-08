@@ -1,0 +1,56 @@
+<%# Links to next/previous month%>
+<%= link_to "< Previous Month", user_calendars_month_path(user_id: @user.id, date: (@date - 1.month).to_s) %>
+<%= link_to "This Month", user_calendars_month_path(user_id: @user.id, date: Date.today.to_s) %>
+<%= link_to "Next Month >", user_calendars_month_path(user_id: @user.id, date: (@date + 1.month).to_s) %>
+<%# Display of month name %>
+<h2><%= Date::MONTHNAMES[@date.month] %> <%= @date.year %></h2>
+<%# Calendar container %>
+<div class="container">
+<% days_of_month = @date.all_month.to_a %>
+
+<%# These are the days of the week being displayed in it's own row%>
+  <table class="table table-bordered">
+    <%# Table Header: Days of the Week %>
+    <thead>
+      <tr>
+        <% @day_names.each do |day_name| %>
+          <th class="text-center p-2">
+            <%= day_name %>
+          </th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <%# Table Body: Days of the Month %>
+    <tbody>
+        <tr>
+          <% days_of_prev_month = @prev_month.all_month.to_a.reverse %>
+          <% days_of_prev_month[0, month_offset(@date)].each do |day| %>
+          <% days_of_month.insert(0, day) %>
+          <% end %>
+          <% days_of_month.each_slice(7) do |week| %>
+            <% week.each do |day| %>
+              <td class="text-center p-2 <%= today_highlighter(day) %> <%= grey_out_non_month(day) %>">
+                <%= day.day %>
+                <% @bookings.where(start_time: day.all_day).each do |booking| %>
+                <div class="booking-div bg-secondary text-white">
+                <%= booking.start_time.strftime("%I:%M%p") %> -
+                <%= booking.end_time.strftime("%I:%M%p") %> with
+                <%= booking.client.name %>
+                </div>
+                <% end %>
+              </td>
+            <% end %>
+          <%# Fill in any missing days in the last row with empty cells %>
+          <% if week.size < 7 %>
+            <% (7 - week.size).times do %>
+              <td class="text-center p-2"></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= @date.beginning_of_month.wday %>

@@ -7,5 +7,8 @@ class CalendarsController < ApplicationController
     @user = User.find(params[:user_id])
     authorize @user
     @day_names = day_names
+    @date = Date.parse(params.fetch(:date, Date.today.to_s))
+    @prev_month = @date - 1.month
+    @bookings = Booking.where(user_id: @user.id, start_time: @date.all_month)
   end
 end
