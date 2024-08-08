@@ -1,1 +1,13 @@
 <h2>its the profile page of: <%= @user.email %></h2>
+
+
+<%= link_to "This user's Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill" %>
+
+<h3>other users:</h3>
+
+<% users_all = User.all %>
+<% if users_all.any? %>
+  <% users_all.each do |user| %>
+    <%= link_to user.email, user_path(user), class: "btn btn-info rounded-pill" %>
+  <% end %>
+<% end %>

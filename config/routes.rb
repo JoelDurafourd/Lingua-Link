@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   }
 
   resources :users, only: [:show] do
+    get "calendars/month", to: "calendars#month"
     resources :bookings do
       member do
         get :accept
@@ -14,6 +15,7 @@ Rails.application.routes.draw do
   end
 
   resources :clients
+
 
   root to: "pages#home"
 
