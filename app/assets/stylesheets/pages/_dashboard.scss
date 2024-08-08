@@ -23,4 +23,20 @@
 
 .container {
   max-width: 100%;
+  // background-color: #ff6259;
+}
+
+.avatar-dash {
+  width: 125px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.buttons-dash {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  background-color: #ffa500;
 }
