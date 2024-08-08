@@ -26,17 +26,57 @@
   // background-color: #ff6259;
 }
 
+.container-img {
+  display: flex;
+  justify-content: center;
+  border-top: white;
+  border-top-left-radius: 20%;
+  border-top-right-radius: round($number: 20%);
+}
+
 .avatar-dash {
+  object-fit: cover;
+  height: 125px;
   width: 125px;
   border-radius: 50%;
   display: flex;
-  justify-content: center;
-  margin-bottom: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .buttons-dash {
+  font-weight: bold;
+  font-size: larger;
+  color: #e0f7fa;
   display: flex;
   justify-content: center;
   margin-bottom: 5px;
-  background-color: #ffa500;
+  background-color: transparent;
+  // background-color: #ffa500;
+  font-family: 'Lato', sans-serif;
+  border: none;
+}
+
+.buttons-dash2 {
+  font-weight: bold;
+  font-size: larger;
+  color: #e0f7fa;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  background-color: transparent;
+  // background-color: #ff6259;
+  font-family: 'Lato', sans-serif;
+  border: none;
+}
+
+.left-nav {
+  background: linear-gradient(45deg, #ff6259, #e67e22);
+  height: 100vh;
+    border-radius: 0 14px 14px 0;
+}
+
+.calander-months-links {
+  font-size: larger;
+  font-family: 'Lato', sans-serif;
 }

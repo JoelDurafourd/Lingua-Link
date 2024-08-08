@@ -1,6 +1,6 @@
 <div class="row container">
-  <div class="col-2">
-    <div>
+  <div class="col md:col-2 left-nav">
+    <div class="container-img">
       <% if current_user.photo.present? %>
         <%= cl_image_tag(current_user.photo.key, class: "avatar-dash", alt: "User Avatar") %>
       <% else %>
@@ -8,22 +8,24 @@
       <% end %>
     </div>
     <div>
-      <%= link_to "My Profile", new_user_booking_path(@user), class: "btn btn-info rounded-pill buttons-dash" %>
+      <%= link_to "My Profile", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
     </div>
     <div>
-      <%= link_to "My Messages", new_user_booking_path(@user), class: "btn btn-info rounded-pill buttons-dash" %>
+      <%= link_to "My Messages", new_user_booking_path(@user), class: "btn btn-info buttons-dash2" %>
     </div>
     <div>
-      <%= link_to "My History", new_user_booking_path(@user), class: "btn btn-info rounded-pill buttons-dash" %>
+      <%= link_to "My History", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
     </div>
     <div>
-      <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "btn btn-info rounded-pill buttons-dash" %>
+      <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "btn btn-info buttons-dash2" %>
     </div>
   </div>
   <div class="row col-10">
     <h1>Welcome to your dashboard, <%= @user.email %>!</h1>
     <h2>My Calander</h2>
-      <%= link_to "My Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill" %>
+      <div>
+      <%= link_to "View My Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill" %>
+      </div>
         <%= render partial: "calendars/month" %>
       <h2>Most Recent Client Message</h2>
     </div>
