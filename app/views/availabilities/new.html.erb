@@ -1,0 +1,6 @@
+<%= simple_form_for([@user, @availability]) do |f| %>
+<%= f.input :start_time, as: :datetime, html5: true %>
+<%= f.input :end_time, as: :datetime, html5: true %>
+<%= f.submit class: "nav-button col-12"%>
+<% end %>
+<%= link_to "Back to lessons", "/lessons", class: "nav-button col-12" %>
