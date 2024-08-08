@@ -23,7 +23,9 @@
   <div class="row col-10">
     <h1>Welcome to your dashboard, <%= @user.email %>!</h1>
     <h2>My Calander</h2>
+      <div>
       <%= link_to "View My Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill" %>
+      </div>
         <%= render partial: "calendars/month" %>
       <h2>Most Recent Client Message</h2>
     </div>

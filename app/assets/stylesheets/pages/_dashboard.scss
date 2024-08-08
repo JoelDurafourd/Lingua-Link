@@ -73,4 +73,10 @@
 .left-nav {
   background: linear-gradient(45deg, #ff6259, #e67e22);
   height: 100vh;
+    border-radius: 0 14px 14px 0;
+}
+
+.calander-months-links {
+  font-size: larger;
+  font-family: 'Lato', sans-serif;
 }
