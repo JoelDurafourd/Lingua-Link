@@ -7,20 +7,19 @@
 <%# Calendar container %>
 <div class="container">
 <% days_of_month = @date.all_month.to_a %>
-
 <%# These are the days of the week being displayed in it's own row%>
   <table class="table table-bordered">
     <%# Table Header: Days of the Week %>
     <thead>
       <tr>
         <% @day_names.each do |day_name| %>
+            <%# Days of the Week code %>
           <th class="text-center p-2">
             <%= day_name %>
           </th>
         <% end %>
       </tr>
     </thead>
-
     <%# Table Body: Days of the Month %>
     <tbody>
         <tr>
@@ -30,14 +29,15 @@
           <% end %>
           <% days_of_month.each_slice(7) do |week| %>
             <% week.each do |day| %>
+                <%# today highlighter is the today highlighter and greyed out is the days before the first %>
               <td class="text-center p-2 <%= today_highlighter(day) %> <%= grey_out_non_month(day) %>">
                 <%= day.day %>
                 <% @bookings.where(start_time: day.all_day).each do |booking| %>
-                <div class="booking-div bg-secondary text-white">
-                <%= booking.start_time.strftime("%I:%M%p") %> -
-                <%= booking.end_time.strftime("%I:%M%p") %> with
-                <%= booking.client.name %>
-                </div>
+                  <div class="booking-div bg-secondary text-white">
+                    <%= booking.start_time.strftime("%I:%M%p") %> -
+                    <%= booking.end_time.strftime("%I:%M%p") %> with
+                    <%= booking.client.name %>
+                  </div>
                 <% end %>
               </td>
             <% end %>
@@ -52,5 +52,3 @@
     </tbody>
   </table>
 </div>
-
-<%= @date.beginning_of_month.wday %>
