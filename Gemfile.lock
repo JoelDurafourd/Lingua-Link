@@ -142,8 +142,6 @@ GEM
     faraday-net_http (3.1.1)
       net-http
     ffi (1.17.0)
-    ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86_64-darwin)
     font-awesome-sass (6.5.2)
       sassc (~> 2.0)
     globalid (1.2.1)
@@ -196,16 +194,12 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.3)
-    nokogiri (1.16.7-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.16.7-x86_64-darwin)
-      racc (~> 1.4)
     nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     observer (0.1.2)
     orm_adapter (0.5.0)
-    parallel (1.25.1)
-    parser (3.3.4.0)
+    parallel (1.26.1)
+    parser (3.3.4.2)
       ast (~> 2.4.1)
       racc
     pg (1.5.7)
@@ -287,7 +281,7 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.32.0)
       parser (>= 3.3.1.0)
-    ruby-lsp (0.17.11)
+    ruby-lsp (0.17.12)
       language_server-protocol (~> 3.17.0)
       prism (>= 0.29.0, < 0.31)
       rbs (>= 3, < 4)
@@ -310,7 +304,7 @@ GEM
       websocket (~> 1.0)
     simple_calendar (3.0.4)
       rails (>= 6.1)
-    sorbet-runtime (0.5.11511)
+    sorbet-runtime (0.5.11517)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -350,8 +344,6 @@ GEM
     zeitwerk (2.6.17)
 
 PLATFORMS
-  arm64-darwin
-  x86_64-darwin
   x86_64-linux
 
 DEPENDENCIES
