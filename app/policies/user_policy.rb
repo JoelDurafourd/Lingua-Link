@@ -19,4 +19,8 @@ class UserPolicy < ApplicationPolicy
   def month?
     return true
   end
+
+  def week?
+    return true
+  end
 end

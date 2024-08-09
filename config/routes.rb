@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show] do
     get "calendars/month", to: "calendars#month"
+    get "calendars/week", to: "calendars#week"
     resources :availabilities
     resources :bookings do
       member do
