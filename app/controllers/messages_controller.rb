@@ -1,7 +1,8 @@
 require 'line/bot' # gem 'line-bot-api'
 
 # Define the file path where user IDs will be stored ### REMOVE LATER <-----
-USER_IDS_FILE = Rails.root.join('storage', 'user_ids.txt')
+USER_IDS_FILE = Rails.root.join('storage', 'user_ids.txt') unless defined?(USER_IDS_FILE)
+
 
 class MessagesController < ApplicationController
   include LineBotConcern
@@ -105,3 +106,13 @@ class MessagesController < ApplicationController
     client.reply_message(event['replyToken'], welcome_message)
   end
 end
+#   def bot_answer_to(message, user_name)
+#     # Existing code
+#     elsif message.downcase.include?('reservation')
+#       handle_booking_request(message, user_name)
+
+#     # Existing code
+#   end
+
+#   # Add methods for creating, changing, and canceling reservations
+# end

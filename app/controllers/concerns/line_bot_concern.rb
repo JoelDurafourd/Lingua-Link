@@ -1,5 +1,5 @@
 # app/controllers/concerns/line_bot_concern.rb
-require 'line/bot' # gem 'line-bot-api'
+require 'line/bot'
 
 module LineBotConcern
   extend ActiveSupport::Concern
@@ -8,12 +8,10 @@ module LineBotConcern
     before_action :set_client
   end
 
-  # Dummy data structures
   TEACHERS = [
     { id: 1, name: 'Alice', subject: 'English Grammar' },
     { id: 2, name: 'Bob', subject: 'Conversation Skills' },
     { id: 3, name: 'Carol', subject: 'Business English' }
-    # { id: 4, name: 'George', subject: 'Native English' }
   ]
 
   USERS = {}
@@ -30,53 +28,188 @@ module LineBotConcern
     user_id = event['source']['userId']
     data = event['postback']['data']
 
+    Rails.logger.info "Handling postback for user #{user_id} with data: #{data}"
+
     return unless data.start_with?('select_teacher_')
 
-    teacher_id = data.split('_').last.to_i
     USERS[user_id] ||= {}
+    teacher_id = data.split('_').last.to_i
     USERS[user_id][:current_teacher_id] = teacher_id
 
     teacher = TEACHERS.find { |t| t[:id] == teacher_id }
     message = {
       type: 'text',
-      text: "You're now chatting with Teacher #{teacher[:name]}. Your messages will be sent to this teacher."
+      text: "You're now chatting with Teacher #{teacher[:name]}. Your messages will be sent to this teacher.\n\nHow can I help you today?\nPlease select your preferred number below.\n1. lesson reservation, change, or cancellation\n2. confirm your reserved lesson\n3. other"
     }
-    client.reply_message(event['replyToken'], message)
+
+    Rails.logger.info "Sending reply message: #{message[:text]}"
+
+    begin
+      response = client.reply_message(event['replyToken'], message)
+      Rails.logger.info "Reply sent successfully: #{response.body}"
+    rescue => e
+      Rails.logger.error "Error sending reply: #{e.message}"
+    end
   end
 
   def handle_message(event)
     user_id = event['source']['userId']
     text = event['message']['text']
 
+    USERS[user_id] ||= {}
+
+    response = case USERS[user_id][:state]
+                when :awaiting_slot_selection
+                  handle_slot_selection(user_id, text)
+                when :awaiting_change_selection
+                  handle_change_selection(user_id, text)
+                when :awaiting_cancel_selection
+                  handle_cancel_selection(user_id, text)
+                else
+                  handle_general_message(user_id, text)
+                end
+
+    message = { type: 'text', text: response }
+    client.reply_message(event['replyToken'], message)
+  end
+
+  def handle_general_message(user_id, text)
+    USERS[user_id] ||= {}
+
+    case text
+    when '1'
+      handle_booking_request('1', user_id)
+    when '2'
+      "Here are your current reservations: [Display reservation list]"
+    when '3'
+      "Please tell us how else we can assist you."
+    else
+      if text.downcase.include?('reservation')
+        handle_booking_request(text, user_id)
+      else
+        handle_teacher_message(user_id, text)
+      end
+    end
+  end
+
+  def handle_teacher_message(user_id, text)
     user = USERS[user_id]
     if user && user[:current_teacher_id]
       teacher = TEACHERS.find { |t| t[:id] == user[:current_teacher_id] }
       teacher_reply = reply_to_message(teacher, text)
-      full_message = "[From Teacher #{teacher[:name]}] #{teacher_reply}"
-
-      message = {
-        type: 'text',
-        text: full_message
-      }
-      client.reply_message(event['replyToken'], message)
+      "[From Teacher #{teacher[:name]}] #{teacher_reply}"
     else
-      message = {
-        type: 'text',
-        text: "Please select a teacher from the menu before sending a message."
-      }
-      return client.reply_message(event['replyToken'], message)
+      "Please select a teacher from the menu before sending a message."
+    end
+  end
+
+def handle_booking_request(message, user_id)
+  case message
+  when '1'
+    "Please let us know your reservation request by choosing a number:\n1. New reservation\n2. Change reservation\n3. Cancel reservation\n\nPlease reply with the number of your choice (1, 2, or 3)."
+  when '2'
+    show_existing_reservations(user_id, :change)
+  when '3'
+    show_existing_reservations(user_id, :cancel)
+  else
+    case message
+    when '1'
+      show_available_slots(user_id)
+    when '2'
+      show_existing_reservations(user_id, :change)
+    when '3'
+      show_existing_reservations(user_id, :cancel)
+    else
+      "Invalid selection. Please choose 1 for new reservation, 2 for changing a reservation, or 3 for canceling a reservation."
+    end
+  end
+end
+
+def handle_booking_request(message, user_id)
+  case message
+  when '1'
+    "Please let us know your reservation request by choosing a number:\n1. New reservation\n2. Change reservation\n3. Cancel reservation\n\nPlease reply with the number of your choice (1, 2, or 3)."
+  when '2'
+    show_existing_reservations(user_id, :change)
+  when '3'
+    show_existing_reservations(user_id, :cancel)
+  else
+    case message
+    when '1'
+      show_available_slots(user_id)
+    when '2'
+      show_existing_reservations(user_id, :change)
+    when '3'
+      show_existing_reservations(user_id, :cancel)
+    else
+      "Invalid selection. Please choose 1 for new reservation, 2 for changing a reservation, or 3 for canceling a reservation."
+    end
+  end
+end
+
+  def show_existing_reservations(user_id, action)
+    user_reservations = Reservation.get_reservations_for_user(user_id)
+
+    if user_reservations.any?
+      message = "User B's reservations are as follows:\n"
+      user_reservations.each_with_index do |reservation, index|
+        message += "#{index + 1}. #{reservation.strftime('%m/%d %H:%M')}\n"
+      end
+      message += "\nPlease choose the number of the reservation you want to #{action}."
+
+      USERS[user_id][:state] = action == :change ? :awaiting_change_selection : :awaiting_cancel_selection
+      USERS[user_id][:user_reservations] = user_reservations
+    else
+      message = "You don't have any existing reservations."
+    end
+
+    message
+  end
+
+  def handle_slot_selection(user_id, text)
+    slot_index = text.to_i - 1
+    if slot_index.between?(0, USERS[user_id][:available_slots].length - 1)
+      selected_slot = USERS[user_id][:available_slots][slot_index]
+      # ここで予約を作成する処理を実装
+      USERS[user_id][:state] = nil
+      "Your reservation for #{selected_slot.strftime('%m/%d %H:%M')} has been confirmed."
+    else
+      "Invalid selection. Please choose a number from the list of available slots."
+    end
+  end
+
+  def handle_change_selection(user_id, text)
+    reservation_index = text.to_i - 1
+    if reservation_index.between?(0, USERS[user_id][:user_reservations].length - 1)
+      selected_reservation = USERS[user_id][:user_reservations][reservation_index]
+      # ここで予約変更のプロセスを開始する
+      USERS[user_id][:state] = :awaiting_new_slot
+      USERS[user_id][:reservation_to_change] = selected_reservation
+      show_available_slots(user_id)
+    else
+      "Invalid selection. Please choose a number from the list of your reservations."
+    end
+  end
+
+  def handle_cancel_selection(user_id, text)
+    reservation_index = text.to_i - 1
+    if reservation_index.between?(0, USERS[user_id][:user_reservations].length - 1)
+      selected_reservation = USERS[user_id][:user_reservations][reservation_index]
+      # ここで予約をキャンセルする処理を実装
+      USERS[user_id][:state] = nil
+      "Your reservation for #{selected_reservation.strftime('%m/%d %H:%M')} has been cancelled."
+    else
+      "Invalid selection. Please choose a number from the list of your reservations."
     end
   end
 
   def update_user_rich_menu(user_id)
-    # Unlink any existing rich menu
     begin
       client.unlink_user_rich_menu(user_id)
     rescue Line::Bot::API::Error => e
       Rails.logger.info "No existing rich menu to unlink for user #{user_id}: #{e.message}"
     end
 
-    # Delete any existing rich menu for this user
     existing_menu_id = USERS[user_id]&.[](:rich_menu_id)
     if existing_menu_id
       begin
@@ -86,7 +219,6 @@ module LineBotConcern
       end
     end
 
-    # Create and link the new rich menu
     rich_menu_id = create_teacher_rich_menu(user_id)
 
     if rich_menu_id
@@ -113,7 +245,6 @@ module LineBotConcern
       areas: []
     }
 
-    # Create an area for each teacher assigned to the user
     user_teachers.each_with_index do |teacher_id, index|
       teacher = TEACHERS.find { |t| t[:id] == teacher_id }
       rich_menu[:areas] << {
@@ -139,7 +270,6 @@ module LineBotConcern
       rich_menu_id = JSON.parse(response.body)['richMenuId']
       Rails.logger.info "Successfully created rich menu with ID: #{rich_menu_id} for user #{user_id}"
 
-      # Generate and upload the rich menu image
       image_blob = generate_rich_menu_image(user_teachers)
 
       Rails.logger.debug "Attempting to upload rich menu image for user #{user_id}"
@@ -178,17 +308,14 @@ module LineBotConcern
   end
 
   def generate_rich_menu_image(user_teachers)
-    # Constants for image dimensions
     width = 2500
     height = 1686
     rect_height = height / user_teachers.size
-    padding = 20 # Padding between rectangles
+    padding = 20
 
-    # Create a new image with the specified dimensions
     img = Magick::Image.new(width, height)
     img.background_color = 'white'
 
-    # Create a drawing object
     gc = Magick::Draw.new
     gc.font = 'Arial'
     gc.pointsize = 36
@@ -196,39 +323,30 @@ module LineBotConcern
     gc.stroke = 'black'
     gc.stroke_width(2)
 
-    # Loop through each teacher and create a rectangle with the teacher's name
     user_teachers.each_with_index do |teacher_id, index|
       teacher = TEACHERS.find { |t| t[:id] == teacher_id }
-      # Calculate rectangle position
       top_y = (index * rect_height) + padding
       bottom_y = ((index + 1) * rect_height) - padding
 
-      # Draw the rectangle
-      gc.fill(random_pastel_color) # Rectangle fill color
+      gc.fill(random_pastel_color)
       gc.rectangle(padding, top_y, width - padding, bottom_y)
 
-      # Calculate text position
       text_x = width / 2
       text_y = (top_y + bottom_y) / 2
 
-      # Draw the teacher's name centered in the rectangle
       gc.fill_color('black')
-      gc.fill = 'black' # Set text color again (in case it was overridden)
+      gc.fill = 'black'
       gc.font_size(72)
-      gc.text(text_x, text_y, teacher[:name]) # Directly set text position
+      gc.text(text_x, text_y, teacher[:name])
 
-      # Temporary Placeholder for calculations
       subject_metrics = gc.get_type_metrics(teacher[:subject])
       gc.text(text_x - (subject_metrics.width / 2) - 65, text_y + 75, teacher[:subject])
     end
 
-    # Draw everything onto the image
     gc.draw(img)
 
-    # Save the image to a file
     img.write('rich_menu_image.png')
 
-    # Optionally, return the image object
     img.format = 'PNG'
     img.to_blob
   end
