@@ -1,0 +1,15 @@
+<div style="display: flex;">
+  <!-- Sidebar with Clients -->
+  <div style="width: 25%; padding: 10px; border-right: 1px solid #ccc;">
+    <h2>Your Students</h2>
+    <ul>
+      <% Client.all.each do |client| %>
+        <li>
+          <%= link_to client.name, chat_path(id: client.id) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <!-- Main Chat Area -->
+</div>

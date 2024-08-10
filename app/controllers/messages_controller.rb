@@ -1,131 +1,138 @@
-require 'line/bot'  # gem 'line-bot-api'
+require 'line/bot' # gem 'line-bot-api'
+
+# Define the file path where user IDs will be stored ### REMOVE LATER <-----
+USER_IDS_FILE = Rails.root.join('storage', 'user_ids.txt') unless defined?(USER_IDS_FILE)
 
 class MessagesController < ApplicationController
-  skip_before_action :authenticate_user!, only: :line_callback
-  skip_before_action :verify_authenticity_token, only: :line_callback
-  after_action :verify_authorized, except: :line_callback
-  after_action :verify_policy_scoped, except: :line_callback
+  include LineBotConcern
 
+  # Skip CSRF protection for webhook
+  skip_before_action :verify_authenticity_token, only: %i[callback update_all_users_rich_menu]
 
-  def line_callback
+  # Skip Devise authentication for webhook (if you're using Devise)
+  skip_before_action :authenticate_user!, only: %i[callback update_all_users_rich_menu]
+
+  # Skip Pundit authorization check for webhook
+  skip_after_action :verify_authorized, only: %i[callback update_all_users_rich_menu]
+
+  # Optionally, skip policy scope check if you're using it
+  skip_after_action :verify_policy_scoped, only: %i[callback update_all_users_rich_menu]
+
+  def callback
     body = request.body.read
-
     signature = request.env['HTTP_X_LINE_SIGNATURE']
+
+    Rails.logger.info "Received LINE webhook callback"
+    Rails.logger.info "Body: #{body}"
+    Rails.logger.info "Signature: #{signature}"
+
     unless client.validate_signature(body, signature)
-      error 400 do 'Bad Request' end
+      head :bad_request
+      return
     end
 
     events = client.parse_events_from(body)
     events.each do |event|
-      p event
-      # Focus on the message events (including text, image, emoji, vocal.. messages)
-      next if event.class != Line::Bot::Event::Message
-
-      case event.type
-      # when receive a text message
-      when Line::Bot::Event::MessageType::Text
-        user_name = ''
-        user_id = event['source']['userId']
-        response = client.get_profile(user_id)
-        if response.class == Net::HTTPOK
-          contact = JSON.parse(response.body)
-          p contact
-          user_name = contact['displayName']
-        else
-          # Can't retrieve the contact info
-          p "#{response.code} #{response.body}"
+      case event
+      when Line::Bot::Event::Message
+        case event.type
+        when Line::Bot::Event::MessageType::Text
+          handle_message(event)
         end
-
-        if event.message['text'].downcase == 'hello, world'
-          # Sending a message when LINE tries to verify the webhook
-          send_bot_message(
-            'Everything is working!',
-            client,
-            event
-          )
-        else
-          # The answer mechanism is here!
-          send_bot_message(
-            bot_answer_to(event.message['text'], user_name),
-            client,
-            event
-          )
-        end
-        # when receive an image message
-      when Line::Bot::Event::MessageType::Image
-        response_image = client.get_message_content(event.message['id'])
-        fetch_imagga(response_image) do |image_results|
-          # Sending the image results
-          send_bot_message(
-            "Looking at that picture, the first words that come to me are #{image_results[0..1].join(', ')} and #{image_results[2]}. Pretty good, eh?",
-            client,
-            event
-          )
-        end
+      when Line::Bot::Event::Postback
+        handle_postback(event)
+      when Line::Bot::Event::Follow
+        handle_follow(event)
       end
     end
-    'OK'
+
+    head :ok
+  end
+
+  # Debug route for testing Rich Menu Update(s)
+  def update_all_users_rich_menu
+    user_ids = load_user_ids
+
+    user_ids.each do |user_id|
+      # Re-assign teachers to user. For simplicity, let's assign all teachers.
+      assigned_teacher_ids = @teachers.map { |t| t[:id] }
+
+      # Update the USERS hash with the assigned teachers
+      USERS[user_id] ||= {}
+      USERS[user_id][:teachers] = assigned_teacher_ids
+
+      update_user_rich_menu(user_id)
+    end
+    render json: { message: "Rich menu updated for all users" }, status: :ok
   end
 
   private
 
-  def client
-    @client ||= Line::Bot::Client.new { |config|
-      config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
-      config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
-    }
+  def load_user_ids
+    FileUtils.touch(USER_IDS_FILE) unless File.exist?(USER_IDS_FILE)
+
+    File.read(USER_IDS_FILE).split("\n").uniq
   end
 
-  def send_bot_message(message, client, event)
-    # Log prints for debugging
-    p 'Bot message sent!'
-    p event['replyToken']
-    p client
-
-    message = { type: 'text', text: message }
-    p message
-
-    client.reply_message(event['replyToken'], message)
-    'OK'
-  end
-
-  def bot_answer_to(message, user_name)
-    # If you want to add Bob to group chat, uncomment the next line
-    # return '' unless message.downcase.include?('bob') # Only answer to messages with 'bob'
-
-    if message.downcase.include?('hello')
-      # respond if a user says hello
-      "Hello #{user_name}, how are you doing today?"
-    elsif message.downcase.include?('weather in')
-      # call weather API in weather_api.rb
-      fetch_weather(message)
-    elsif message.downcase.include?('eat')
-      ['sushi', 'tacos', 'curry', 'pad thai', 'kebab', 'spaghetti', 'burger'].sample
-    elsif message.downcase.include?('events')
-      # call events API in tokyo_events.rb
-      fetch_tokyo_events
-    elsif message.match?(/([\p{Hiragana}\p{Katakana}\p{Han}]+)/)
-      # respond in japanese!
-      bot_jp_answer_to(message, user_name)
-    elsif message.end_with?('?')
-      # respond if a user asks a question
-      "Good question, #{user_name}!"
+  def save_user_id(user_id)
+    if user_id_exists?(user_id)
+      Rails.logger.info "User ID #{user_id} already exists in the file."
     else
-      ["I couldn't agree more.", 'Great to hear that.', 'Interesting.'].sample
+      File.open(USER_IDS_FILE, 'a') do |file|
+        file.puts(user_id)
+      end
     end
   end
 
-  def bot_jp_answer_to(message, user_name)
-    if message.match?(/(おはよう|こんにちは|こんばんは|ヤッホー|ハロー).*/)
-      "こんにちは#{user_name}さん！お元気ですか?"
-    elsif message.match?(/.*元気.*(？|\?｜か)/)
-      "私は元気です、#{user_name}さん"
-    elsif message.match?(/.*(le wagon|ワゴン|バゴン).*/i)
-      "#{user_name}さん... もしかして京都のLE WAGONプログラミング学校の話ですかね？ 素敵な画っこと思います！"
-    elsif message.end_with?('?','？')
-      "いい質問ですね、#{user_name}さん！"
+  def user_id_exists?(user_id)
+    user_ids = load_user_ids
+    user_ids.include?(user_id)
+  end
+
+  def handle_follow(event)
+    user_id = event['source']['userId']
+
+    # Find or create the client with the given lineid (user_id)
+    client_obj = Client.find_or_initialize_by(lineid: user_id)
+
+    # Update or set any additional attributes
+    client_obj.update(name: user_id.to_s) # Set a default name or handle accordingly
+
+    # Optionally update any other fields, e.g., phone_number
+
+    # Save the client record
+    if client_obj.save
+      # Successfully saved the client
+      USERS[user_id] = { teachers: @teachers.map { |t| t[:id] } }
+
+      # Update the user's rich menu
+      update_user_rich_menu(user_id)
+
+      welcome_message = {
+        type: 'text',
+        text: "Welcome! You've been assigned to all our teachers. Use the menu at the bottom to select a teacher and
+        start chatting!"
+      }
+      client.reply_message(event['replyToken'], welcome_message)
     else
-      ['そうですね！', '確かに！', '間違い無いですね！'].sample
+      # Handle the error (optional)
+      Rails.logger.error("Failed to save client with lineid: #{user_id}")
     end
   end
+
+  # def handle_follow(event)
+  #   user_id = event['source']['userId']
+  #   USERS[user_id] = { teachers: @teachers.map { |t| t[:id] } }
+
+  #   # Save the user ID to the file
+  #   save_user_id(user_id)
+  #   update_user_rich_menu(user_id)
+
+  #   welcome_message = {
+  #     type: 'text',
+  #     text: "Welcome! You've been assigned to all our teachers. Use the menu at the bottom to select a teacher and
+  #     start chatting!"
+  #   }
+  #   client.reply_message(event['replyToken'], welcome_message)
+  # end
 end

@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
+  
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions'
   }
 
+  resources :chat
+  
   resources :users, only: [:show] do
     get "calendars/month", to: "calendars#month"
     get "calendars/week", to: "calendars#week"
@@ -17,6 +21,11 @@ Rails.application.routes.draw do
   end
 
   resources :clients
+  resources :chat, only: [:index, :show] do
+    collection do
+      post :send_message
+    end
+  end
 
 
   root to: "pages#home"
@@ -28,7 +37,8 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  post "messages/callback" => "messages#line_callback"
+  post "messages/callback" => "messages#callback"
+  post "messages/debug/update" => "messages#update_all_users_rich_menu"
 
   # Defines the root path route ("/")
   # root "posts#index"
