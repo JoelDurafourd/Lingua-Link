@@ -52,12 +52,12 @@
   justify-content: center;
   margin-bottom: 5px;
   background-color: transparent;
-  // background-color: #ffa500;
+  // background-color: #ff6259;
   font-family: 'Lato', sans-serif;
   border: none;
 }
 
-.buttons-dash2 {
+.buttons-dash:hover {
   font-weight: bold;
   font-size: larger;
   color: #e0f7fa;
@@ -80,6 +80,20 @@
 }
 
 .calander-months-links {
+  // color: #ff6259;
+  text-decoration: none;
   font-size: larger;
   font-family: 'Lato', sans-serif;
+}
+
+.calander-weeks-links {
+  // color: #ff6259;
+  text-decoration: none;
+  font-size: larger;
+  font-family: 'Lato', sans-serif;
+}
+
+a {
+  color: #ff6259;
+  text-decoration: none;
 }
