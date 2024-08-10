@@ -26,50 +26,51 @@
 </div>
 
 <div class="bg-containeur">
-<div class="description-container">
-  <div class="button-group">
-    <div class="button-row">
-      <div class="object-button bouton-1" data-description="description-1">
-        <%= image_tag "message.png", alt: "Bouton 1", class: "button-img" %>
-        <div class="button-title">Line</div>
+  <div class="description-container rounded-box">
+    <div class="button-group">
+      <div class="button-row">
+        <div class="object-button bouton-1" data-description="description-1">
+          <%= image_tag "message.png", alt: "Bouton 1", class: "button-img" %>
+          <div class="button-title">Line</div>
+        </div>
+        <div class="object-button bouton-2" data-description="description-2">
+          <%= image_tag "calendar.png", alt: "Bouton 2", class: "button-img" %>
+          <div class="button-title">Calendar</div>
+        </div>
       </div>
-      <div class="object-button bouton-2" data-description="description-2">
-        <%= image_tag "calendar.png", alt: "Bouton 2", class: "button-img" %>
-        <div class="button-title">calendar</div>
+      <div class="button-row">
+        <div class="object-button bouton-3" data-description="description-3">
+          <%= image_tag "message.png", alt: "Bouton 3", class: "button-img" %>
+          <div class="button-title">Title 3</div>
+        </div>
+        <div class="object-button bouton-4" data-description="description-4">
+          <%= image_tag "message.png", alt: "Bouton 4", class: "button-img" %>
+          <div class="button-title">Title 4</div>
+        </div>
       </div>
     </div>
-    <div class="button-row">
-      <div class="object-button bouton-3" data-description="description-3">
-        <%= image_tag "message.png", alt: "Bouton 3", class: "button-img" %>
-        <div class="button-title">Title 3</div>
+    <div class="description">
+      <div id="description-1" class="description-content">
+        <h1>Line</h1>
+        <p>The booking is made through your line app and automatically registered in your dashboard calendar.</p>
       </div>
-      <div class="object-button bouton-4" data-description="description-4">
-        <%= image_tag "message.png", alt: "Bouton 4", class: "button-img" %>
-        <div class="button-title">Title 4</div>
-      </div>
+      <div id="description-2" class="description-content">Description for button 2</div>
+      <div id="description-3" class="description-content">Description for button 3</div>
+      <div id="description-4" class="description-content">Description for button 4</div>
     </div>
   </div>
-  <div class="description">
-    <div id="description-1" class="description-content">
-      <h1>Line</h1>
-      <p>The booking is made through your line app and automatically registered in your dashboard calendar</p>
-    </div>
-    <div id="description-2" class="description-content">Description for button 2</div>
-    <div id="description-3" class="description-content">Description for button 3</div>
-    <div id="description-4" class="description-content">Description for button 4</div>
+
+  <div class="signupdiv rounded-box">
+    <%# <h1>JOIN US!</h1> %>
+    <button class="signup-btn" id="signupBtn">Sign up</button>
   </div>
 </div>
 
-<div class="signupdiv">
-  <h1>JOIN US!</h1>
-  <button class="signup-btn" id="signupBtn">Sign up</button>
-</div>
-</div>
 <footer class="footer">
   <h2 class="footer-title"><b>LINGUA LINK</b></h2>
   <div class="sns-icons">
     <a href="#"><%= image_tag 'facebook.png', alt: 'Facebook' %></a>
-    <a href="#"><%= image_tag 'linkedin.png', alt: 'Twitter' %></a>
+    <a href="#"><%= image_tag 'linkedin.png', alt: 'LinkedIn' %></a>
     <a href="#"><%= image_tag 'instagram.png', alt: 'Instagram' %></a>
   </div>
 </footer>
