@@ -1,4 +1,6 @@
 <div class="weekly-calendar">
+<%# Display of week name %>
+<h2 class="dash-h2"><%= Date::MONTHNAMES[@date.month] %> <%= @date.year %></h2>
 <%# Links to next/previous week%>
   <div class="d-flex justify-content-around calander-weeks-links">
     <%= link_to "< Previous Week", user_calendars_week_path(user_id: @user.id, date: (@date - 1.week).to_s),
@@ -8,8 +10,6 @@
     <%= link_to "Next Week >", user_calendars_week_path(user_id: @user.id, date: (@date + 1.week).to_s),
             data: { action: "click->weekly-calendar#change" }  %>
 </div>
-<%# Display of week name %>
-<h2><%= Date::MONTHNAMES[@date.month] %> <%= @date.year %></h2>
 <%# Calendar container %>
 <div class="container">
 <% days_of_week = @date.all_week.to_a %>
@@ -20,7 +20,7 @@
       <tr>
         <% @day_names.each do |day_name| %>
             <%# Days of the Week code %>
-          <th class="text-center p-2">
+          <th class="text-center p-2 table-head">
             <%= day_name %>
           </th>
         <% end %>
@@ -33,7 +33,7 @@
             <% week.each do |day| %>
                 <%# today highlighter is the today highlighter and greyed out is the days before the first %>
               <td class="text-center p-2 <%= today_highlighter(day) %> ">
-                <%= day.day %>
+                <b><%= day.day %></b>
                 <% @bookings.where(start_time: day.all_day).each do |booking| %>
                   <div class="booking-div bg-secondary text-white">
                     <%= booking.start_time.strftime("%I:%M%p") %> -
