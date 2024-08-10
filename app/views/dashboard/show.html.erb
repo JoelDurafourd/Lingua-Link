@@ -30,7 +30,7 @@
       <div>
       <%= link_to "View My Monthly Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill buttons-dash-month-view" %>
       </div>
-      <div id="calendar-render-space" class="calendar-render" data-weekly-calendar-target="calendarRenderSpace">
+      <div id="calendar-render-space" class="calendar-render" data-weekly-calendar-target="calendarRenderSpace" data-controller="weekly-calendar">
         <%= render partial: "calendars/week" %>
       <h2 class="dash-h2">Most Recent Client Message</h2>
             <div class="d-flex justify-content-center">
