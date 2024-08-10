@@ -1,4 +1,4 @@
-class UserPolicy < ApplicationPolicy
+class AvailabilityPolicy < ApplicationPolicy
   # NOTE: Up to Pundit v2.3.1, the inheritance was declared as
   # `Scope < Scope` rather than `Scope < ApplicationPolicy::Scope`.
   # In most cases the behavior will be identical, but if updating existing
@@ -12,15 +12,13 @@ class UserPolicy < ApplicationPolicy
     # end
   end
 
-  def show?
-    return true
+  def new?
+    # Ensure the current user is allowed to create a booking
+    user.present?
   end
 
-  def month?
-    return true
-  end
-
-  def week?
-    return true
+  def create?
+    # Ensure the current user is allowed to create a booking
+    new?
   end
 end

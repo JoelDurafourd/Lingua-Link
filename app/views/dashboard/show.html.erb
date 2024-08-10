@@ -1,17 +1,41 @@
-<h1>connected to the dashboard of: <%= @user.email %></h1>
-
-<%= link_to "Book a lesson", new_user_booking_path(@user), class: "btn btn-outline-p rounded-pill" %>
-
-
-<%= month_calendar(events: @user.bookings) do |date, bookings| %>
-  <%= date %>
-
-  <% bookings.each do |booking| %>
-    <div class="booking-slot">
-      <strong><%= booking.client.name %></strong>
-      <br>
-      <em><%= booking.start_time.strftime("%I:%M %p") %> - <%= booking.end_time.strftime("%I:%M %p") %></em>
-      <div class="booking-bar" style="width: <%= (booking.end_time - booking.start_time) / 60 %>px;"></div>
+<div class="container">
+<div class="row">
+  <div class="col-2 left-nav">
+    <div class="container-img">
+      <% if current_user.photo.present? %>
+        <%= cl_image_tag(current_user.photo.key, class: "avatar-dash", alt: "User Avatar") %>
+      <% else %>
+        <%= image_tag("default_avatar.png", class: "avatar-dash", alt: "Default Avatar") %>
+      <% end %>
     </div>
-  <% end %>
-<% end %>
+    <div>
+      <%= link_to "My Profile", user_path(@user), class: "btn btn-info buttons-dash" %>
+    </div>
+    <div>
+      <%= link_to "My Messages", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
+    </div>
+    <div>
+      <%= link_to "My History", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
+    </div>
+    <div>
+      <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
+    </div>
+  </div>
+  <div class="col-10">
+  <div class="alert alert-warning alert-dismissible fade show row col-3" role="alert">
+ Welcome to your dashboard, <%= @user.email %>!
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+    <h2 class="dash2-h2">My Calendar</h2>
+      <div>
+      <%= link_to "View My Monthly Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill buttons-dash-month-view" %>
+      </div>
+      <div id="calendar-render-space" class="calendar-render" data-weekly-calendar-target="calendarRenderSpace" data-controller="weekly-calendar">
+        <%= render partial: "calendars/week" %>
+      <h2 class="dash-h2">Most Recent Client Message</h2>
+            <div class="d-flex justify-content-center">
+      <i>You don't have any recent messages at this time.</i>
+      </div>
+    </div>
+  </div>
+</div>

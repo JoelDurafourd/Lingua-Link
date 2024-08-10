@@ -1,0 +1,141 @@
+
+.booking-slot {
+  background-color: #e0f7fa;
+  border: 1px solid #b2ebf2;
+  padding: 4px;
+  margin-bottom: 2px;
+  border-radius: 4px;
+}
+
+.booking-slot::before {
+  content: "";
+  display: block;
+  height: 5px;
+  background-color: #00bcd4;
+  margin-bottom: 4px;
+}
+
+.booking-bar {
+  background-color: #00bcd4;
+  height: 20px;
+  margin: 2px 0;
+}
+
+.container {
+  max-width: 100%;
+  // background-color: #ff6259;
+}
+
+.container-img {
+  display: flex;
+  justify-content: center;
+  border-top: white;
+  border-top-left-radius: 20%;
+  border-top-right-radius: round($number: 20%);
+}
+
+.avatar-dash {
+  object-fit: cover;
+  height: 125px;
+  width: 125px;
+  border-radius: 50%;
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 3px solid #ffffff;
+}
+
+.buttons-dash {
+  font-weight: bold;
+  font-size: larger;
+  color: #e0f7fa;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  background-color: transparent;
+  // background-color: #ff6259;
+  font-family: 'Lato', sans-serif;
+  border: none;
+}
+
+.buttons-dash-month-view {
+  font-weight: bold;
+  font-size: larger;
+  color: #e0f7fa;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  // background-color: transparent;
+  background-color: #e67e22;
+  font-family: 'Lato', sans-serif;
+  border: none;
+}
+
+.buttons-dash-month-view:hover {
+  font-weight: bold;
+  font-size: larger;
+  color: #e0f7fa;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  // background-color: transparent;
+  background-color: #ff6259;
+  font-family: 'Lato', sans-serif;
+  border: none;
+}
+
+.buttons-dash:hover {
+  font-weight: bold;
+  font-size: larger;
+  color: #e0f7fa;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  background-color: transparent;
+  // background-color: #ff6259;
+  font-family: 'Lato', sans-serif;
+  border: none;
+  border-left: 5px solid white;
+  background: linear-gradient(45deg, #ff6259, #e67e22);
+}
+
+.left-nav {
+  background: linear-gradient(45deg, #ff6259, #e67e22);
+  height: 100vh;
+  border-radius: 0 14px 14px 0;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.calander-months-links {
+  // color: #ff6259;
+  text-decoration: none;
+  font-size: larger;
+  font-family: 'Lato', sans-serif;
+}
+
+.calander-weeks-links {
+  // color: #ff6259;
+  text-decoration: none;
+  font-size: larger;
+  font-family: 'Lato', sans-serif;
+  margin-bottom: 20px;
+}
+
+a {
+  color: #ff6259;
+  text-decoration: none;
+}
+
+.dash-h2 {
+color: #5d5c6a;
+font-family: 'Lato', sans-serif;
+margin-bottom: 50px;
+margin-top: 51px;
+}
+
+.dash2-h2 {
+  color: #5d5c6a;
+  font-family: 'Lato', sans-serif;
+  margin-bottom: 51px;
+  }

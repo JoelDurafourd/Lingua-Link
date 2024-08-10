@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   resources :chat
   
   resources :users, only: [:show] do
+    get "calendars/month", to: "calendars#month"
+    get "calendars/week", to: "calendars#week"
+    resources :availabilities
     resources :bookings do
       member do
         get :accept
@@ -23,6 +26,7 @@ Rails.application.routes.draw do
       post :send_message
     end
   end
+
 
   root to: "pages#home"
 

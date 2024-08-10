@@ -1,6 +1,5 @@
-// Specific CSS for your home-page
 .carousel-inner {
-  height: 600px;
+  height: 500px;
 }
 
 .carousel-inner img {
@@ -8,16 +7,117 @@
   object-fit: cover;
 }
 
-.description {
-  background-image: url('carousel/background-des.png'); // Assurez-vous que le chemin de l'image est correct
-  background-size: cover;
-  background-position: center;
-  height: 600px;
-  color: white; // Ajout de la couleur du texte pour rendre le contenu visible
+.description-container {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-radius: 40px;
+  height: 600px;
+  background: linear-gradient(135deg, #E7D39A, #F1AA60), url('carousel/bg-modern.png') center center no-repeat;
+  background-size: cover;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+
+
+
+.button-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.object-button {
+  width: 200px;
+  height: 200px;
+  margin: 15px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px;
+  transition: box-shadow 0.3s, transform 0.3s;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  border-radius: 20px;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 8px 24px;
+  }
+}
+
+.object-button.clicked img {
+  filter: brightness(0) saturate(100%) invert(47%) sepia(100%) saturate(447%) hue-rotate(97deg) brightness(95%) contrast(88%);
+}
+
+.object-button.clicked .button-title {
+  color: green;
+}
+
+.object-button.clicked .btn-title-4{
+  color: green;
+}
+
+.object-button.clicked .btn-title-1 {
+  color: green;
+}
+
+.object-button.clicked .btn-title-2 {
+  color: green;
+}
+
+.object-button.clicked .btn-title-3 {
+  color: green;
+}
+
+.object-button.clicked {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 24px;
+}
+
+.description {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 30px;
+  text-align: center;
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+}
+
+.bg-container {
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.5) 100%), url('carousel/bg-modern.png') no-repeat center center;
+  background-size: cover;
+}
+
+.description-content {
+  display: none;
+}
+
+.description-content.active {
+  display: block;
 }
 
 .signupdiv {
@@ -26,16 +126,15 @@
   background-position: center;
   color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin: 20px 40px; // Marges sur les côtés et en haut/bas
-  border-radius: 40px;
-  padding: 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding: 30px;
+  width: 100%;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
 .signup-btn {
   cursor: pointer;
@@ -43,19 +142,20 @@
   font-size: 28px;
   color: white;
   padding: 14px 30px;
-  transition: 0.2s; // Transition plus rapide
+  transition: 0.2s;
   width: 335px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 12px;
   border-radius: 50px;
   background: linear-gradient(90deg, rgb(204, 201, 0) 0%, rgb(0, 99, 204) 100%);
-  font-weight: 100;
-  border: none; // Supprimer les bordures par défaut
+  font-weight: bold;
+  border: none;
 
   &:hover {
     width: 337px;
     background: rgb(0, 102, 204);
   }
 }
+
 .footer {
   background-color: white;
   color: orange;
@@ -65,7 +165,8 @@
 
 .footer-title {
   margin: 0;
-  font-size: 24px;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .sns-icons {
@@ -73,10 +174,26 @@
 }
 
 .sns-icons a {
-  margin: 0 10px;
+  margin: 0 15px;
   display: inline-block;
 }
-.sns-icons img{
+
+.sns-icons img {
   width: 50px;
   height: 50px;
+}
+
+.button-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.button-title {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+
 }
