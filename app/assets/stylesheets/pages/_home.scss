@@ -61,7 +61,27 @@
 }
 
 .object-button.clicked img {
-  filter: brightness(0) saturate(100%) invert(38%) sepia(57%) saturate(453%) hue-rotate(359deg) brightness(94%) contrast(96%);
+  filter: brightness(0) saturate(100%) invert(47%) sepia(100%) saturate(447%) hue-rotate(97deg) brightness(95%) contrast(88%);
+}
+
+.object-button.clicked .button-title {
+  color: green;
+}
+
+.object-button.clicked .btn-title-4{
+  color: green;
+}
+
+.object-button.clicked .btn-title-1 {
+  color: green;
+}
+
+.object-button.clicked .btn-title-2 {
+  color: green;
+}
+
+.object-button.clicked .btn-title-3 {
+  color: green;
 }
 
 .object-button.clicked {
@@ -172,7 +192,8 @@
 }
 
 .button-title {
-  font-size: 16px;
+  font-size: 25px;
   font-weight: bold;
   text-align: center;
+
 }
