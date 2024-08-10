@@ -18,8 +18,8 @@ puts "Created #{user1}!"
 user2 = User.create!(email: "jane.smith@email.com", password: "password123", first_name: "Jane", last_name: "Smith")
 puts "Created #{user2}!"
 
-user3 = User.create!(email: "michael.jones@email.com", password: "securepass", first_name: "Michael", last_name: "Jones")
-puts "Created #{user3}!"
+# user3 = User.create!(email: "michael.jones@email.com", password: "securepass", first_name: "Michael", last_name: "Jones")
+# puts "Created #{user3}!"
 
 # user4 = User.create!(email: "emily.wilson@email.com", password: "p@ssw0rd", first_name: "Emily", last_name: "Wilson")
 # puts "Created #{user4}!"
