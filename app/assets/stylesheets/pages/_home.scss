@@ -83,10 +83,13 @@
   text-align: center;
 }
 
-.description-container {
-  background: url('carousel/background-des1.png') no-repeat center center;
-  background-size: cover;
+.bg-containeur{
+  background: url('carousel/bg-home-2.png') no-repeat center center, url('carousel/bg-home-1.png') left top no-repeat;
+  background-size: 100% 50%, 100% 70%;
+  background-position: center top, left top;
 }
+
+
 
 .description-content {
   display: none;
