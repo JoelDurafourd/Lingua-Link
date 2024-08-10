@@ -14,11 +14,11 @@ User.destroy_all
 Client.destroy_all
 Message.destroy_all
 
-# user1 = User.create!(email: "john.doe@email.com", password: "123456", first_name: "John", last_name: "Doe")
-# puts "Created #{user1}!"
+user1 = User.create!(id: 2, email: "john.doe@email.com", password: "123456", first_name: "John", last_name: "Doe")
+puts "Created #{user1}!"
 
-# user2 = User.create!(email: "jane.smith@email.com", password: "password123", first_name: "Jane", last_name: "Smith")
-# puts "Created #{user2}!"
+user2 = User.create!(id: 3, email: "jane.smith@email.com", password: "password123", first_name: "Jane", last_name: "Smith")
+puts "Created #{user2}!"
 
 # user3 = User.create!(email: "michael.jones@email.com", password: "securepass", first_name: "Michael", last_name: "Jones")
 # puts "Created #{user3}!"
