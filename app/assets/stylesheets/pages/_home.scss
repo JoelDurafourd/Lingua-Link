@@ -9,10 +9,21 @@
 
 .description-container {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-radius: 40px;
   height: 600px;
-  background: linear-gradient(135deg, rgba(0, 102, 204, 0.9), rgba(0, 201, 204, 0.9)), url('carousel/bg-modern.png') center center no-repeat;
+  background: linear-gradient(135deg, #E7D39A, #F1AA60), url('carousel/bg-modern.png') center center no-repeat;
   background-size: cover;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
+
+
+
 
 .button-group {
   flex: 1;
@@ -95,13 +106,14 @@
   background-position: center;
   color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   text-align: center;
-  border-radius: 40px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   padding: 30px;
-  margin: 50px 20% 50px;
+  width: 100%;
 }
 
 .signup-btn {
