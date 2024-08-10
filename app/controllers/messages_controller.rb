@@ -3,7 +3,6 @@ require 'line/bot' # gem 'line-bot-api'
 # Define the file path where user IDs will be stored ### REMOVE LATER <-----
 USER_IDS_FILE = Rails.root.join('storage', 'user_ids.txt') unless defined?(USER_IDS_FILE)
 
-
 class MessagesController < ApplicationController
   include LineBotConcern
 
@@ -56,7 +55,7 @@ class MessagesController < ApplicationController
 
     user_ids.each do |user_id|
       # Re-assign teachers to user. For simplicity, let's assign all teachers.
-      assigned_teacher_ids = TEACHERS.map { |t| t[:id] }
+      assigned_teacher_ids = @teachers.map { |t| t[:id] }
 
       # Update the USERS hash with the assigned teachers
       USERS[user_id] ||= {}
@@ -92,27 +91,48 @@ class MessagesController < ApplicationController
 
   def handle_follow(event)
     user_id = event['source']['userId']
-    USERS[user_id] = { teachers: TEACHERS.map { |t| t[:id] } }
 
-    # Save the user ID to the file
-    save_user_id(user_id)
+    # Find or create the client with the given lineid (user_id)
+    client_obj = Client.find_or_initialize_by(lineid: user_id)
 
-    update_user_rich_menu(user_id)
+    # Update or set any additional attributes
+    client_obj.update(name: user_id.to_s) # Set a default name or handle accordingly
 
-    welcome_message = {
-      type: 'text',
-      text: "Welcome! You've been assigned to all our teachers. Use the menu at the bottom to select a teacher and start chatting!"
-    }
-    client.reply_message(event['replyToken'], welcome_message)
+    # Optionally update any other fields, e.g., phone_number
+
+    # Save the client record
+    if client_obj.save
+      # Successfully saved the client
+      USERS[user_id] = { teachers: @teachers.map { |t| t[:id] } }
+
+      # Update the user's rich menu
+      update_user_rich_menu(user_id)
+
+      welcome_message = {
+        type: 'text',
+        text: "Welcome! You've been assigned to all our teachers. Use the menu at the bottom to select a teacher and
+        start chatting!"
+      }
+      client.reply_message(event['replyToken'], welcome_message)
+    else
+      # Handle the error (optional)
+      Rails.logger.error("Failed to save client with lineid: #{user_id}")
+    end
   end
+
+  # def handle_follow(event)
+  #   user_id = event['source']['userId']
+  #   USERS[user_id] = { teachers: @teachers.map { |t| t[:id] } }
+
+  #   # Save the user ID to the file
+  #   save_user_id(user_id)
+  #   update_user_rich_menu(user_id)
+
+  #   welcome_message = {
+  #     type: 'text',
+  #     text: "Welcome! You've been assigned to all our teachers. Use the menu at the bottom to select a teacher and
+  #     start chatting!"
+  #   }
+  #   client.reply_message(event['replyToken'], welcome_message)
+  # end
 end
-#   def bot_answer_to(message, user_name)
-#     # Existing code
-#     elsif message.downcase.include?('reservation')
-#       handle_booking_request(message, user_name)
-
-#     # Existing code
-#   end
-
-#   # Add methods for creating, changing, and canceling reservations
-# end

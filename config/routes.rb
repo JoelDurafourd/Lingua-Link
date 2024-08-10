@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
+  
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions'
   }
 
+  resources :chat
+  
   resources :users, only: [:show] do
     resources :bookings do
       member do
@@ -14,6 +18,11 @@ Rails.application.routes.draw do
   end
 
   resources :clients
+  resources :chat, only: [:index, :show] do
+    collection do
+      post :send_message
+    end
+  end
 
   root to: "pages#home"
 

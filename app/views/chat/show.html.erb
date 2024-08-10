@@ -1,0 +1,34 @@
+<div style="display: flex;">
+  <!-- Sidebar with Clients -->
+  <div style="width: 25%; padding: 10px; border-right: 1px solid #ccc;">
+    <h2>Your Students</h2>
+    <ul>
+      <% Client.all.each do |client| %>
+        <li>
+          <%= link_to client.name, chat_path(id: client.id) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <!-- Main Chat Area -->
+  <div style="width: 75%; padding: 10px;">
+    <h1>Chat with Student</h1>
+
+    <%= form_with url: send_message_chat_index_path, method: :post, remote: true, data: { controller: "chat" } do |f| %>
+      <div>
+        <%= f.label :message, "Type your message:" %><br>
+        <%= f.text_area :message, rows: 3, data: { chat_target: "input" } %>
+      </div>
+
+      <div>
+        <%= f.submit "Send", data: { action: "click->chat#sendMessage" } %>
+      </div>
+    <% end %>
+
+    <%= content_tag(:div, data: { controller: "chat", chat_target: "output" }) do %>
+      <h2>Messages will appear here:</h2>
+      <!-- The received messages will be inserted here -->
+    <% end %>
+  </div>
+</div>

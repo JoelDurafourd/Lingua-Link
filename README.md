@@ -11,3 +11,7 @@ sudo apt-get install imagemagick libmagickwand-dev
 ngrok config add-authtoken <TOKEN>
 ngrok http 3000
 ```
+
+
+
+rails db:drop; rails db:create; rails db:migrate; rails db:seed
