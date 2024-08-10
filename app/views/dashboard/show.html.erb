@@ -1,5 +1,6 @@
-<div class="row container">
-  <div class="col md:col-2 left-nav">
+<div class="container">
+<div class="row">
+  <div class="col-2 left-nav">
     <div class="container-img">
       <% if current_user.photo.present? %>
         <%= cl_image_tag(current_user.photo.key, class: "avatar-dash", alt: "User Avatar") %>
@@ -20,16 +21,17 @@
       <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
     </div>
   </div>
-  <div class="row col-10">
-    <div class="alert alert-warning row col-3" role="alert">
-Welcome to your dashboard, <%= @user.email %>!
+  <div class="col-10">
+  <div class="alert alert-warning alert-dismissible fade show row col-3" role="alert">
+ Welcome to your dashboard, <%= @user.email %>!
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-    <h2>My Calander</h2>
+    <h2 class="dash2-h2">My Calendar</h2>
       <div>
       <%= link_to "View My Monthly Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill buttons-dash-month-view" %>
       </div>
         <%= render partial: "calendars/week" %>
-      <h2>Most Recent Client Message</h2>
+      <h2 class="dash-h2">Most Recent Client Message</h2>
             <div class="d-flex justify-content-center">
       <i>You don't have any recent messages at this time.</i>
       </div>
