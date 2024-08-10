@@ -1,8 +1,12 @@
+<div class="weekly-calendar">
 <%# Links to next/previous week%>
-<div class="d-flex justify-content-around calander-weeks-links">
-<%= link_to "< Previous Week", user_calendars_week_path(user_id: @user.id, date: (@date - 1.week).to_s) %>
-<%= link_to "This Week", user_calendars_week_path(user_id: @user.id, date: Date.today.to_s) %>
-<%= link_to "Next Week >", user_calendars_week_path(user_id: @user.id, date: (@date + 1.week).to_s) %>
+  <div class="d-flex justify-content-around calander-weeks-links">
+    <%= link_to "< Previous Week", user_calendars_week_path(user_id: @user.id, date: (@date - 1.week).to_s),
+            data: { action: "click->weekly-calendar#change" } %>
+    <%= link_to "This Week", user_calendars_week_path(user_id: @user.id, date: Date.today.to_s),
+            data: { action: "click->weekly-calendar#change" }  %>
+    <%= link_to "Next Week >", user_calendars_week_path(user_id: @user.id, date: (@date + 1.week).to_s),
+            data: { action: "click->weekly-calendar#change" }  %>
 </div>
 <%# Display of week name %>
 <h2><%= Date::MONTHNAMES[@date.month] %> <%= @date.year %></h2>
@@ -49,4 +53,5 @@
       <% end %>
     </tbody>
   </table>
+</div>
 </div>
