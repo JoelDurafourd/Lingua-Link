@@ -21,10 +21,12 @@
     </div>
   </div>
   <div class="row col-10">
-    <h1>Welcome to your dashboard, <%= @user.email %>!</h1>
+    <div class="alert alert-warning row col-3" role="alert">
+Welcome to your dashboard, <%= @user.email %>!
+</div>
     <h2>My Calander</h2>
       <div>
-      <%= link_to "View My Monthly Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill" %>
+      <%= link_to "View My Monthly Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill buttons-dash-month-view" %>
       </div>
         <%= render partial: "calendars/week" %>
       <h2>Most Recent Client Message</h2>
