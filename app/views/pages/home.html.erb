@@ -1,52 +1,30 @@
 <div class="banner">
   <h1>Explore your</h1>
   <h1 class="highlight">performance</h1>
-  <%= image_tag "home/homebannerimg1.png", alt: "Left Image", class: "banner-image banner-image-left" %>
-   <%= image_tag "home/circle-homebanner.png", alt: "Left Image", class: "banner-image banner-image-left-1" %>
-  <%= image_tag "home/homebannerimg2.png", alt: "Right Image", class: "banner-image banner-image-right" %>
+  <%= image_tag "home/homebannerimg1.png" %>
 
 </div>
 
+<div class="orange-section" id="orangeSection">
+  <h2>Connect to your students is effortless</h2>
+  <p>Make your bookings through line</p>
+  <%= image_tag "home/line1.png", alt: "Line img", class: "line-img" %>
+</div>
 
-<div class="bg-containeur">
-  <div class="description-container rounded-box">
-    <div class="button-group">
-      <div class="button-row">
-        <div class="object-button bouton-1" data-description="description-1">
-          <%= image_tag "message.png", alt: "Bouton 1", class: "button-img btn-img-1" %>
-          <div class="button-title btn-title-1">Line</div>
-        </div>
-        <div class="object-button bouton-2" data-description="description-2">
-          <%= image_tag "calendar.png", alt: "Bouton 2", class: "button-img btn-img-2" %>
-          <div class="button-title btn-title-2">Calendar</div>
-        </div>
-      </div>
-      <div class="button-row">
-        <div class="object-button bouton-3" data-description="description-3">
-          <%= image_tag "schedule.png", alt: "Bouton 3", class: "button-img btn-img-3" %>
-          <div class="button-title btn-title-3">Schedule</div>
-        </div>
-        <div class="object-button bouton-4" data-description="description-4">
-          <%= image_tag "translate.png", alt: "Bouton 4", class: "button-img btn-img-4" %>
-          <div class="button-title btn-title-4">Translate</div>
-        </div>
-      </div>
-    </div>
-    <div class="description">
-      <div id="description-1" class="description-content">
-        <h1>Line</h1>
-        <p>The booking is made through your line app and automatically registered in your dashboard calendar.</p>
-      </div>
-      <div id="description-2" class="description-content"> <h2>Calendar</h2>You can follow your bookings through the calendar</div>
-      <div id="description-3" class="description-content"><h2>Schedule</h2>With your scheduled calendar you can watch your bookings in real time</div>
-      <div id="description-4" class="description-content"><h2>Translate</h2>Your students don't speak your language, no worries ! Lingua link trnaslate the messages for you</div>
-    </div>
+<div class="red-section" id="redSection">
+  <div class="images-container">
+    <%= image_tag "home/appo1.png", alt: "appo1 img", class: "appo-img-1" %>
+    <%= image_tag "home/appo2.png", alt: "appo2 img", class: "appo-img-2" %>
   </div>
+  <h2>Real-time updates</h2>
+  <p>Bookings automatically update to your calendar</p>
+</div>
 
-  <div class="signupdiv rounded-box">
-    <%# <h1>JOIN US!</h1> %>
-    <button class="signup-btn" id="signupBtn">Sign up</button>
-  </div>
+<div class="white-section" id="whiteSection">
+
+  <h2>interested ?</h2>
+  <h2>JOIN US !</h2>
+  <p>SIGN IN</p>
 </div>
 
 <footer class="footer">
@@ -59,18 +37,27 @@
 </footer>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const buttons = document.querySelectorAll('.object-button');
-  const descriptions = document.querySelectorAll('.description-content');
+  document.addEventListener("DOMContentLoaded", function() {
+    const buttons = document.querySelectorAll('.object-button');
+    const descriptions = document.querySelectorAll('.description-content');
 
-  buttons.forEach(button => {
-    button.addEventListener('click', function() {
-      descriptions.forEach(desc => desc.classList.remove('active'));
-      const descriptionId = button.getAttribute('data-description');
-      document.getElementById(descriptionId).classList.add('active');
-      buttons.forEach(btn => btn.classList.remove('clicked'));
-      button.classList.add('clicked');
+    buttons.forEach(button => {
+      button.addEventListener('click', function() {
+        descriptions.forEach(desc => desc.classList.remove('active'));
+        const descriptionId = button.getAttribute('data-description');
+        document.getElementById(descriptionId).classList.add('active');
+        buttons.forEach(btn => btn.classList.remove('clicked'));
+        button.classList.add('clicked');
+      });
+    });
+
+    window.addEventListener('scroll', function() {
+      const orangeSection = document.getElementById('orangeSection');
+      if (window.scrollY > 500) {
+        orangeSection.classList.add('visible');
+      } else {
+        orangeSection.classList.remove('visible');
+      }
     });
   });
-});
 </script>
