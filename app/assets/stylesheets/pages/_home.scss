@@ -1,6 +1,60 @@
+.banner {
+  position: relative;
+  text-align: center;
+  background-color: #faf8f6;
+  margin: 10px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+
+  h1 {
+    font-size: 35px;
+    font-weight: bold;
+    color: #ffbd44;
+    margin: 0;
+
+  }
+
+
+  .highlight {
+    color: rgb(255, 146, 250);
+    font-size: 40px;
+  }
+
+  .banner-image {
+    position: absolute;
+    width: 100px;
+    height: auto;
+
+    &.banner-image-left {
+      top: 10px;
+      left: 10px;
+    }
+
+    &.banner-image-right {
+      bottom: 10px;
+      right: 10px;
+    }
+
+    &.banner-image-left-1 {
+      top: 10px;
+      left: 10px;
+    }
+  }
+}
+
 .carousel-inner {
   height: 500px;
 }
+
+.carousel-inner img {
+  height: 100%;
+  object-fit: cover;
+}
+
+// Your existing SCSS code
+
 
 .carousel-inner img {
   height: 100%;
