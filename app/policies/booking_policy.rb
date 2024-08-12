@@ -37,5 +37,4 @@ class BookingPolicy < ApplicationPolicy
   def edit?
     user.present?
   end
-
 end
