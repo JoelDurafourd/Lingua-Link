@@ -18,25 +18,11 @@
     }
   }
 
-  .banner-image {
-    position: absolute;
-    width: 100px;
+  .banner-img {
+    width: 100%;
+    max-width: 600px; // Adjust this value as needed
     height: auto;
-
-    &.banner-image-left {
-      top: 10px;
-      left: 10px;
-    }
-
-    &.banner-image-right {
-      bottom: 10px;
-      right: 10px;
-    }
-
-    &.banner-image-left-1 {
-      top: 10px;
-      left: 10px;
-    }
+    margin-top: 20px; // Add spacing from the text
   }
 }
 
@@ -44,10 +30,9 @@
   background-color: #fcc11e;
   color: white;
   text-align: center;
-  padding-top: 20px;
+  padding: 20px;
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  position: relative;
   margin: 20px;
   transition: opacity 0.5s ease-in-out;
   display: flex;
@@ -63,7 +48,6 @@
   p {
     font-size: 1.2rem;
   }
-
 }
 
 .orange-section.visible {
@@ -79,28 +63,38 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   position: relative;
   margin: 20px;
+  height: 400px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 
+  .images-container-1,
+  .images-container-2 {
+    position: absolute;
+    width: auto;
+    height: auto;
+  }
 
-  .images-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
+  .images-container-1 {
+    top: 10px;
+    right: 10px;
+  }
 
-    .appo-img-1,
-    .appo-img-2 {
-      width: 300px;
-      height: auto;
-      margin: 10px 0;
-    }
-    .appo-img-1{
+  .images-container-2 {
+    bottom: 150px;
+    left: 10px;
+  }
 
-    }
+  .appo-img-1,
+  .appo-img-2 {
+    width: 200px;
+    height: auto;
+  }
 
+  .title-home {
+    margin-top: 250px;
+    z-index: 1;
+    position: relative;
   }
 
   h2 {
@@ -113,14 +107,51 @@
   }
 }
 
-
 .red-section.visible {
   display: flex;
 }
 
 .white-section {
   background-color: #faf8f6;
+  text-align: center;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  margin: 20px;
+
+  .join-us-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+      margin: 10px 0;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    .sign-up-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+      background-color: #ffbd44; // Adjust the color as needed
+      border-radius: 25px;
+      text-decoration: none;
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 10px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        background-color: #ff9f00; // Adjust the hover color as needed
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 6px 15px;
+      }
+    }
+  }
 }
+
 .footer {
   background-color: white;
   color: orange;
