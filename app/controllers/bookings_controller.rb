@@ -64,6 +64,7 @@ class BookingsController < ApplicationController
   def accept
     # change the bookings status to accepted, redirect to the booking path
     @booking = Booking.find(params[:id])
+    authorize @booking
     if @booking.update(status: :accepted)
       redirect_to user_path(@booking.user)
     end
