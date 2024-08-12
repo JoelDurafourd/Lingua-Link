@@ -1,7 +1,11 @@
 <div class="banner">
-  <h1>Explore your</h1>
-  <h1 class="highlight">performance</h1>
-  <%= image_tag "home/banner-1.jpg", alt: "Banner img", class: "banner-img" %>
+  <h1>Join the team</h1>
+  <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="..." alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
 </div>
 
 <div class="orange-section" id="orangeSection">
@@ -25,12 +29,21 @@
 
 <div class="white-section" id="whiteSection">
   <div class="join-us-content">
-    <h2>Interested?</h2>
-    <h2>JOIN US!</h2>
-
-    <a href="#" class="sign-up-button">Sign in</a>
+    <%# <h2>Interested?</h2> %>
+    <h2><b>JOIN US!</b></h2>
+     <%= link_to new_user_registration_path, class: 'cssbuttons-io-button' do %>
+      SIGN UP
+      <div class="icon">
+        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path>
+        </svg>
+      </div>
+    <% end %>
   </div>
 </div>
+
+
 
 <footer class="footer">
   <h2 class="footer-title"><b>LINGUA LINK</b></h2>
