@@ -38,7 +38,17 @@
                   <div class="booking-div bg-secondary text-white">
                     <%= booking.start_time.strftime("%I:%M%p") %> -
                     <%= booking.end_time.strftime("%I:%M%p") %> with
-                    <%= booking.client.name %>
+                    <%= booking.client.name %> current status:
+                    <%= booking.status %>
+                    <%= link_to 'see more...', user_booking_path(user_id: booking.user_id, id: booking.id) %>
+                      <% if booking.user == current_user %>
+                          <% if booking.status == "pending" %>
+                            <div>
+                              <%= link_to 'Accept', accept_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-success" %>
+                              <%= link_to 'Decline', decline_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-danger" %>
+                            </div>
+                          <% end %>
+                        <% end %>
                   </div>
                 <% end %>
               </td>

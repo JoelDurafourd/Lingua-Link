@@ -1,0 +1,14 @@
+<h1><%= @booking %></h1>
+    <h2>start_time <%= @booking.start_time %></h2>
+    <h2>end_time <%= @booking.end_time %></h2>
+    <h2>status <%= @booking.status %></h2>
+    </div>
+
+<% if @booking.user == current_user %>
+  <% if @booking.status == "pending" %>
+    <%= link_to 'Accept', accept_user_booking_path(user_id: @booking.user_id, id: @booking.id), class: "btn btn-success" %>
+    <%= link_to 'Decline', decline_user_booking_path(user_id: @booking.user_id, id: @booking.id), class: "btn btn-danger" %>
+  <% end %>
+<% end %>
+
+<%= link_to 'Edit', edit_user_booking_path(user_id: @booking.user_id, id: @booking.id), class: "btn btn-danger" %>

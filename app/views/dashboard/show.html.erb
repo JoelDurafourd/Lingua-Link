@@ -12,7 +12,7 @@
       <%= link_to "My Profile", user_path(@user), class: "btn btn-info buttons-dash" %>
     </div>
     <div>
-      <%= link_to "My Messages", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
+      <%= link_to "My Messages", chat_index_path, class: "btn btn-info buttons-dash" %>
     </div>
     <div>
       <%= link_to "My History", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
@@ -22,9 +22,9 @@
     </div>
   </div>
   <div class="col-10">
-  <div class="alert alert-warning alert-dismissible fade show row col-3" role="alert">
- Welcome to your dashboard, <%= @user.email %>!
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert alert-warning alert-dismissible fade show row col-3" role="alert">
+      Welcome to your dashboard, <%= @user.email %>!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
     <h2 class="dash2-h2">My Calendar</h2>
       <div>

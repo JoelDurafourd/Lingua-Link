@@ -3,11 +3,6 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="weekly-calendar"
 export default class extends Controller {
   static targets = ["calendarRenderSpace"]
-
-  connect() {
-    console.log("connected to weekly-calendar-controller")
-  }
-
   change(event) {
     event.preventDefault()
     const parser = new DOMParser()

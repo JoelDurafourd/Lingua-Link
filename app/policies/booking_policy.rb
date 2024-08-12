@@ -21,4 +21,21 @@ class BookingPolicy < ApplicationPolicy
     # Ensure the current user is allowed to create a booking
     new?
   end
+
+  def accept?
+    user.present?
+  end
+
+  def decline?
+    user.present?
+  end
+
+  def show?
+    user.present?
+  end
+
+  def edit?
+    user.present?
+  end
+
 end

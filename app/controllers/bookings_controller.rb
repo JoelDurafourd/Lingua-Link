@@ -10,6 +10,7 @@ class BookingsController < ApplicationController
   def show
     # this shows a singular lesson, usually the lesson attached to the page or whatever link you're clicking on.
     @booking = Booking.find(params[:id])
+    authorize @booking
   end
 
   def new
@@ -37,6 +38,8 @@ class BookingsController < ApplicationController
   def edit
     # find the booking to edit
     @booking = Booking.find(params[:id])
+    @user = User.find(params[:user_id])
+    authorize @booking
   end
 
   def update
@@ -58,21 +61,21 @@ class BookingsController < ApplicationController
     redirect_to dashboard_path(@booking.user), status: :see_other
   end
 
-  # def accept
-  #   # change the bookings status to accepted, redirect to the booking path
-  #   @booking = Booking.find(params[:booking_id])
-  #   if @booking.update(status: :accepted)
-  #     redirect_to user_path(@booking.lesson.user)
-  #   end
-  # end
+  def accept
+    # change the bookings status to accepted, redirect to the booking path
+    @booking = Booking.find(params[:id])
+    if @booking.update(status: :accepted)
+      redirect_to user_path(@booking.user)
+    end
+  end
 
-  # def decline
-  #   # change the bookings status to declined, redirect to the booking path
-  #   @booking = Booking.find(params[:booking_id])
-  #   if @booking.update(status: :declined)
-  #     redirect_to user_path(@booking.lesson.user)
-  #   end
-  # end
+  def decline
+    # change the bookings status to declined, redirect to the booking path
+    @booking = Booking.find(params[:id])
+    if @booking.update(status: :declined)
+      redirect_to user_path(@booking.user)
+    end
+  end
 
   def set_user
     @user = User.find(params[:user_id])
@@ -86,7 +89,7 @@ class BookingsController < ApplicationController
 
   def booking_params
     # these are strong params or security params, it makes sure only these attributes are changed. Any edits to a model has to be modified here also.
-    params.require(:booking).permit(:start_time, :end_time, :client_id)
+    params.require(:booking).permit(:start_time, :end_time, :client_id, :status)
   end
 end
 # t.datetime "start_time"

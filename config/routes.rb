@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
-  
+
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions'
   }
 
   resources :chat
-  
+
   resources :users, only: [:show] do
     get "calendars/month", to: "calendars#month"
     get "calendars/week", to: "calendars#week"
