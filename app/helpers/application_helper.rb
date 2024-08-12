@@ -7,7 +7,13 @@ module ApplicationHelper
   def day_num_ender(day_number)
     # adds an ender to days of the month depending on what day it is
     last_number = day_number.to_s.chars.last
-    if last_number == "1"
+    if day_number == 11
+      return "#{day_number}th"
+    elsif day_number == 12
+      return "#{day_number}th"
+    elsif day_number == 13
+      return "#{day_number}th"
+    elsif last_number == "1"
       return "#{day_number}st"
     elsif last_number == "2"
       return "#{day_number}nd"

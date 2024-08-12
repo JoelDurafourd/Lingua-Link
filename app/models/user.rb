@@ -8,5 +8,6 @@ class User < ApplicationRecord
   validates :last_name, presence: true, length: { in: 1..100 }
 
   has_many :bookings
+  has_many :availabilities
   has_one_attached :photo
 end
