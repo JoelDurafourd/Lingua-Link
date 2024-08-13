@@ -20,7 +20,7 @@
       <tr>
         <% days_of_week.each do |day| %>
             <%# Days of the Week code %>
-          <th class="text-center p-2 table-head">
+          <th class="table-head text-center p-2">
             <b><%= day.strftime('%a') %></b>
             <b><%= day_num_ender(day.day) %></b>
           </th>
@@ -40,13 +40,20 @@
                     <p><strong>Availability:</strong> <%= availability.start_time.strftime("%I:%M %p") %></p>
 
                     <% @bookings.where(start_time: availability.start_time..availability.end_time).each do |booking| %>
-                      <div class="booking-div bg-secondary text-white">
-                        <p>
+
+                    <%# Start of card. %>
+<div class="card bg-light mb-3 week-card" style="max-width: 18rem;">
+<div class="card-header">                        <p> 🕓
                           <%= booking.start_time.strftime("%I:%M%p") %> -
-                          <%= booking.end_time.strftime("%I:%M%p") %> with
-                          <%= booking.client.name %> (Status: <%= booking.status %>)
-                        </p>
-                        <%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id) %>
+                          <%= booking.end_time.strftime("%I:%M%p") %> </div>
+<div class="card-body">
+<h5 class="card-title">👤 w/ <%= booking.client.name %></h5>
+
+<p class="card-text">
+                          (Status: <%= booking.status.capitalize %>)
+                          </p>
+
+                                                  <%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id) %>
                         <% if booking.user == current_user %>
                           <% if booking.status == "pending" %>
                             <div>
@@ -55,7 +62,9 @@
                             </div>
                           <% end %>
                         <% end %>
-                      </div>
+  </div>
+</div>
+<%# END OF CARD %>
                     <% end %>
                     <p><%= availability.end_time.strftime("%I:%M %p") %></p>
                   </div>
