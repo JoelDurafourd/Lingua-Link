@@ -7,7 +7,7 @@ class User < ApplicationRecord
   validates :first_name, presence: true, length: { in: 1..100 }
   validates :last_name, presence: true, length: { in: 1..100 }
 
-  has_many :bookings
-  has_many :availabilities
+  has_many :bookings, dependent: :destroy
+  has_many :availabilities, dependent: :destroy
   has_one_attached :photo
 end
