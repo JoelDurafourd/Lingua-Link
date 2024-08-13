@@ -56,26 +56,31 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    const buttons = document.querySelectorAll('.object-button');
-    const descriptions = document.querySelectorAll('.description-content');
+  const buttons = document.querySelectorAll('.object-button');
+  const descriptions = document.querySelectorAll('.description-content');
 
-    buttons.forEach(button => {
-      button.addEventListener('click', function() {
-        descriptions.forEach(desc => desc.classList.remove('active'));
-        const descriptionId = button.getAttribute('data-description');
-        document.getElementById(descriptionId).classList.add('active');
-        buttons.forEach(btn => btn.classList.remove('clicked'));
-        button.classList.add('clicked');
-      });
-    });
-
-    window.addEventListener('scroll', function() {
-      const orangeSection = document.getElementById('orangeSection');
-      if (window.scrollY > 500) {
-        orangeSection.classList.add('visible');
-      } else {
-        orangeSection.classList.remove('visible');
-      }
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+      descriptions.forEach(desc => desc.classList.remove('active'));
+      const descriptionId = button.getAttribute('data-description');
+      document.getElementById(descriptionId).classList.add('active');
+      buttons.forEach(btn => btn.classList.remove('clicked'));
+      button.classList.add('clicked');
     });
   });
+
+
+
+  window.addEventListener('scroll', function() {
+    const orangeSection = document.getElementById('orangeSection');
+    if (window.scrollY > 500) {
+      orangeSection.classList.add('visible');
+    } else {
+      orangeSection.classList.remove('visible');
+    }
+  });
+
+
+});
+
 </script>
