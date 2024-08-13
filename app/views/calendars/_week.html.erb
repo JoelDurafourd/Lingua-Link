@@ -18,10 +18,11 @@
     <%# Table Header: Days of the Week %>
     <thead>
       <tr>
-        <% @day_names.each do |day_name| %>
+        <% days_of_week.each do |day| %>
             <%# Days of the Week code %>
           <th class="text-center p-2 table-head">
-            <%= day_name %>
+            <b><%= day.strftime('%a') %></b>
+            <b><%= day_num_ender(day.day) %></b>
           </th>
         <% end %>
       </tr>
@@ -33,12 +34,30 @@
             <% week.each do |day| %>
                 <%# today highlighter is the today highlighter and greyed out is the days before the first %>
               <td class="text-center p-2 <%= today_highlighter(day) %> ">
-                <b><%= day.day %></b>
-                <% @bookings.where(start_time: day.all_day).each do |booking| %>
-                  <div class="booking-div bg-secondary text-white">
-                    <%= booking.start_time.strftime("%I:%M%p") %> -
-                    <%= booking.end_time.strftime("%I:%M%p") %> with
-                    <%= booking.client.name %>
+
+                <% @user.availabilities.where(start_time: day.all_day).each do |availability| %>
+                  <div class="availability-div bg-info">
+                    <p><strong>Availability:</strong> <%= availability.start_time.strftime("%I:%M %p") %></p>
+
+                    <% @bookings.where(start_time: availability.start_time..availability.end_time).each do |booking| %>
+                      <div class="booking-div bg-secondary text-white">
+                        <p>
+                          <%= booking.start_time.strftime("%I:%M%p") %> -
+                          <%= booking.end_time.strftime("%I:%M%p") %> with
+                          <%= booking.client.name %> (Status: <%= booking.status %>)
+                        </p>
+                        <%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id) %>
+                        <% if booking.user == current_user %>
+                          <% if booking.status == "pending" %>
+                            <div>
+                              <%= link_to 'Accept', accept_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-success" %>
+                              <%= link_to 'Decline', decline_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-danger" %>
+                            </div>
+                          <% end %>
+                        <% end %>
+                      </div>
+                    <% end %>
+                    <p><%= availability.end_time.strftime("%I:%M %p") %></p>
                   </div>
                 <% end %>
               </td>

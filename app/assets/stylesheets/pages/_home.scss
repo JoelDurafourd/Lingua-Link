@@ -1,105 +1,57 @@
-.carousel-inner {
-  height: 500px;
-}
-
-.carousel-inner img {
-  height: 100%;
-  object-fit: cover;
-}
-
-.description-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  margin: 0 auto;
-  padding-top: 20px;
-  margin-top: 20px;
-  border-radius: 40px;
-  height: 600px;
-  background: linear-gradient(135deg, #E7D39A, #F1AA60), url('carousel/bg-modern.png') center center no-repeat;
-  background-size: cover;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-}
-
-
-
-
-.button-group {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.button-row {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.object-button {
-  width: 200px;
-  height: 200px;
-  margin: 15px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px;
-  transition: box-shadow 0.3s, transform 0.3s;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.banner {
+  position: relative;
   text-align: center;
+  background-color: #59c2ff;
+  margin: 10px;
+  padding: 40px;
   border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 8px 24px;
+  h1 {
+    font-size: 35px;
+    font-weight: bold;
+    color: #ffbd44;
+    margin: 0;
+
+    &.highlight {
+      color: rgb(255, 146, 250);
+      font-size: 40px;
+    }
+  }
+
+  .banner-img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin-top: 20px;
+  }
+
+  .card{
+color: #faf8f6;
   }
 }
 
-.object-button.clicked img {
-  filter: brightness(0) saturate(100%) invert(47%) sepia(100%) saturate(447%) hue-rotate(97deg) brightness(95%) contrast(88%);
-}
-
-.object-button.clicked .button-title {
-  color: green;
-}
-
-.object-button.clicked .btn-title-4{
-  color: green;
-}
-
-.object-button.clicked .btn-title-1 {
-  color: green;
-}
-
-.object-button.clicked .btn-title-2 {
-  color: green;
-}
-
-.object-button.clicked .btn-title-3 {
-  color: green;
-}
-
-.object-button.clicked {
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 24px;
-}
-
-.description {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.orange-section {
+  background-color: #fcc11e;
   color: white;
-  padding: 30px;
   text-align: center;
+  padding-top: 20px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  margin: 20px;
+  transition: opacity 0.5s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+  .line-img{
+    height: 80%;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin: 0;
   }
 
   p {
@@ -107,52 +59,142 @@
   }
 }
 
-.bg-container {
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.5) 100%), url('carousel/bg-modern.png') no-repeat center center;
-  background-size: cover;
-}
-
-.description-content {
-  display: none;
-}
-
-.description-content.active {
-  display: block;
-}
-
-.signupdiv {
-  background-color: #FFA845;
-  background-size: cover;
-  background-position: center;
-  color: white;
+.orange-section.visible {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  padding: 30px;
-  width: 100%;
 }
 
-.signup-btn {
-  cursor: pointer;
-  font-family: 'Lato', sans-serif;
-  font-size: 28px;
+.red-section {
+  background-color: #73580d;
   color: white;
-  padding: 14px 30px;
-  transition: 0.2s;
-  width: 335px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 12px;
-  border-radius: 50px;
-  background: linear-gradient(90deg, rgb(204, 201, 0) 0%, rgb(0, 99, 204) 100%);
-  font-weight: bold;
-  border: none;
+  text-align: center;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  position: relative;
+  margin: 20px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-  &:hover {
-    width: 337px;
-    background: rgb(0, 102, 204);
+  .images-container-1,
+  .images-container-2 {
+    position: absolute;
+    width: auto;
+    height: auto;
+  }
+
+  .images-container-1 {
+    top: 10px;
+    right: 10px;
+  }
+
+  .images-container-2 {
+    bottom: 140px;
+    left: 10px;
+  }
+
+  .appo-img-1,
+  .appo-img-2 {
+    width: 200px;
+    height: auto;
+  }
+
+  .title-home {
+    margin-top: 250px;
+    z-index: 1;
+    position: relative;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+}
+
+.red-section.visible {
+  display: flex;
+}
+
+.white-section {
+  background-color: #faf8f6;
+  text-align: center;
+  color: #ffbd44;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  margin: 20px;
+
+  .join-us-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+      margin: 10px 0;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    .cssbuttons-io-button {
+      background: #ffbd44;
+      color: white;
+      font-family: inherit;
+      padding: 0.35em;
+      padding-left: 1.2em;
+      font-size: 17px;
+      font-weight: 500;
+      border-radius: 0.9em;
+      border: none;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      box-shadow: inset 0 0 1.6em -0.6em #fcac18;
+      overflow: hidden;
+      position: relative;
+      height: 2.8em;
+      padding-right: 3.3em;
+      cursor: pointer;
+
+      .icon {
+        background: white;
+        margin-left: 1em;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.2em;
+        width: 2.2em;
+        border-radius: 0.7em;
+        box-shadow: 0.1em 0.1em 0.6em 0.2em #fdb632;
+        right: 0.3em;
+        transition: all 0.3s;
+      }
+
+      .icon svg {
+        width: 1.1em;
+        transition: transform 0.3s;
+        color: #f8af28;
+      }
+
+      &:hover .icon {
+        width: calc(100% - 0.6em);
+      }
+
+      &:hover .icon svg {
+        transform: translateX(0.1em);
+      }
+
+      &:active .icon {
+        transform: scale(0.95);
+      }
+    }
   }
 }
 
@@ -195,5 +237,4 @@
   font-size: 25px;
   font-weight: bold;
   text-align: center;
-
 }

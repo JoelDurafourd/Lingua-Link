@@ -4,7 +4,7 @@ class AvailabilitiesController < ApplicationController
     start_date = params.fetch(:start_date, Date.today).to_date
 
     # Query availabilitys for the current month, adjusting the range to cover the entire month
-    @availabilitys = Availability.where(start_time: start_date.beginning_of_month..start_date.end_of_month)
+    @availabilities = Availability.where(start_time: start_date.beginning_of_month..start_date.end_of_month)
   end
 
   def show

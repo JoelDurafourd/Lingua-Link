@@ -1,70 +1,49 @@
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <%= image_tag "carousel/slide1.jpg", class: 'd-block w-100', alt: 'First slide' %>
-    </div>
-    <div class="carousel-item">
-      <%= image_tag 'carousel/slide2.jpg', class: 'd-block w-100', alt: 'Second slide' %>
-    </div>
-    <div class="carousel-item">
-      <%= image_tag 'carousel/slide3.jpg', class: 'd-block w-100', alt: 'Third slide' %>
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-
-<div class="bg-containeur">
-  <div class="description-container rounded-box">
-    <div class="button-group">
-      <div class="button-row">
-        <div class="object-button bouton-1" data-description="description-1">
-          <%= image_tag "message.png", alt: "Bouton 1", class: "button-img btn-img-1" %>
-          <div class="button-title btn-title-1">Line</div>
-        </div>
-        <div class="object-button bouton-2" data-description="description-2">
-          <%= image_tag "calendar.png", alt: "Bouton 2", class: "button-img btn-img-2" %>
-          <div class="button-title btn-title-2">Calendar</div>
-        </div>
-      </div>
-      <div class="button-row">
-        <div class="object-button bouton-3" data-description="description-3">
-          <%= image_tag "schedule.png", alt: "Bouton 3", class: "button-img btn-img-3" %>
-          <div class="button-title btn-title-3">Schedule</div>
-        </div>
-        <div class="object-button bouton-4" data-description="description-4">
-          <%= image_tag "translate.png", alt: "Bouton 4", class: "button-img btn-img-4" %>
-          <div class="button-title btn-title-4">Translate</div>
-        </div>
-      </div>
-    </div>
-    <div class="description">
-      <div id="description-1" class="description-content">
-        <h1>Line</h1>
-        <p>The booking is made through your line app and automatically registered in your dashboard calendar.</p>
-      </div>
-      <div id="description-2" class="description-content"> <h2>Calendar</h2>You can follow your bookings through the calendar</div>
-      <div id="description-3" class="description-content"><h2>Schedule</h2>With your scheduled calendar you can watch your bookings in real time</div>
-      <div id="description-4" class="description-content"><h2>Translate</h2>Your students don't speak your language, no worries ! Lingua link trnaslate the messages for you</div>
-    </div>
-  </div>
-
-  <div class="signupdiv rounded-box">
-    <%# <h1>JOIN US!</h1> %>
-    <button class="signup-btn" id="signupBtn">Sign up</button>
+<div class="banner">
+  <h1>Join the team</h1>
+  <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="..." alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
   </div>
 </div>
+</div>
+
+<div class="orange-section" id="orangeSection">
+  <h2>Connect to your students is effortless</h2>
+  <p>Make your bookings through line</p>
+  <%= image_tag "home/line1.png", alt: "Line img", class: "line-img" %>
+</div>
+
+<div class="red-section" id="redSection">
+  <div class="images-container-1">
+    <%= image_tag "home/appo1.png", alt: "appo1 img", class: "appo-img-1" %>
+  </div>
+  <div class="images-container-2">
+    <%= image_tag "home/appo2.png", alt: "appo2 img", class: "appo-img-2" %>
+  </div>
+  <div class="title-home">
+    <h2>Real-time updates</h2>
+    <p>Bookings automatically update to your calendar</p>
+  </div>
+</div>
+
+<div class="white-section" id="whiteSection">
+  <div class="join-us-content">
+    <%# <h2>Interested?</h2> %>
+    <h2><b>JOIN US!</b></h2>
+     <%= link_to new_user_registration_path, class: 'cssbuttons-io-button' do %>
+      SIGN UP
+      <div class="icon">
+        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path>
+        </svg>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
 
 <footer class="footer">
   <h2 class="footer-title"><b>LINGUA LINK</b></h2>
@@ -76,18 +55,27 @@
 </footer>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const buttons = document.querySelectorAll('.object-button');
-  const descriptions = document.querySelectorAll('.description-content');
+  document.addEventListener("DOMContentLoaded", function() {
+    const buttons = document.querySelectorAll('.object-button');
+    const descriptions = document.querySelectorAll('.description-content');
 
-  buttons.forEach(button => {
-    button.addEventListener('click', function() {
-      descriptions.forEach(desc => desc.classList.remove('active'));
-      const descriptionId = button.getAttribute('data-description');
-      document.getElementById(descriptionId).classList.add('active');
-      buttons.forEach(btn => btn.classList.remove('clicked'));
-      button.classList.add('clicked');
+    buttons.forEach(button => {
+      button.addEventListener('click', function() {
+        descriptions.forEach(desc => desc.classList.remove('active'));
+        const descriptionId = button.getAttribute('data-description');
+        document.getElementById(descriptionId).classList.add('active');
+        buttons.forEach(btn => btn.classList.remove('clicked'));
+        button.classList.add('clicked');
+      });
+    });
+
+    window.addEventListener('scroll', function() {
+      const orangeSection = document.getElementById('orangeSection');
+      if (window.scrollY > 500) {
+        orangeSection.classList.add('visible');
+      } else {
+        orangeSection.classList.remove('visible');
+      }
     });
   });
-});
 </script>
