@@ -31,6 +31,17 @@ color: #faf8f6;
   }
 }
 
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .orange-section {
   background-color: #fcc11e;
   color: white;
@@ -44,8 +55,9 @@ color: #faf8f6;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  opacity: 0; // Start hidden
 
-  .line-img{
+  .line-img {
     height: 80%;
   }
 
@@ -57,10 +69,10 @@ color: #faf8f6;
   p {
     font-size: 1.2rem;
   }
-}
 
-.orange-section.visible {
-  display: flex;
+  &.visible {
+    opacity: 1;
+  }
 }
 
 .red-section {
