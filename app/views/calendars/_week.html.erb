@@ -44,17 +44,17 @@
                     <%# Start of card. %>
                     <div class="d-flex justify-content-center">
 <div class="card bg-light mb-3 week-card" style="max-width: 18rem;">
-<div class="card-header">                        <p> <i class="fa-solid fa-clock"></i>
+<div class="card-header"><p><i class="fa-solid fa-clock"></i>
                           <%= booking.start_time.strftime("%I:%M%p") %> -
                           <%= booking.end_time.strftime("%I:%M%p") %> </div>
 <div class="card-body">
-<h5 class="card-title"><i class="fa-solid fa-user"></i> w/ <%= booking.client.name %></h5>
+<h5 class="card-title"><i class="fa-solid fa-user"></i> w/ <strong><%= booking.client.name %></strong></h5>
 
 <p class="card-text">
-                          (Status: <%= booking.status.capitalize %>)
+                          <%= booking.status.capitalize %>
                           </p>
 
-                                                  <%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id) %>
+                                                  <button type="button" class="btn btn-warning"><%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id) %></button>
                         <% if booking.user == current_user %>
                           <% if booking.status == "pending" %>
                             <div>
