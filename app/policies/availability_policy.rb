@@ -7,9 +7,9 @@ class AvailabilityPolicy < ApplicationPolicy
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      scope.all
+    end
   end
 
   def new?
@@ -19,6 +19,10 @@ class AvailabilityPolicy < ApplicationPolicy
 
   def create?
     # Ensure the current user is allowed to create a booking
-    new?
+    user.present?
+  end
+
+  def update?
+    user.present? # or any other condition
   end
 end

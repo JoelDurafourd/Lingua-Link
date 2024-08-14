@@ -1,6 +1,24 @@
-<%= simple_form_for([@user, @availability]) do |f| %>
-<%= f.input :start_time, as: :datetime, html5: true %>
-<%= f.input :end_time, as: :datetime, html5: true %>
-<%= f.submit class: "nav-button col-12"%>
+<!-- app/views/availabilities/new.html.erb -->
+<h1>New Availability</h1>
+<%= form_with(model: @availability, url: user_availabilities_path(current_user), local: true) do |form| %>
+  <div class="field">
+    <%= form.label :start_date, "Start Date" %>
+    <%= form.date_field :start_date, id: 'start_date' %>
+  </div>
+  <div class="field">
+    <%= form.label :end_date, "End Date" %>
+    <%= form.date_field :end_date, id: 'end_date' %>
+  </div>
+  <div class="field">
+    <%= form.label :start_time, "Start Time" %>
+    <%= form.time_field :start_time, id: 'start_time' %>
+  </div>
+  <div class="field">
+    <%= form.label :end_time, "End Time" %>
+    <%= form.time_field :end_time, id: 'end_time' %>
+  </div>
+  <div class="actions">
+    <%= form.submit 'Create Availabilities' %>
+  </div>
 <% end %>
-<%= link_to "Back to lessons", "/lessons", class: "nav-button col-12" %>
+<%= link_to "My Dashboard", dashboard_path(@user), class: "nav-link text-orange" %>
