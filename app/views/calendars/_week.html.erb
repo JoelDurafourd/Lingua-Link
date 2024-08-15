@@ -20,7 +20,7 @@
       <tr>
         <% days_of_week.each do |day| %>
             <%# Days of the Week code %>
-          <th class="text-center p-2 table-head">
+          <th class="table-head text-center p-2">
             <b><%= day.strftime('%a') %></b>
             <b><%= day_num_ender(day.day) %></b>
           </th>
@@ -40,22 +40,34 @@
                     <p><strong>Availability:</strong> <%= availability.start_time.strftime("%I:%M %p") %></p>
 
                     <% @bookings.where(start_time: availability.start_time..availability.end_time).each do |booking| %>
-                      <div class="booking-div bg-secondary text-white">
-                        <p>
+
+                    <%# Start of card. %>
+                    <div class="d-flex justify-content-center">
+<div class="card bg-light mb-3 week-card" style="max-width: 18rem;">
+<div class="card-header"><p><i class="fa-solid fa-clock"></i>
                           <%= booking.start_time.strftime("%I:%M%p") %> -
-                          <%= booking.end_time.strftime("%I:%M%p") %> with
-                          <%= booking.client.name %> (Status: <%= booking.status %>)
-                        </p>
-                        <%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id) %>
+                          <%= booking.end_time.strftime("%I:%M%p") %> </div>
+<div class="card-body">
+<h5 class="card-title"><i class="fa-solid fa-user"></i> w/ <strong><%= booking.client.name %></strong></h5>
+
+<p class="card-text">
+                          <%= booking.status.capitalize %>
+                          </p>
                         <% if booking.user == current_user %>
                           <% if booking.status == "pending" %>
                             <div>
-                              <%= link_to 'Accept', accept_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-success" %>
+                            <%= link_to 'Accept', accept_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-success" %>
                               <%= link_to 'Decline', decline_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-danger" %>
                             </div>
                           <% end %>
                         <% end %>
-                      </div>
+                        <p></p>
+                                                  <button type="button" class="btn btn-warning"><%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id), class: "see-more" %></button>
+
+  </div>
+</div>
+</div>
+<%# END OF CARD %>
                     <% end %>
                     <p><%= availability.end_time.strftime("%I:%M %p") %></p>
                   </div>

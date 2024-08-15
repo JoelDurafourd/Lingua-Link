@@ -24,7 +24,7 @@
       <%= link_to "Set Availabilities", new_user_availability_path(@user), class: "btn btn-info buttons-dash" %>
     </div>
         <div>
-      <%= link_to "My clients", clients_path(@user), class: "btn btn-info buttons-dash" %>
+      <%= link_to "My Clients", clients_path(@user), class: "btn btn-info buttons-dash" %>
     </div>
   </div>
   <div class="col-10">
@@ -32,7 +32,7 @@
       Welcome to your dashboard, <%= @user.email %>!
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-    <h2 class="dash2-h2">My Calendar</h2>
+    <h2 class="dash2-h2">My Dashboard</h2>
       <div>
       <%= link_to "View My Monthly Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill buttons-dash-month-view" %>
       </div>

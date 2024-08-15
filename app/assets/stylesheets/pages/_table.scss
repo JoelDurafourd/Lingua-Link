@@ -19,3 +19,31 @@
 .table-head {
   background-color: #ff6259;
 }
+
+.week-card {
+  // border-radius: 20px;
+  border-width: 5px;
+  color: rgb(100, 90, 90);
+  // background-color: #9e731d;
+  border-image: linear-gradient(to right, #c24841 0%, #f8790b 100%) 1;
+}
+
+.card-header {
+  color: white;
+  font-weight: bolder;
+  background-color: #c24841;
+  border-radius: 10px;
+  height: 40px;
+}
+
+.card-text {
+  font-size: large;
+}
+
+.see-more {
+  color: #ffffff;
+}
+
+.availability-div {
+border-radius: 15px;
+}
