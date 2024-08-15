@@ -53,16 +53,17 @@
 <p class="card-text">
                           <%= booking.status.capitalize %>
                           </p>
-
-                                                  <button type="button" class="btn btn-warning"><%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id) %></button>
                         <% if booking.user == current_user %>
                           <% if booking.status == "pending" %>
                             <div>
-                              <%= link_to 'Accept', accept_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-success" %>
+                            <%= link_to 'Accept', accept_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-success" %>
                               <%= link_to 'Decline', decline_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-danger" %>
                             </div>
                           <% end %>
                         <% end %>
+                        <p></p>
+                                                  <button type="button" class="btn btn-warning"><%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id), class: "see-more" %></button>
+
   </div>
 </div>
 </div>
