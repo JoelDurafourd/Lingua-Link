@@ -7,14 +7,29 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+puts "Destroying Messages...!"
+Message.destroy_all
 puts "Destroying Bookings...!"
 Booking.destroy_all
+puts "Destroying Availabilities...!"
+Availability.destroy_all
 puts "Destroying Users...!"
 User.destroy_all
 puts "Destroying Clients...!"
 Client.destroy_all
-puts "Destroying Messages...!"
-Message.destroy_all
+
+
+joel = User.create!(email: "joel.durafourd@gmail.com", password: "123456", first_name: "Joel", last_name: "Durafourd")
+puts "Created #{joel}!"
+
+nakia = User.create!(email: "n@mail.com", password: "123456", first_name: "Bo Wen", last_name: "Zhong")
+puts "Created #{nakia}!"
+
+emilie = User.create!(email: "noctis@gmail.com", password: "123456", first_name: "Noctis", last_name: "LucisCaelum")
+puts "Created #{emilie}!"
+
+ayako = User.create!(email: "three.peach.0524@gmail.com", password: "123456", first_name: "Ayako", last_name: "Okawa")
+puts "Created #{ayako}!"
 
 user1 = User.create!(email: "john.doe@email.com", password: "123456", first_name: "John", last_name: "Doe")
 puts "Created #{user1}!"

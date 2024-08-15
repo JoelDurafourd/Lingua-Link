@@ -21,19 +21,23 @@ class BookingsController < ApplicationController
   end
 
   def create
-    # creates a new booking based on provided inputs, it uses private security params below.
     @booking = Booking.new(booking_params.merge(user: current_user))
     @user = current_user
+
     authorize @booking
-    # assigns current user to the booking
-    if @booking.save
-      # if the current booking is created succesfully, redirect to the lesson it was booked from
-      redirect_to dashboard_path(current_user), notice: 'Booking successfully created!'
+
+    if available_for_booking?(@booking)
+      if @booking.save
+        redirect_to dashboard_path(@user), notice: 'Booking successfully created!'
+      else
+        render :new, status: :unprocessable_entity
+      end
     else
-      # else display an error message
+      flash[:alert] = 'The selected time slot is either unavailable or overlaps with an existing booking. Please choose a different time.'
       render :new, status: :unprocessable_entity
     end
   end
+
 
   def edit
     # find the booking to edit
@@ -87,6 +91,29 @@ class BookingsController < ApplicationController
   end
 
   private
+
+  private
+
+  def available_for_booking?(booking)
+    # Fetch availability for the current user
+    availabilities = Availability.where(user: booking.user)
+
+    # Fetch existing bookings for the current user
+    existing_bookings = Booking.where(user: booking.user)
+    # Check if the booking time falls within any available slot
+    is_available = availabilities.any? do |availability|
+      booking.start_time < availability.end_time && booking.end_time > availability.start_time
+    end
+
+    # Check if the booking time overlaps with any existing bookings
+    is_not_double_booked = existing_bookings.none? do |existing_booking|
+      booking.start_time < existing_booking.end_time && booking.end_time > existing_booking.start_time
+    end
+
+    # Both conditions must be met
+    is_available && is_not_double_booked
+  end
+
 
   def booking_params
     # these are strong params or security params, it makes sure only these attributes are changed. Any edits to a model has to be modified here also.

@@ -20,19 +20,37 @@ class AvailabilitiesController < ApplicationController
   end
 
   def create
-    # creates a new availability based on provided inputs, it uses private security params below.
-    @availability = Availability.new(availability_params.merge(user: current_user))
-    @user = current_user
-    authorize @availability
-    # assigns current user to the availability
-    if @availability.save
-      # if the current availability is created succesfully, redirect to the avialability it was booked from
-      redirect_to dashboard_path(current_user), notice: 'Availability successfully created!'
-    else
-      # else display an error message
-      render :new, status: :unprocessable_entity
+    start_date = Date.parse(params[:availability][:start_date])
+    end_date = Date.parse(params[:availability][:end_date])
+    start_time = Time.parse(params[:availability][:start_time])
+    end_time = Time.parse(params[:availability][:end_time])
+
+    current_date = start_date
+    created_availabilities = []
+
+    while current_date <= end_date
+      availability_start = current_date.to_datetime.change(hour: start_time.hour, min: start_time.min)
+      availability_end = current_date.to_datetime.change(hour: end_time.hour, min: end_time.min)
+
+      if availability_end > availability_start
+        availability = Availability.new(user: current_user, start_time: availability_start, end_time: availability_end)
+
+        authorize availability # Authorize the specific availability record being created
+
+        if availability.save
+          created_availabilities << availability
+        else
+          flash[:alert] = "There was an issue saving one or more availabilities."
+          render :new and return
+        end
+      end
+
+      current_date += 1.day
     end
+
+    redirect_to dashboard_path(@user), notice: "#{created_availabilities.count} availability(s) successfully created!"
   end
+
 
   def edit
     # find the availability to edit
