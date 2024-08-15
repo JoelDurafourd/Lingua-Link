@@ -1,5 +1,6 @@
 # app/controllers/concerns/line_bot_concern.rb
 require 'line/bot'
+require 'google/cloud/translate'
 
 module LineBotConcern
   extend ActiveSupport::Concern
@@ -7,6 +8,7 @@ module LineBotConcern
   included do
     before_action :set_client
     before_action :set_teachers
+    before_action :set_translate_client
   end
 
   module UserState
@@ -93,27 +95,20 @@ module LineBotConcern
   # end
 
   def handle_message(event)
-    user_id = event['source']['userId']
+    user = User.find_or_create_by_line_user_id(event['source']['userId'])
     text = event['message']['text']
 
-    USERS[user_id] ||= { state: UserState::INITIAL }
-
-    response = case USERS[user_id][:state]
-               when UserState::AWAITING_BOOKING_TYPE
-                 handle_booking_request(text, user_id)
-               when UserState::AWAITING_SLOT_SELECTION
-                 handle_slot_selection(user_id, text)
-               when UserState::AWAITING_CHANGE_SELECTION
-                 handle_change_selection(user_id, text)
-               when UserState::AWAITING_CANCEL_SELECTION
-                 handle_cancel_selection(user_id, text)
-               when UserState::AWAITING_NEW_SLOT
-                 handle_new_slot_selection(user_id, text)
+    response = case user.state.to_sym
+               when :awaiting_booking_type
+                 handle_booking_request(text, user)
+               when :awaiting_slot_selection
+                 handle_slot_selection(user, text)
                else
-                 handle_general_message(user_id, text)
+                 handle_general_message(user, text)
                end
 
-    message = { type: 'text', text: response }
+    translated_response = translate_message(response, user.language)
+    message = { type: 'text', text: translated_response }
     client.reply_message(event['replyToken'], message)
   end
 
@@ -153,23 +148,46 @@ module LineBotConcern
   #   message = { type: 'text', text: response }
   #   client.reply_message(event['replyToken'], message)
   # end
-  def handle_general_message(user_id, text)
-    case text
-    when '1'
-      USERS[user_id][:state] = UserState::AWAITING_BOOKING_TYPE
-      "Please let us know your reservation request by choosing a number:\n1. New reservation\n2. Change reservation\n3. Cancel reservation\n\nPlease reply with the number of your choice (1, 2, or 3)."
-    when '2'
-      "Here are your current reservations: [Display reservation list]"
-    when '3'
-      "Please tell us how else we can assist you."
+  #
+
+  def handle_teacher_message(user, text)
+    if user.current_teacher
+      teacher = user.current_teacher
+
+      # ユーザーのメッセージを先生側への言語に翻訳
+      translated_text = translate_message(text, teacher.language)
+
+      ActionCable.server.broadcast(
+        "chat_channel",
+        {
+          from: user.line_user_id,
+          message: translated_text,
+          original_message: text,
+          from_language: user.language,
+          to_language: teacher.language
+        }
+      )
+      "Message sent to Teacher #{teacher.name}"
     else
-      if text.downcase.include?('reservation')
-        handle_booking_request(text, user_id)
-      else
-        handle_teacher_message(user_id, text)
-      end
+      "Please select a teacher from the menu before sending a message."
     end
   end
+
+  # def handle_teacher_message(user, text)
+  #   if user.current_teacher_id
+  #     teacher = @teachers.find { |t| t[:id] == user.current_teacher_id }
+  #     ActionCable.server.broadcast(
+  #       "chat_channel",
+  #       {
+  #         from: user.line_user_id,
+  #         message: text
+  #       }
+  #     )
+  #     "Message sent to Teacher #{teacher[:name]}"
+  #   else
+  #     "Please select a teacher from the menu before sending a message."
+  #   end
+  # end
 
   # def handle_general_message(user_id, text)
   #   USERS[user_id] ||= {}
@@ -208,17 +226,17 @@ module LineBotConcern
     end
   end
 
-  def handle_booking_request(message, user_id)
-    case message
+  def handle_booking_request(text, user)
+    case text
     when '1'
-      USERS[user_id][:state] = UserState::AWAITING_SLOT_SELECTION
-      show_available_slots(user_id)
+      user.update(state: :awaiting_slot_selection)
+      show_available_slots(user)
     when '2'
-      USERS[user_id][:state] = UserState::AWAITING_CHANGE_SELECTION
-      show_existing_reservations(user_id, :change)
+      user.update(state: :awaiting_change_selection)
+      show_existing_reservations(user, :change)
     when '3'
-      USERS[user_id][:state] = UserState::AWAITING_CANCEL_SELECTION
-      show_existing_reservations(user_id, :cancel)
+      user.update(state: :awaiting_cancel_selection)
+      show_existing_reservations(user, :cancel)
     else
       "Invalid selection. Please choose 1 for new reservation, 2 for changing a reservation, or 3 for canceling a reservation."
     end
@@ -243,12 +261,13 @@ module LineBotConcern
     message
   end
 
-  def handle_slot_selection(user_id, text)
+  def handle_slot_selection(user, text)
     slot_index = text.to_i - 1
-    if slot_index.between?(0, USERS[user_id][:available_slots].length - 1)
-      selected_slot = USERS[user_id][:available_slots][slot_index]
+    available_slots = user.available_slots # このメソッドは User モデルに追加する必要があります
+    if slot_index.between?(0, available_slots.length - 1)
+      selected_slot = available_slots[slot_index]
       # ここで予約を作成する処理を実装
-      USERS[user_id][:state] = nil
+      user.update(state: :initial)
       "Your reservation for #{selected_slot.strftime('%m/%d %H:%M')} has been confirmed."
     else
       "Invalid selection. Please choose a number from the list of available slots."
@@ -462,7 +481,19 @@ module LineBotConcern
   private
 
   def set_client
-    client
+    @client ||= Line::Bot::Client.new do |config|
+      config.channel_secret = ENV.fetch('LINE_CHANNEL_SECRET', nil)
+      config.channel_token = ENV.fetch('LINE_CHANNEL_TOKEN', nil)
+    end
+  end
+
+  def set_teachers
+    @teachers = User.all.map do |user|
+      {
+        id: user.id,
+        name: user.first_name.to_s[0, 15]
+      }
+    end
   end
 
   def random_pastel_color
@@ -480,16 +511,32 @@ module LineBotConcern
         message:
       }
     )
-    # case teacher[:name]
-    # when 'Alice'
-    #   "Grammar tip: Remember to capitalize proper nouns."
-    # when 'Bob'
-    #   "Great! Can you elaborate on that point?"
+  end
+  # case teacher[:name]
+  # when 'Alice'
+  #   "Grammar tip: Remember to capitalize proper nouns."
+  # when 'Bob'
+  #   "Great! Can you elaborate on that point?"
 
-    # when 'Carol'
-    #   "In a business context, we might phrase that as: 'optimize the workflow'."
-    # else
-    #   "Thank you for your message."
-    # end
+  # when 'Carol'
+  #   "In a business context, we might phrase that as: 'optimize the workflow'."
+  # else
+  #   "Thank you for your message."
+  # end
+
+  def translate_message(text, target_language)
+    source_language = @translate_client.detect(text)
+    if source_language.language == target_language
+      text
+    else
+      translation = @translate_client.translate(text, to: target_language)
+      translation.text
+    end
+  end
+
+  def set_translate_client
+    @translate_client ||= Google::Cloud::Translate.translation_v2_service(
+      credentials: JSON.parse(ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', nil))
+    )
   end
 end
