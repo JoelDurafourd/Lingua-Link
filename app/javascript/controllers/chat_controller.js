@@ -82,7 +82,7 @@ export default class extends Controller {
 
     const messageContent = {
       to: this.chatId,  // Use the chat ID as the recipient or other use
-      from: this.currentUser.id,  // Add the correct sender
+      from: this.currentUser.user_id,  // Add the correct sender
       message: this.inputTarget.value.toString()
     }
 
