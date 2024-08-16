@@ -506,9 +506,7 @@ class MenuManagerService
 
   def initialize
     @session_manager = Redis.new(
-      host: '10.0.0.6',
-      port: 6379,
-      db: 0
+      url: ENV.fetch("REDIS_URL")
     )
   end
 
