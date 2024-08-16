@@ -1325,7 +1325,7 @@ module LineBotConcern
       reply_token:,
       timestamp: Time.at(timestamp / 1000), # Convert timestamp to datetime
       client_id:,
-      user_id: User.last.id, # Assuming this is from the client, so user_id can be nil TODO: MAKE IT COME FROM LINE WHEN THE USER SELECTS THE ID FROM THE RICH MENU BEFORE RELEASE!
+      user_id: User.last.id, # Assuming this is from the client, so user_id can be nil 'TODO: MAKE IT COME FROM LINE WHEN THE USER SELECTS THE ID FROM THE RICH MENU BEFORE RELEASE!'
       uuid: SecureRandom.uuid
     )
 

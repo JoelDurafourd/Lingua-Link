@@ -139,6 +139,4 @@ export default class extends Controller {
       console.log("Received data:", data);
     }
   }
-
-
 }

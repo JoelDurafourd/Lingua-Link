@@ -10,6 +10,7 @@ class ChatController < ApplicationController
 
   def show
     @client = Client.find_by(id: params[:id])
+    @line_client = @line_service.get_profile(@client.lineid)
     @messages = Message.where(client_id: @client.id).order(created_at: :asc)
   end
 
