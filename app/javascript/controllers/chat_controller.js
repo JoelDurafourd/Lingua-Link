@@ -6,8 +6,10 @@ export default class extends Controller {
   static targets = ["input", "output"]
 
   connect() {
-    console.log("Chat controller connected")
-    
+    console.log("Chat controller connected");
+    this.currentUser = this.parseCurrentUserData();
+    console.log("Current User:", this.currentUser);
+
     // Extract the ID from the URL path
     this.chatId = this.extractChatIdFromUrl();
     console.log("Chat ID:", this.chatId);
@@ -15,6 +17,26 @@ export default class extends Controller {
     this.checkOutputTarget();
     this.sub = this.createActionCableChannel();
     console.log(this.sub);
+  }
+
+  parseCurrentUserData() {
+    // Assuming the div with data-chat-current-user is a sibling of the form
+    const userElement = document.querySelector('[data-chat-current-user]');
+    if (userElement) {
+      const userData = userElement.dataset.chatCurrentUser;
+      console.log("Raw data-chat-current-user attribute:", userData); // Log raw attribute
+      try {
+        const parsedData = JSON.parse(userData);
+        console.log("Parsed current user data:", parsedData); // Log parsed data
+        return parsedData;
+      } catch (e) {
+        console.error("Error parsing current user data:", e);
+        return null;
+      }
+    } else {
+      console.error("Element with data-chat-current-user not found.");
+      return null;
+    }
   }
 
   extractChatIdFromUrl() {
@@ -34,7 +56,10 @@ export default class extends Controller {
     const controller = this;  // Store reference to the controller instance
 
     return consumer.subscriptions.create(
-      { channel: "ChatChannel", id: this.chatId },
+      {
+        channel: "ChatChannel",
+        id: this.chatId
+      },
       {
         connected() {
           console.log("Connected to ChatChannel with ID:", controller.chatId)
@@ -57,7 +82,7 @@ export default class extends Controller {
 
     const messageContent = {
       to: this.chatId,  // Use the chat ID as the recipient or other use
-      from: '',  // Add the correct sender
+      from: this.currentUser.id,  // Add the correct sender
       message: this.inputTarget.value.toString()
     }
 
@@ -87,12 +112,33 @@ export default class extends Controller {
 
   displayMessage(data) {
     try {
-      const messageElement = document.createElement('p')
-      messageElement.textContent = `${data.from}: ${data.message}`
-      this.outputTarget.appendChild(messageElement)
+      // Check if the message with the given ID already exists
+      if (!document.querySelector(`#message-${data.message_id}`)) {
+        // Create a new <p> element
+        const messageElement = document.createElement('p');
+
+        // Create a <strong> element for the sender
+        const strongElement = document.createElement('strong');
+        strongElement.textContent = `${data.sender}: `;
+
+        // Create a text node for the message contents
+        const messageText = document.createTextNode(data.message);
+
+        // Append the <strong> element and the message text to the <p> element
+        messageElement.appendChild(strongElement);
+        messageElement.appendChild(messageText);
+
+        // Set the ID of the <p> element
+        messageElement.id = `message-${data.message_id}`;
+
+        // Append the <p> element to the output target
+        this.outputTarget.appendChild(messageElement);
+      }
     } catch (error) {
-      console.error("Error displaying message:", error)
-      console.log("Received data:", data)
+      console.error("Error displaying message:", error);
+      console.log("Received data:", data);
     }
   }
+
+
 }

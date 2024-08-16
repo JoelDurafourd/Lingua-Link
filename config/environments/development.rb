@@ -6,6 +6,8 @@ Rails.application.configure do
 
   # config.hosts << "2b41-240f-106-fa04-2-d589-709-903e-2d4b.ngrok-free.app"
   config.hosts.clear
+  # config.web_console.permissions = '0.0.0.0/0'
+  config.web_console.permissions = '::/0'
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
