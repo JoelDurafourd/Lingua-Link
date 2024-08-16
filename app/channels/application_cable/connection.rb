@@ -9,7 +9,6 @@ module ApplicationCable
     private
 
     def find_verified_user
-      # if (verified_user = User.find_by(id: cookies.signed[:user_id]))
       if (verified_user = env['warden'].user)
         verified_user
       else

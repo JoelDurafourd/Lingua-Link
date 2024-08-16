@@ -22,7 +22,7 @@ gem "turbo-rails"
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
-
+gem 'google-cloud-translate'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
@@ -52,7 +52,7 @@ gem "font-awesome-sass", "~> 6.1"
 gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 gem 'line-bot-api'
-gem "dotenv-rails"
+gem "dotenv-rails", groups: [:development, :test]
 gem "simple_calendar"
 gem "cloudinary"
 gem 'activestorage'

@@ -22,29 +22,13 @@ class MessagesController < ApplicationController
     body = request.body.read
     signature = request.env['HTTP_X_LINE_SIGNATURE']
 
-    Rails.logger.info "Received LINE webhook callback"
-    Rails.logger.info "Body: #{body}"
-    Rails.logger.info "Signature: #{signature}"
-
-    unless client.validate_signature(body, signature)
+    unless @line_service.validate_signature(body, signature)
       head :bad_request
       return
     end
 
-    events = client.parse_events_from(body)
-    events.each do |event|
-      case event
-      when Line::Bot::Event::Message
-        case event.type
-        when Line::Bot::Event::MessageType::Text
-          handle_message(event)
-        end
-      when Line::Bot::Event::Postback
-        handle_postback(event)
-      when Line::Bot::Event::Follow
-        handle_follow(event)
-      end
-    end
+    events = @line_service.parse_events_from(body)
+    process_events(events)
 
     head :ok
   end
@@ -65,74 +49,4 @@ class MessagesController < ApplicationController
     end
     render json: { message: "Rich menu updated for all users" }, status: :ok
   end
-
-  private
-
-  def load_user_ids
-    FileUtils.touch(USER_IDS_FILE) unless File.exist?(USER_IDS_FILE)
-
-    File.read(USER_IDS_FILE).split("\n").uniq
-  end
-
-  def save_user_id(user_id)
-    if user_id_exists?(user_id)
-      Rails.logger.info "User ID #{user_id} already exists in the file."
-    else
-      File.open(USER_IDS_FILE, 'a') do |file|
-        file.puts(user_id)
-      end
-    end
-  end
-
-  def user_id_exists?(user_id)
-    user_ids = load_user_ids
-    user_ids.include?(user_id)
-  end
-
-  def handle_follow(event)
-    user_id = event['source']['userId']
-
-    # Find or create the client with the given lineid (user_id)
-    client_obj = Client.find_or_initialize_by(lineid: user_id)
-
-    # Update or set any additional attributes
-    client_obj.update(name: user_id.to_s) # Set a default name or handle accordingly
-
-    # Optionally update any other fields, e.g., phone_number
-
-    # Save the client record
-    if client_obj.save
-      # Successfully saved the client
-      USERS[user_id] = { teachers: @teachers.map { |t| t[:id] } }
-
-      # Update the user's rich menu
-      update_user_rich_menu(user_id)
-
-      welcome_message = {
-        type: 'text',
-        text: "Welcome! You've been assigned to all our teachers. Use the menu at the bottom to select a teacher and
-        start chatting!"
-      }
-      client.reply_message(event['replyToken'], welcome_message)
-    else
-      # Handle the error (optional)
-      Rails.logger.error("Failed to save client with lineid: #{user_id}")
-    end
-  end
-
-  # def handle_follow(event)
-  #   user_id = event['source']['userId']
-  #   USERS[user_id] = { teachers: @teachers.map { |t| t[:id] } }
-
-  #   # Save the user ID to the file
-  #   save_user_id(user_id)
-  #   update_user_rich_menu(user_id)
-
-  #   welcome_message = {
-  #     type: 'text',
-  #     text: "Welcome! You've been assigned to all our teachers. Use the menu at the bottom to select a teacher and
-  #     start chatting!"
-  #   }
-  #   client.reply_message(event['replyToken'], welcome_message)
-  # end
 end

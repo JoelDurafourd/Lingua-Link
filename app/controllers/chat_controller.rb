@@ -9,39 +9,62 @@ class ChatController < ApplicationController
   end
 
   def show
-    # Find the selected client based on the :client_id parameter
-    @client = Client.find_by(id: params[:client_id])
-
-    return unless @client.nil?
-
-    flash[:alert] = "Client not found or you do not have access to this client."
-    # redirect_to root_path
-
-    # Any additional logic you want to add for the index view
+    @client = Client.find_by(id: params[:id])
+    @messages = Message.where(client_id: @client.id).order(created_at: :asc)
   end
 
-  def send_message
-    puts params
-    first_name = current_user.first_name
-    client_obj = Client.find_by(id: params[:to])
-    line_id = client_obj.lineid
-    puts "LINE ID: #{line_id}"
-    teacher_id = first_name
-    user_id = line_id
-    message_text = params[:message]
+  # line_message
+  # message
+  # action_message
 
-    message = {
+  def send_message
+    # Teacher Information
+    teacher_obj = current_user
+
+    teacher_first_name = teacher_obj.first_name
+    teacher_last_name = teacher_obj.last_name
+
+    Rails.logger.info(params[:to])
+    # Client Information
+    client_obj = Client.find_by(id: params[:to])
+
+    client_line_id = client_obj.lineid
+
+    message_uuid = SecureRandom.uuid
+    message_text = params[:message].to_s.strip
+
+    translate = Google::Cloud::Translate::V2.new(
+      key: ENV.fetch("GOOGLE_TRANSLATE_API_KEY")
+    )
+
+    translation = translate.translate(message_text, to: "ja")
+    translated_message = translation.text
+
+    # Save the message to the database
+    Message.create!(
+      uuid: message_uuid,
+      sender: teacher_first_name,
+      user_id: teacher_obj.id, # TeacherID
+      client_id: client_obj.id, # ClientID
+      contents: message_text
+    )
+
+    line_message = {
       type: "text",
-      text: "#{teacher_id}: #{message_text}"
+      text: "#{teacher_first_name}: #{translated_message}"
     }
 
-    client.push_message(user_id, message)
+    @line_service.push_message(client_line_id, line_message)
 
     # Broadcast the message to the ActionCable channel
     ActionCable.server.broadcast(
       "chat_channel",
       {
-        from: teacher_id,
+        message_id: message_uuid,
+        is_teacher: true,
+        sender: teacher_first_name,
+        user_id: teacher_obj.id,
+        client_id: client_obj.id,
         message: message_text
       }
     )
