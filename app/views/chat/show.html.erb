@@ -17,15 +17,17 @@
     <div class="col-md-8">
       <div class="card chat-container">
         <div class="card-body d-flex flex-column">
-          <div class="chat-messages" id="chatMessages">
+          <div class="chat-messages" id="chatMessages" style="flex-grow: 1; overflow-y: auto; max-height: calc(100vh - 300px);">
             <div data-controller="chat"
-                data-chat-target="output"
-                data-chat-current-user='<%= { user_id: current_user.id, first_name: current_user.first_name, last_name: current_user.last_name }.to_json.html_safe %>'
-                data-action="turbo:load->chat#connect">
+                 data-chat-target="output"
+                 data-chat-current-user='<%= { user_id: current_user.id, first_name: current_user.first_name, last_name: current_user.last_name }.to_json.html_safe %>'
+                 data-action="turbo:load->chat#connect">
               <h2>Messages:</h2>
               <div id="messages-container">
                 <% @messages.each do |message| %>
-                  <p><strong><%= message.sender %>:</strong> <%= message.contents %></p>
+                  <p class="message <%= message.sender == current_user.first_name ? 'message-outgoing' : 'message-incoming' %>">
+                    <strong><%= message.sender %>:</strong> <%= message.contents %>
+                  </p>
                 <% end %>
               </div>
             </div>
@@ -52,37 +54,37 @@
     </div>
   </div>
 </div>
+
 <style>
-  body {
-      background-color: #f8f9fa;
-  }
+    body {
+        background-color: #f8f9fa;
+    }
 
-  .chat-container {
-      height: calc(100vh - 200px);
-  }
+    .chat-container {
+        height: calc(100vh - 200px);
+        display: flex;
+        flex-direction: column;
+    }
 
-  .chat-messages {
-      height: calc(100% - 50px);
-      overflow-y: auto;
-  }
+    .chat-messages {
+        overflow-y: auto;
+        flex-grow: 1;
+        max-height: calc(100vh - 300px);
+    }
 
-  .message {
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 5px;
-  }
+    .message {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+    }
 
-  .message-incoming {
-      background-color: #e9ecef;
-  }
+    .message-incoming {
+        background-color: #e9ecef;
+    }
 
-  .profile-picture img.small-profile-pic {
-      width: 100px;  /* Adjust as needed */
-      height: 100px; /* Adjust as needed */
-  }
-
-  .message-outgoing {
-      background-color: #007bff;
-      color: white;
-  }
+    .message-outgoing {
+        background-color: #007bff;
+        color: white;
+        align-self: flex-end;
+    }
 </style>

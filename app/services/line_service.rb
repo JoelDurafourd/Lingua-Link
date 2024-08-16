@@ -42,8 +42,9 @@ class LineService
   end
 
   def reply_message(reply_token, message)
-    raise ArgumentError, "Invalid reply token provided" unless reply_token.is_a?(String) && reply_token.present?
+    Rails.logger.info "Attempting to send reply message for token #{reply_token} with message: #{message.inspect}"
 
+    raise ArgumentError, "Invalid reply token provided" unless reply_token.is_a?(String) && reply_token.present?
     raise ArgumentError, "Message must be a non-empty hash" unless message.is_a?(Hash) && message.present?
 
     response = client.reply_message(reply_token, message)
@@ -55,6 +56,12 @@ class LineService
       Rails.logger.error "Failed to send reply message: #{response.code} #{response.message}"
       raise "Failed to send reply message"
     end
+  rescue ArgumentError => e
+    Rails.logger.error "ArgumentError in reply_message: #{e.message}"
+    raise
+  rescue StandardError => e
+    Rails.logger.error "Error in reply_message: #{e.class.name} - #{e.message}"
+    raise
   end
 
   # Get the user profile by line ID

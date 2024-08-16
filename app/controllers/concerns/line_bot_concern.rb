@@ -1291,8 +1291,59 @@ module LineBotConcern
   # end
   #
 
-  # FOR CLIENT
+  def push_teacher_message(event) end
+
   def handle_message(event)
+    Rails.logger.info "Handling message event: #{event.inspect}"
+
+    message_data = event['message']
+    source_data = event['source']
+
+    line_user_id = source_data['userId']
+    message_text = message_data['text']
+
+    # Initialize your state machine service
+    menu_manager = MenuManagerService.new
+    current_state = menu_manager.get_or_create_state(line_user_id)
+
+    # Handle the message based on the user's current state
+
+    if current_state.name == 'teacher_direct_chat_menu_state'
+      response_text = current_state.handle_input(message_text, event)
+
+      if response_text[:in_chat]
+        if message_text == '#2'
+          reply_message = { type: 'text', text: response_text[:content] }
+
+          # Send the reply
+          reply_token = event['replyToken']
+          @line_service.reply_message(reply_token, reply_message)
+        end
+      else
+        reply_message = { type: 'text', text: response_text[:content] }
+
+        # Send the reply
+        reply_token = event['replyToken']
+        @line_service.reply_message(reply_token, reply_message)
+      end
+    else
+      response_text = current_state.handle_input(message_text)
+      # Prepare the reply message (ensure response_text is a string)
+      reply_message = { type: 'text', text: response_text }
+
+      # Send the reply
+      reply_token = event['replyToken']
+      @line_service.reply_message(reply_token, reply_message)
+    end
+
+    Rails.logger.info "Finished processing message event for user #{line_user_id}"
+  rescue StandardError => e
+    Rails.logger.error "Error in handle_message: #{e.class.name} - #{e.message}"
+    raise
+  end
+
+  # FOR CLIENT
+  def handle_message2(event)
     # Extract necessary data from the event
     message_data = event['message']
     source_data = event['source']
@@ -1384,7 +1435,7 @@ module LineBotConcern
         type: 'text',
         # text: "Welcome! You've been assigned to all our teachers. Use the menu at the bottom to select a teacher
         # and start chatting!"
-        text: "Welcome! You've been assigned to a teacher. Use this channel to start chatting with them!"
+        text: "Welcome! You can start using LinguaLink by typing '#' for a list of menu options."
       }
 
       response = @line_service.reply_message(event['replyToken'], message)

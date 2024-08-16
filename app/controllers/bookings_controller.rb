@@ -33,11 +33,11 @@ class BookingsController < ApplicationController
         render :new, status: :unprocessable_entity
       end
     else
-      flash[:alert] = 'The selected time slot is either unavailable or overlaps with an existing booking. Please choose a different time.'
+      flash[:alert] =
+        'The selected time slot is either unavailable or overlaps with an existing booking. Please choose a different time.'
       render :new, status: :unprocessable_entity
     end
   end
-
 
   def edit
     # find the booking to edit
@@ -69,17 +69,28 @@ class BookingsController < ApplicationController
     # change the bookings status to accepted, redirect to the booking path
     @booking = Booking.find(params[:id])
     authorize @booking
-    if @booking.update(status: :accepted)
-      redirect_to user_path(@booking.user)
-    end
+    return unless @booking.update(status: :accepted)
+
+    line_service = LineService.new
+    teacher = User.find_by(id: @booking.user_id)
+    student = @booking.client
+
+    line_service.push_message(
+      student.lineid,
+      {
+        type: "text",
+        text: "Your booked a lesson on #{@booking.start_time.strftime('%A, %B %d, %Y')} at #{@booking.start_time.strftime('%I:%M %p')} has been Accepted by #{teacher.first_name}."
+      }
+    )
+    redirect_to user_path(@booking.user)
   end
 
   def decline
     # change the bookings status to declined, redirect to the booking path
     @booking = Booking.find(params[:id])
-    if @booking.update(status: :declined)
-      redirect_to user_path(@booking.user)
-    end
+    return unless @booking.update(status: :declined)
+
+    redirect_to user_path(@booking.user)
   end
 
   def set_user
@@ -113,7 +124,6 @@ class BookingsController < ApplicationController
     # Both conditions must be met
     is_available && is_not_double_booked
   end
-
 
   def booking_params
     # these are strong params or security params, it makes sure only these attributes are changed. Any edits to a model has to be modified here also.
