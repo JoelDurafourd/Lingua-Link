@@ -7,27 +7,29 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="form-container">
-    <h2><b>Log in</b></h2>
+  <div class="form-page">
+    <div class="form-container">
+      <h2><b>Log in</b></h2>
 
-    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <div class="form-inputs">
-        <%= f.input :email,
-                    required: false,
-                    autofocus: true,
-                    input_html: { autocomplete: "email" } %>
-        <%= f.input :password,
-                    required: false,
-                    input_html: { autocomplete: "current-password" } %>
-        <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
-      </div>
+      <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="form-inputs">
+          <%= f.input :email,
+                      required: false,
+                      autofocus: true,
+                      input_html: { autocomplete: "email" } %>
+          <%= f.input :password,
+                      required: false,
+                      input_html: { autocomplete: "current-password" } %>
+          <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+        </div>
 
-      <div class="form-actions">
-        <%= f.button :submit, "Log in", class: "orange-button-login" %>
-      </div>
-    <% end %>
+        <div class="form-actions">
+          <%= f.button :submit, "Log in", class: "orange-button-login" %>
+        </div>
+      <% end %>
 
-    <%= render "devise/shared/links" %>
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
 </body>
 </html>

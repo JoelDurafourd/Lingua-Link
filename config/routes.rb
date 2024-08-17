@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get "calendars/month", to: "calendars#month"
     get "calendars/week", to: "calendars#week"
     resources :availabilities
+    resources :clients
     resources :bookings do
       member do
         get :accept
@@ -20,7 +21,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :clients
   resources :chat, only: [:index, :show] do
     collection do
       post :send_message
