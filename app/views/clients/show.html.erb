@@ -1,20 +1,18 @@
-Hello
-<%= @client.name %>
-
-
-
-
-<div class="container">
-  <div class="row">
+<div class="container" data-controller="weekly-calendar">
+  <div class="row sidebar-container">
+      <%= render partial: "dashboard/sidebar" %>
 
     <div class="col-12 col-lg-8">
+
+      <h2 class="client-h2"><%= @client.name %>'s Client Profile</h2>
 
 <div class="card-product">
 <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
   <div class="card-product-infos">
-    <h1>Product name</h1>
-    <p>Nickname</p>
-    <p>LineID: ____</p>
+    <h2><%= @client.name %></h2>
+    <p><strong>Nickname</strong></p>
+    <p>LineID: ____________</p>
+    <p>Phone Number: ###-###-####</p>
 
   </div>
 </div>
@@ -56,6 +54,3 @@ Hello
 </div> %>
 
     </div>
-
-  </div>
-</div>
