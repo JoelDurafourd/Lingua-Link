@@ -3,12 +3,9 @@
   height: 200px;
   width: 450px;
   background: white;
-  // border-color: #5d5c6a;
-  box-shadow: 0 0 8px rgba(0,0,0,0.3);
-  // border-style: solid;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
   display: flex;
   align-items: center;
-  // align-content: center;
   border-radius: 20px;
 }
 
@@ -24,6 +21,16 @@
   font-size: 28px;
   font-weight: bold;
   margin: 0;
+}
+
+.card-product h3 {
+  font-weight: bolder;
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.4;
+  opacity: .7;
+  margin-bottom: 0;
+  margin-top: 8px;
 }
 
 .card-product p {
