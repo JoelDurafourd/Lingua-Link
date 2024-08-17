@@ -26,8 +26,8 @@
     margin-top: 20px;
   }
 
-  .card{
-color: #faf8f6;
+  .card {
+    color: #faf8f6;
   }
 }
 
@@ -42,6 +42,14 @@ color: #faf8f6;
   }
 }
 
+.row-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px;
+  margin: 20px;
+}
+
 .orange-section {
   background-color: #fcc11e;
   color: white;
@@ -49,17 +57,8 @@ color: #faf8f6;
   padding-top: 20px;
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  margin: 20px;
-  transition: opacity 0.5s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0; // Start hidden
-
-  .line-img {
-    height: 80%;
-  }
+  flex: 1;
+  opacity: 1;
 
   h2 {
     font-size: 2rem;
@@ -69,67 +68,70 @@ color: #faf8f6;
   p {
     font-size: 1.2rem;
   }
+}
 
-  &.visible {
-    opacity: 1;
+.red-section,
+.yellow-section {
+  background-color: #73580d;
+  color: white;
+  text-align: center;
+  padding-top: 20px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  flex: 1;
+  height: 48%;
+  position: relative;
+
+  h2 {
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  p {
+    font-size: 1.2rem;
   }
 }
 
 .red-section {
   background-color: #73580d;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  position: relative;
-  margin: 20px;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  .images-container-1,
-  .images-container-2 {
-    position: absolute;
-    width: auto;
-    height: auto;
-  }
-
-  .images-container-1 {
-    top: 10px;
-    right: 10px;
-  }
-
-  .images-container-2 {
-    bottom: 140px;
-    left: 10px;
-  }
-
-  .appo-img-1,
-  .appo-img-2 {
-    width: 200px;
-    height: auto;
-  }
-
-  .title-home {
-    margin-top: 250px;
-    z-index: 1;
-    position: relative;
-  }
-
-  h2 {
-    font-size: 2rem;
-    margin: 0;
-  }
-
-  p {
-    font-size: 1.2rem;
-  }
 }
 
-.red-section.visible {
-  display: flex;
+.red-section .images-container-1,
+.red-section .images-container-2 {
+  position: absolute;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+
+.red-section .images-container-1 {
+  top: 10px;
+  right: 10px;
+}
+
+.red-section .images-container-2 {
+  bottom: 90px;
+  left: 10px;
+}
+
+.red-section .appo-img-1,
+.red-section .appo-img-2 {
+  width: 40%;
+  max-width: 600px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.red-section .title-home {
+  margin-top: 200px;
+  z-index: 1;
+  position: relative;
+}
+
+.yellow-section {
+  background-color: #ffae00;
+  flex: 1;
 }
 
 .white-section {
