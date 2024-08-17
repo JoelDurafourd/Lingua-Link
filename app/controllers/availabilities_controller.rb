@@ -20,22 +20,35 @@ class AvailabilitiesController < ApplicationController
   end
 
   def create
+    # Parse dates and times from parameters
     start_date = Date.parse(params[:availability][:start_date])
     end_date = Date.parse(params[:availability][:end_date])
-    start_time = Time.parse(params[:availability][:start_time])
-    end_time = Time.parse(params[:availability][:end_time])
 
+    # Extract hour and minute values and create Time objects
+    start_hour = params[:availability][:start_time_hour].to_i
+    start_minute = params[:availability][:start_time_minute].to_i
+    end_hour = params[:availability][:end_time_hour].to_i
+    end_minute = params[:availability][:end_time_minute].to_i
+
+    # Initialize start_time and end_time with the start_date's year, month, and day
+    start_time = Time.new(start_date.year, start_date.month, start_date.day, start_hour, start_minute)
+    end_time = Time.new(start_date.year, start_date.month, start_date.day, end_hour, end_minute)
+
+    # Initialize current_date and array to store created availabilities
     current_date = start_date
     created_availabilities = []
 
     while current_date <= end_date
+      # Combine current_date with start_time and end_time
       availability_start = current_date.to_datetime.change(hour: start_time.hour, min: start_time.min)
       availability_end = current_date.to_datetime.change(hour: end_time.hour, min: end_time.min)
 
+      # Ensure availability_end is after availability_start
       if availability_end > availability_start
         availability = Availability.new(user: current_user, start_time: availability_start, end_time: availability_end)
 
-        authorize availability # Authorize the specific availability record being created
+        # Authorize the availability record
+        authorize availability
 
         if availability.save
           created_availabilities << availability
@@ -45,12 +58,13 @@ class AvailabilitiesController < ApplicationController
         end
       end
 
+      # Move to the next day
       current_date += 1.day
     end
 
-    redirect_to dashboard_path(@user), notice: "#{created_availabilities.count} availability(s) successfully created!"
+    # Redirect to the dashboard with a success notice
+    redirect_to dashboard_path(current_user), notice: "#{created_availabilities.count} availability(s) successfully created!"
   end
-
 
   def edit
     # find the availability to edit
