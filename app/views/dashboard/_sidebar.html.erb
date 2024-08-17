@@ -1,0 +1,24 @@
+<div class="col-2 left-nav">
+      <div class="container-img">
+        <% if current_user.photo.present? %>
+          <%= cl_image_tag(current_user.photo.key, class: "avatar-dash", alt: "User Avatar") %>
+        <% else %>
+          <%= image_tag("default_avatar.png", class: "avatar-dash", alt: "Default Avatar") %>
+        <% end %>
+      </div>
+      <div>
+        <%= link_to "My Profile", user_path(@user), class: "btn btn-info buttons-dash" %>
+      </div>
+              <div>
+    <%= link_to "My Clients", user_clients_path(@user), class: "btn btn-info buttons-dash" %>
+      </div>
+      <div>
+        <%= link_to "My Messages", chat_index_path, class: "btn btn-info buttons-dash" %>
+      </div>
+      <div>
+        <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
+      </div>
+          <div>
+        <%= link_to "Set Availabilities", new_user_availability_path(@user), class: "btn btn-info buttons-dash" %>
+      </div>
+    </div>

@@ -1,5 +1,6 @@
 class ClientsController < ApplicationController
   def index
+    @user = User.find(params[:user_id])
     if params[:user_id]
       @clients = Client.joins(:bookings).where(bookings: { user_id: params[:user_id] }).distinct
     else
@@ -11,6 +12,7 @@ class ClientsController < ApplicationController
   def show
     @client = Client.find(params[:id])
     authorize @client
+    @user = User.find(params[:user_id])
   end
 
   def set_client

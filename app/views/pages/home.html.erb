@@ -1,37 +1,45 @@
 <div class="banner">
   <h1>Join the team</h1>
   <div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="..." alt="Card image cap">
-  <div class="card-body">
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <img class="card-img-top" src="..." alt="Card image cap">
+    <div class="card-body">
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
   </div>
-</div>
 </div>
 
-<div class="orange-section" id="orangeSection">
-  <h2>Connect to your students is effortless</h2>
-  <p>Make your bookings through line</p>
-  <%= image_tag "home/line1.png", alt: "Line img", class: "line-img" %>
-</div>
+<div class="row-container">
+  <div class="orange-section" id="orangeSection">
+    <h2>Connect to your students is effortless</h2>
+    <p>Make your bookings through line</p>
+    <%= image_tag "home/line1.png", alt: "Line img", class: "line-img" %>
+  </div>
 
-<div class="red-section" id="redSection">
-  <div class="images-container-1">
-    <%= image_tag "home/appo1.png", alt: "appo1 img", class: "appo-img-1" %>
-  </div>
-  <div class="images-container-2">
-    <%= image_tag "home/appo2.png", alt: "appo2 img", class: "appo-img-2" %>
-  </div>
-  <div class="title-home">
-    <h2>Real-time updates</h2>
-    <p>Bookings automatically update to your calendar</p>
+  <div style="flex: 0 0 50%;">
+    <div class="red-section" id="redSection">
+      <div class="images-container-1">
+        <%= image_tag "home/appo1.png", alt: "appo1 img", class: "appo-img-1" %>
+      </div>
+      <div class="images-container-2">
+        <%= image_tag "home/appo2.png", alt: "appo2 img", class: "appo-img-2" %>
+      </div>
+      <div class="title-home">
+        <h2>Real-time updates</h2>
+        <p>Bookings automatically update to your calendar</p>
+      </div>
+    </div>
+
+    <div class="yellow-section" id="yellowSection">
+      <h2>users</h2>
+      <p>each users </p>
+    </div>
   </div>
 </div>
 
 <div class="white-section" id="whiteSection">
   <div class="join-us-content">
-    <%# <h2>Interested?</h2> %>
     <h2><b>JOIN US!</b></h2>
-     <%= link_to new_user_registration_path, class: 'cssbuttons-io-button' do %>
+    <%= link_to new_user_registration_path, class: 'cssbuttons-io-button' do %>
       SIGN UP
       <div class="icon">
         <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -44,7 +52,6 @@
 </div>
 
 
-
 <footer class="footer">
   <h2 class="footer-title"><b>LINGUA LINK</b></h2>
   <div class="sns-icons">
@@ -53,34 +60,3 @@
     <a href="#"><%= image_tag 'instagram.png', alt: 'Instagram' %></a>
   </div>
 </footer>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-  const buttons = document.querySelectorAll('.object-button');
-  const descriptions = document.querySelectorAll('.description-content');
-
-  buttons.forEach(button => {
-    button.addEventListener('click', function() {
-      descriptions.forEach(desc => desc.classList.remove('active'));
-      const descriptionId = button.getAttribute('data-description');
-      document.getElementById(descriptionId).classList.add('active');
-      buttons.forEach(btn => btn.classList.remove('clicked'));
-      button.classList.add('clicked');
-    });
-  });
-
-
-
-  window.addEventListener('scroll', function() {
-    const orangeSection = document.getElementById('orangeSection');
-    if (window.scrollY > 500) {
-      orangeSection.classList.add('visible');
-    } else {
-      orangeSection.classList.remove('visible');
-    }
-  });
-
-
-});
-
-</script>
