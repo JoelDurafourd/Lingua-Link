@@ -1,5 +1,11 @@
-<% @clients.each do |client| %>
-  <div>
-    <%= link_to client.name, user_client_path(params[:user_id], client), class: "btn btn-info" %>
-  </div>
-<% end %>
+
+<div class="container" data-controller="weekly-calendar">
+  <div class="row sidebar-container">
+      <%= render partial: "dashboard/sidebar" %>
+        <% @clients.each do |client| %>
+          <div>
+            <%= link_to client.name, user_client_path(params[:user_id], client), class: "btn btn-info" %>
+          </div>
+        <% end %>
+</div>
+</div>
