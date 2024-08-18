@@ -1,24 +1,39 @@
 <div class="col-2 left-nav">
-      <div class="container-img">
-        <% if current_user.photo.present? %>
-          <%= cl_image_tag(current_user.photo.key, class: "avatar-dash", alt: "User Avatar") %>
-        <% else %>
-          <%= image_tag("default_avatar.png", class: "avatar-dash", alt: "Default Avatar") %>
-        <% end %>
-      </div>
-      <div>
-        <%= link_to "My Profile", user_path(@user), class: "btn btn-info buttons-dash" %>
-      </div>
-              <div>
+  <%# Container for the user avatar %>
+  <div class="container-img">
+    <%# Check if the current user has a profile photo %>
+    <% if current_user.photo.present? %>
+      <%# Display the user's photo %>
+      <%= cl_image_tag(current_user.photo.key, class: "avatar-dash", alt: "User Avatar") %>
+    <% else %>
+      <%# Display a default avatar if no user photo is present %>
+      <%= image_tag("default_avatar.png", class: "avatar-dash", alt: "Default Avatar") %>
+    <% end %>
+  </div>
+
+  <%# Navigation links for the user dashboard %>
+  <div>
+    <%# Link to the user's profile page %>
+    <%= link_to "My Profile", user_path(@user), class: "btn btn-info buttons-dash" %>
+  </div>
+
+  <div>
+    <%# Link to the user's list of clients %>
     <%= link_to "My Clients", user_clients_path(@user), class: "btn btn-info buttons-dash" %>
-      </div>
-      <div>
-        <%= link_to "My Messages", chat_index_path, class: "btn btn-info buttons-dash" %>
-      </div>
-      <div>
-        <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
-      </div>
-          <div>
-        <%= link_to "Set Availabilities", new_user_availability_path(@user), class: "btn btn-info buttons-dash" %>
-      </div>
-    </div>
+  </div>
+
+  <div>
+    <%# Link to the chat messages page %>
+    <%= link_to "My Messages", chat_index_path, class: "btn btn-info buttons-dash" %>
+  </div>
+
+  <div>
+    <%# Link to create a new booking %>
+    <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
+  </div>
+
+  <div>
+    <%# Link to set new availabilities %>
+    <%= link_to "Set Availabilities", new_user_availability_path(@user), class: "btn btn-info buttons-dash" %>
+  </div>
+</div>
