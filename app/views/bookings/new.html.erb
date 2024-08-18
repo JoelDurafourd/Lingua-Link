@@ -1,6 +1,14 @@
 <%= simple_form_for([@user, @booking], html: { class: 'availability-form' }) do |f| %>
   <h1 class="form-title"><b>New Booking</b></h1>
 
+    <div class="form-field">
+    <%= f.input :title, required: true, input_html: { autocomplete: "Booking Title" }%>
+  </div>
+
+  <div class="form-field">
+    <%= f.input :description, input_html: { autocomplete: "Booking Description" }%>
+  </div>
+
   <div class="form-field">
     <%= f.input :start_time, as: :datetime, html5: true, label_html: { class: 'form-label' }, input_html: { class: 'form-input' } %>
   </div>
@@ -16,6 +24,7 @@
   <div class="form-actions">
     <%= f.submit 'Create Booking', class: 'form-submit' %>
   </div>
+
 <% end %>
 
 <%= link_to "Back to dashboard", dashboard_path(@user), class: "nav-button col-12" %>

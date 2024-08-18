@@ -127,7 +127,7 @@ class BookingsController < ApplicationController
 
   def booking_params
     # these are strong params or security params, it makes sure only these attributes are changed. Any edits to a model has to be modified here also.
-    params.require(:booking).permit(:start_time, :end_time, :client_id, :status)
+    params.require(:booking).permit(:start_time, :end_time, :client_id, :status, :title, :description)
   end
 end
 # t.datetime "start_time"
