@@ -16,3 +16,12 @@
 @import "sessions/new";
 @import "availabilities/new";
 @import "bookings/new";
+
+
+.a-availabilities-btn {
+  background-color: orange;
+  color: white;
+  border-radius: 50%;
+  padding: 3px;
+  margin: 3px;
+}
