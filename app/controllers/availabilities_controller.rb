@@ -21,14 +21,14 @@ class AvailabilitiesController < ApplicationController
 
   def create
     # Parse dates and times from parameters
-    start_date = Date.parse(params[:availability][:start_date])
-    end_date = Date.parse(params[:availability][:end_date])
+    start_date = Date.parse(params[:start_time])
+    end_date = Date.parse(params[:end_time])
 
     # Extract hour and minute values and create Time objects
-    start_hour = params[:availability][:start_time_hour].to_i
-    start_minute = params[:availability][:start_time_minute].to_i
-    end_hour = params[:availability][:end_time_hour].to_i
-    end_minute = params[:availability][:end_time_minute].to_i
+    start_hour = params[:start_time_hour].to_i
+    start_minute = params[:start_time_minute].to_i
+    end_hour = params[:end_time_hour].to_i
+    end_minute = params[:end_time_minute].to_i
 
     # Initialize start_time and end_time with the start_date's year, month, and day
     start_time = Time.new(start_date.year, start_date.month, start_date.day, start_hour, start_minute)
