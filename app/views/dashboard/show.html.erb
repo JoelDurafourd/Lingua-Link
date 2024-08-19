@@ -1,5 +1,5 @@
 <div class="container" data-controller="weekly-calendar">
-  <div class="row sidebar-container">
+  <div class="row sidebar-container" data-controller="dashboard-forms">
       <%= render partial: "dashboard/sidebar" %>
     <div class="col-10">
       <div class="alert alert-warning alert-dismissible fade show row col-3" role="alert">
@@ -12,8 +12,10 @@
         </div>
         <div id="calendar-render-space" class="calendar-render" data-weekly-calendar-target="calendarRenderSpace">
           <%= render partial: "calendars/week" %>
+        <div class="availabilities-render-space d-none" data-dashboard-forms-target="availabilitiesForm">
+        <%= render partial: "availabilities/new_form", availability: @availability %>
+        </div>
         <h2 class="dash-h2">Most Recent Client Message</h2>
-
               <div class="d-flex justify-content-center">
         <i>You don't have any recent messages at this time.</i>
         </div>
