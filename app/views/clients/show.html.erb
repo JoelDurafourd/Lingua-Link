@@ -8,9 +8,9 @@
     <%# START USER CARD %>
     <div class="three-cards d-flex flex-row justify-content-between flex-wrap">
       <div class="">
-        <div class="card-product">
+        <div class="card-client-profile">
           <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
-          <div class="card-product-infos">
+          <div class="card-client-profile-infos">
             <h2><%= @client.name %></h2>
             <%# <h3>Nickname</h3> %>
             <p><strong>LineID:</strong> <%= @client.lineid %> </p>
@@ -50,7 +50,7 @@
         <%# START NOTES%>
         <div class="">
           <div class="card-notes">
-            <div class="card-product-infos">
+            <div class="card-notes-infos">
               <h2>NOTES</h2>
               <p><strong>8/20/2024</strong> - <%= @client.name %> wants to work on pages 20-23 in the textbook.</p>
               <p><strong>8/09/2024</strong>  - Make a lesson 4 test for <%= @client.name %> before next Tuesday.</p>
@@ -61,8 +61,8 @@
         <%# END NOTES%>
         <%# START PAYMENTS%>
         <div class="col-12 col-lg-8 flex-grow-1">
-          <div class="card-product flex-grow-1 w-100 h-100">
-            <div class="card-product-infos">
+          <div class="card-client-profile flex-grow-1 w-100 h-100">
+            <div class="card-client-profile-infos">
               <h2>PAYMENT</h2>
               <br>
               <div class="table-responsive">
