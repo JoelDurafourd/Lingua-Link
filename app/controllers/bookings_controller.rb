@@ -23,6 +23,7 @@ class BookingsController < ApplicationController
     @user = current_user # Ensure @user is set
     # Extract the date and time parameters
     date_string = params[:booking][:date]
+
     start_hour = params[:booking][:start_time_hour].to_i
     start_minute = params[:booking][:start_time_minute].to_i
     end_hour = params[:booking][:end_time_hour].to_i
@@ -30,11 +31,9 @@ class BookingsController < ApplicationController
 
     # Convert the date string to a Date object
     date = Date.parse(date_string)
-
     # Create Time objects for start_time and end_time in the application's time zone
     start_time = Time.zone.local(date.year, date.month, date.day, start_hour, start_minute)
     end_time = Time.zone.local(date.year, date.month, date.day, end_hour, end_minute)
-
     @booking = Booking.new(booking_params.merge(user: current_user, start_time: start_time, end_time: end_time))
 
     authorize @booking
@@ -51,7 +50,7 @@ class BookingsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-  
+
   def edit
     # find the booking to edit
     @booking = Booking.find(params[:id])
