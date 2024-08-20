@@ -3,74 +3,100 @@
     <%= render partial: "dashboard/sidebar" %>
   </div>
   <%# END SIDEBAR %>
-  <div class="profile_container mr-6">
-          <h2 class="client-h2"><%= @client.name %>'s Client Profile</h2>
+  <div class="profile_container mx-3">
+    <h2 class="client-h2"> <%= @client.name %>'s Client Profile</h2>
     <%# START USER CARD %>
-    <div class="three-cards">
-
+    <div class="three-cards d-flex flex-row justify-content-between flex-wrap">
       <div class="">
-
         <div class="card-product">
           <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
           <div class="card-product-infos">
             <h2><%= @client.name %></h2>
-            <h3>Nickname</h3>
-            <p><strong>LineID:</strong> ____________</p>
-            <p><strong>Phone Number:</strong> ###-###-####</p>
+            <%# <h3>Nickname</h3> %>
+            <p><strong>LineID:</strong> <%= @client.lineid %> </p>
+            <p><strong>Phone Number:</strong> <%= @client.phone_number %> </p>
           </div>
         </div>
-        </div>
-        <%# END USER CARD %>
-        <%# START BOOKING CARD %>
-        <div class="">
-
-          <div class="d-flex justify-content-center">
-            <div class="card bg-light mb-3 week-card" style="max-width: 18rem;">
-              <div class="card-header">
-                <p><i class="fa-solid fa-clock"></i>
-                  <%= @client.bookings.last.start_time.strftime("%I:%M%p") %> -
-                  <%= @client.bookings.last.end_time.strftime("%I:%M%p") %> </div>
-                <div class="card-body">
-                  <h5 class="card-title"><i class="fa-solid fa-user"></i> w/ <strong><%= @client.bookings.last.client.name %></strong></h5>
-                  <p class="card-text">
-                    <%= @client.bookings.last.status.capitalize %>
-                  </p>
-                  <% if @client.bookings.last.user == current_user %>
-                    <% if @client.bookings.last.status == "pending" %>
-                      <div>
-                        <%= link_to 'Accept', accept_user_booking_path(user_id: @client.bookings.last.user_id, id: @client.bookings.last.id), class: "btn btn-success" %>
-                        <%= link_to 'Decline', decline_user_booking_path(user_id: @client.bookings.last.user_id, id: @client.bookings.last.id), class: "btn btn-danger" %>
-                      </div>
-                    <% end %>
+      </div>
+      <%# END USER CARD %>
+      <%# START BOOKING CARD %>
+      <div class="">
+        <div class="d-flex justify-content-center">
+          <div class="card bg-light mb-3 week-card" style="max-width: 18rem;">
+            <div class="card-header">
+              <p><i class="fa-solid fa-clock"></i>
+                <%= @client.bookings.last.start_time.strftime("%I:%M%p") %> -
+                <%= @client.bookings.last.end_time.strftime("%I:%M%p") %> </div>
+              <div class="card-body">
+                <h5 class="card-title"><i class="fa-solid fa-user"></i> w/ <strong><%= @client.bookings.last.client.name %></strong></h5>
+                <p class="card-text">
+                  <%= @client.bookings.last.status.capitalize %>
+                </p>
+                <% if @client.bookings.last.user == current_user %>
+                  <% if @client.bookings.last.status == "pending" %>
+                    <div>
+                      <%= link_to 'Accept', accept_user_booking_path(user_id: @client.bookings.last.user_id, id: @client.bookings.last.id), class: "btn btn-success" %>
+                      <%= link_to 'Decline', decline_user_booking_path(user_id: @client.bookings.last.user_id, id: @client.bookings.last.id), class: "btn btn-danger" %>
+                    </div>
                   <% end %>
-                  <p></p>
-                  <button type="button" class="btn btn-warning"><%= link_to 'See more...', user_booking_path(user_id: @client.bookings.last.user_id, id: @client.bookings.last.id), class: "see-more" %></button>
-                </div>
+                <% end %>
+                <p></p>
+                <button type="button" class="btn btn-warning"><%= link_to 'See more...', user_booking_path(user_id: @client.bookings.last.user_id, id: @client.bookings.last.id), class: "see-more" %></button>
               </div>
             </div>
           </div>
-          <%# END BOOKING CARD %>
-          <%# START NOTES%>
-          <div class="">
-
-            <div class="card-product">
-              <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" />
-              <div class="card-product-infos">
-                <h2>Product name</h2>
-                <p>Product description with <strong>relevant info</strong> only.</p>
-              </div>
+        </div>
+        <%# END BOOKING CARD %>
+        <%# START NOTES%>
+        <div class="">
+          <div class="card-notes">
+            <div class="card-product-infos">
+              <h2>NOTES</h2>
+              <p><strong>8/20/2024</strong> - <%= @client.name %> wants to work on pages 20-23 in the textbook.</p>
+              <p><strong>8/09/2024</strong>  - Make a lesson 4 test for <%= @client.name %> before next Tuesday.</p>
+              <p><strong>7/15/2024</strong>  - <%= @client.name %> wants to practice her pronunciation for lesson 3 vocab.</p>
             </div>
           </div>
-          <%# END NOTES%>
-
+        </div>
+        <%# END NOTES%>
         <%# START PAYMENTS%>
-        <div class="col-12 col-lg-8">
-
-          <div class="card-product">
-            <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" />
+        <div class="col-12 col-lg-8 flex-grow-1">
+          <div class="card-product flex-grow-1 w-100 h-100">
             <div class="card-product-infos">
               <h2>PAYMENT</h2>
-              <p>Product description with <strong>relevant info</strong> only.</p>
+              <br>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Payment Date</th>
+                      <th scope="col">Payment Method</th>
+                      <th scope="col">Payment Amount</th>
+                      <th scope="col">Payment Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>August 20, 2024</td>
+                      <td>PayPay</td>
+                      <td>¥6000</td>
+                      <td>PAID</td>
+                    </tr>
+                    <tr>
+                      <td>August 09, 2024</td>
+                      <td>PayPay</td>
+                      <td>¥6000</td>
+                      <td>PAID</td>
+                    </tr>
+                    <tr>
+                      <td>July 15, 2024</td>
+                      <td>PayPay</td>
+                      <td>¥6000</td>
+                      <td>PAID</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
