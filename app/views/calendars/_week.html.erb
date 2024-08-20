@@ -1,88 +1,102 @@
 <div class="weekly-calendar">
-<%# Display of week name %>
-<h2 class="dash-h2"><%= Date::MONTHNAMES[@date.month] %> <%= @date.year %></h2>
-<%# Links to next/previous week%>
+  <%# Display of the current month's name and year %>
+  <h2 class="dash-h2">
+    <%= Date::MONTHNAMES[@date.month] %> <%= @date.year %>
+  </h2>
+
+  <%# Links to navigate to the previous, current, or next week %>
   <div class="d-flex justify-content-around calander-weeks-links">
     <%= link_to "< Previous Week", user_calendars_week_path(user_id: @user.id, date: (@date - 1.week).to_s),
-            data: { action: "click->weekly-calendar#change" } %>
+                data: { action: "click->weekly-calendar#change" } %>
     <%= link_to "This Week", user_calendars_week_path(user_id: @user.id, date: Date.today.to_s),
-            data: { action: "click->weekly-calendar#change" }  %>
+                data: { action: "click->weekly-calendar#change" } %>
     <%= link_to "Next Week >", user_calendars_week_path(user_id: @user.id, date: (@date + 1.week).to_s),
-            data: { action: "click->weekly-calendar#change" }  %>
-</div>
-<%# Calendar container %>
-<div class="container">
-<% days_of_week = @date.all_week.to_a %>
-<%# These are the days of the week being displayed in it's own row%>
-  <table class="table table-bordered">
-    <%# Table Header: Days of the Week %>
-    <thead>
-      <tr>
-        <% days_of_week.each do |day| %>
-            <%# Days of the Week code %>
-          <th class="table-head text-center p-2">
-            <b><%= day.strftime('%a') %></b><br>
-            <b><%= day_num_ender(day.day) %></b>
-          </th>
-        <% end %>
-      </tr>
-    </thead>
-    <%# Table Body: Days of the Week %>
-    <tbody>
+                data: { action: "click->weekly-calendar#change" } %>
+  </div>
+
+  <%# Container for the calendar table %>
+  <div class="container">
+    <%# Get the dates for the entire week %>
+    <% days_of_week = @date.all_week.to_a %>
+
+    <table class="table table-bordered">
+      <%# Table Header: Displays the days of the week %>
+      <thead>
         <tr>
+          <% days_of_week.each do |day| %>
+            <th class="table-head text-center p-2">
+              <b><%= day.strftime('%a') %></b><br>
+              <b><%= day_num_ender(day.day) %></b>
+            </th>
+          <% end %>
+        </tr>
+      </thead>
+
+      <%# Table Body: Displays the calendar grid for the week %>
+      <tbody>
+        <tr>
+          <%# Iterate over each week in the days_of_week array %>
           <% days_of_week.each_slice(7) do |week| %>
             <% week.each do |day| %>
-                <%# today highlighter is the today highlighter and greyed out is the days before the first %>
-              <td class="text-center p-2 <%= today_highlighter(day) %> ">
-
+              <td class="text-center p-2 <%= today_highlighter(day) %>">
+                <%# Add availabilities button  %>
+                <div class="a+-btn+container">
+                  <%= link_to "A+", new_user_availability_path(@user), class: "a-availabilities-btn",
+                data: { action: "click->dashboard-forms#availabilitiesFormToggle" } %>
+                </div>
+                <%# Display availabilities for the current day %>
                 <% @user.availabilities.where(start_time: day.all_day).each do |availability| %>
                   <div class="availability-div bg-info">
                     <p><strong>Availability:</strong> <%= availability.start_time.strftime("%I:%M %p") %></p>
-
+                    <%# Display bookings for the current availability %>
                     <% @bookings.where(start_time: availability.start_time..availability.end_time).each do |booking| %>
-
-                    <%# Start of card. %>
-                    <div class="d-flex justify-content-center">
-<div class="card bg-light mb-3 week-card" style="max-width: 18rem;">
-<div class="card-header"><p><i class="fa-solid fa-clock"></i>
-                          <%= booking.start_time.strftime("%I:%M%p") %> -
-                          <%= booking.end_time.strftime("%I:%M%p") %> </div>
-<div class="card-body">
-<h5 class="card-title"><i class="fa-solid fa-user"></i> w/ <strong><%= booking.client.name %></strong></h5>
-
-<p class="card-text">
-                          <%= booking.status.capitalize %>
-                          </p>
-                        <% if booking.user == current_user %>
-                          <% if booking.status == "pending" %>
-                            <div>
-                            <%= link_to 'Accept', accept_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-success" %>
-                              <%= link_to 'Decline', decline_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-danger" %>
-                            </div>
-                          <% end %>
-                        <% end %>
-                        <p></p>
-                                                  <button type="button" class="btn btn-warning"><%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id), class: "see-more" %></button>
-
-  </div>
-</div>
-</div>
-<%# END OF CARD %>
+                      <div class="d-flex justify-content-center">
+                        <div class="card bg-light mb-3 week-card" style="max-width: 18rem;">
+                          <div class="card-header">
+                            <p>
+                              <i class="fa-solid fa-clock"></i>
+                              <%= booking.start_time.strftime("%I:%M%p") %> -
+                              <%= booking.end_time.strftime("%I:%M%p") %>
+                            </p>
+                          </div>
+                          <div class="card-body">
+                            <h5 class="card-title">
+                              <i class="fa-solid fa-user"></i> w/ <strong><%= booking.client.name %></strong>
+                            </h5>
+                            <p class="card-text">
+                              <%= booking.status.capitalize %>
+                            </p>
+                            <% if booking.user == current_user %>
+                              <% if booking.status == "pending" %>
+                                <div>
+                                  <%= link_to 'Accept', accept_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-success" %>
+                                  <%= link_to 'Decline', decline_user_booking_path(user_id: booking.user_id, id: booking.id), class: "btn btn-danger" %>
+                                </div>
+                              <% end %>
+                            <% end %>
+                            <p></p>
+                            <button type="button" class="btn btn-warning">
+                              <%= link_to 'See more...', user_booking_path(user_id: booking.user_id, id: booking.id), class: "see-more" %>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     <% end %>
                     <p><%= availability.end_time.strftime("%I:%M %p") %></p>
                   </div>
                 <% end %>
               </td>
             <% end %>
-          <%# Fill in any missing days in the last row with empty cells %>
-          <% if week.size < 7 %>
-            <% (7 - week.size).times do %>
-              <td class="text-center p-2"></td>
+
+            <%# Fill in any missing days in the last row with empty cells %>
+            <% if week.size < 7 %>
+              <% (7 - week.size).times do %>
+                <td class="text-center p-2"></td>
+              <% end %>
             <% end %>
           <% end %>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -1,17 +1,18 @@
-<div class="banner">
-  <h1>Join the team</h1>
-  <div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="..." alt="Card image cap">
-    <div class="card-body">
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    </div>
+<div class="banner-f">
+  <%= image_tag "carousel/banner-l.jpg", alt: "slide3 img", class: "banner-img" %>
+  <div class="banner-title">
+    <h1>The Best Website for Managing Your Schedules</h1>
   </div>
 </div>
 
+
+<div class="title-row">
+  <h1>All important <span class="f-title"><b>features</b></span> in one website</h1>
+</div>
 <div class="row-container">
   <div class="orange-section" id="orangeSection">
-    <h2>Connect to your students is effortless</h2>
-    <p>Make your bookings through line</p>
+    <h2>Connect to your students effortlessly</h2>
+    <p>Make your bookings through Lingua Link</p>
     <%= image_tag "home/line1.png", alt: "Line img", class: "line-img" %>
   </div>
 
@@ -30,15 +31,38 @@
     </div>
 
     <div class="yellow-section" id="yellowSection">
-      <h2>users</h2>
-      <p>each users </p>
+      <h2>Translation</h2>
+      <p>Your messages are automatically translated to your language </p>
+      <%= image_tag "messages.png", alt: "msg img", class: "msg-img" %>
     </div>
   </div>
 </div>
 
-<div class="white-section" id="whiteSection">
+<div class="banner">
+  <h1>Join the team</h1>
+  <div class="card-container">
+
+  <div class="card" style="width: 18rem;">
+    <%= image_tag "profile/profile2.jpg", alt: "profile img", class: "profile-img" %>
+    <div class="card-body">
+      <p class="card-text">Alexandra</p>
+    </div>
+  </div>
+  <div class="card" style="width: 18rem;">
+    <%= image_tag "profile/profile3.jpg", alt: "profile img", class: "profile-img" %>
+    <div class="card-body">
+      <p class="card-text">Marie</p>
+    </div>
+  </div>
+  <div class="card" style="width: 18rem;">
+    <%= image_tag "profile/profile1.jpg", alt: "profile img", class: "profile-img" %>
+    <div class="card-body">
+      <p class="card-text">Taylor</p>
+    </div>
+  </div>
+
+  </div>
   <div class="join-us-content">
-    <h2><b>JOIN US!</b></h2>
     <%= link_to new_user_registration_path, class: 'cssbuttons-io-button' do %>
       SIGN UP
       <div class="icon">

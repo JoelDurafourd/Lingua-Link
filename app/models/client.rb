@@ -4,4 +4,5 @@ class Client < ApplicationRecord
   # t.string "name"
 
   has_many :bookings, dependent: :destroy
+  has_many :notes, dependent: :destroy
 end

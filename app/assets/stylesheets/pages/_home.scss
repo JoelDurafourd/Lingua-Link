@@ -1,7 +1,7 @@
 .banner {
   position: relative;
   text-align: center;
-  background-color: #59c2ff;
+  background-color: #ffe2ac;
   margin: 10px;
   padding: 40px;
   border-radius: 20px;
@@ -26,8 +26,110 @@
     margin-top: 20px;
   }
 
-  .card {
-    color: #faf8f6;
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+
+    .card {
+      flex: 0 0 18rem;
+      background-color: #faf8f6;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
+
+      .card-img-top {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+
+      .card-body {
+        padding: 15px;
+      }
+    }
+  }
+
+  .join-us-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+
+    h2 {
+      margin: 10px 0;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    .cssbuttons-io-button {
+      background: #ffbd44;
+      color: white;
+      font-family: inherit;
+      padding: 0.35em;
+      padding-left: 1.2em;
+      font-size: 17px;
+      font-weight: 500;
+      border-radius: 0.9em;
+      border: none;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      box-shadow: inset 0 0 1.6em -0.6em #fcac18;
+      overflow: hidden;
+      position: relative;
+      height: 2.8em;
+      padding-right: 3.3em;
+      cursor: pointer;
+
+      .icon {
+        background: white;
+        margin-left: 1em;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.2em;
+        width: 2.2em;
+        border-radius: 0.7em;
+        box-shadow: 0.1em 0.1em 0.6em 0.2em #fdb632;
+        right: 0.3em;
+        transition: all 0.3s;
+      }
+
+      .icon svg {
+        width: 1.1em;
+        transition: transform 0.3s;
+        color: #f8af28;
+      }
+
+      &:hover .icon {
+        width: calc(100% - 0.6em);
+      }
+
+      &:hover .icon svg {
+        transform: translateX(0.1em);
+      }
+
+      &:active .icon {
+        transform: scale(0.95);
+      }
+    }
+  }
+}
+
+
+.title-row {
+  padding-top: 40px;
+  padding-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  & .f-title{
+    color: #fc1e1e;
   }
 }
 
@@ -63,6 +165,7 @@
   h2 {
     font-size: 2rem;
     margin: 0;
+    color: #73580d;
   }
 
   p {
@@ -90,6 +193,14 @@
   p {
     font-size: 1.2rem;
   }
+
+
+
+}
+
+.yellow-section .msg-img {
+  width: 40%;
+  height: 72%;
 }
 
 .red-section {
@@ -130,17 +241,18 @@
 }
 
 .yellow-section {
-  background-color: #ffae00;
+  background-color: #faab36;
   flex: 1;
 }
 
+.yellow-section h2{
+  color: #e54787;
+}
+
 .white-section {
-  background-color: #faf8f6;
   text-align: center;
   color: #ffbd44;
   padding: 40px;
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   margin: 20px;
 
   .join-us-content {
@@ -251,4 +363,47 @@
   font-size: 25px;
   font-weight: bold;
   text-align: center;
+}
+
+.banner-f {
+  position: relative;
+  text-align: center;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+  .banner-img {
+    width: 100%;
+    height: 500px;
+    border-radius: 20px;
+  }
+
+  .banner-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    background-color: rgba(255, 153, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 10px;
+
+    h1 {
+      font-size: 70px;
+      font-weight: bold;
+      margin: 0;
+    }
+  }
+}
+
+.title-row {
+  padding-top: 40px;
+  padding-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+  & .f-title {
+    color: #fc1e1e;
+  }
 }

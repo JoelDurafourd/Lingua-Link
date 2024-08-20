@@ -14,21 +14,34 @@ class BookingsController < ApplicationController
   end
 
   def new
-    # creates a new booking
-    @booking = Booking.new(user: current_user)
     @user = current_user
+    @booking = Booking.new
     authorize @booking
   end
 
   def create
-    @booking = Booking.new(booking_params.merge(user: current_user))
-    @user = current_user
+    @user = current_user # Ensure @user is set
+    # Extract the date and time parameters
+    date_string = params[:booking][:date]
+    start_hour = params[:booking][:start_time_hour].to_i
+    start_minute = params[:booking][:start_time_minute].to_i
+    end_hour = params[:booking][:end_time_hour].to_i
+    end_minute = params[:booking][:end_time_minute].to_i
+
+    # Convert the date string to a Date object
+    date = Date.parse(date_string)
+
+    # Create Time objects for start_time and end_time in the application's time zone
+    start_time = Time.zone.local(date.year, date.month, date.day, start_hour, start_minute)
+    end_time = Time.zone.local(date.year, date.month, date.day, end_hour, end_minute)
+
+    @booking = Booking.new(booking_params.merge(user: current_user, start_time: start_time, end_time: end_time))
 
     authorize @booking
 
     if available_for_booking?(@booking)
       if @booking.save
-        redirect_to dashboard_path(@user), notice: 'Booking successfully created!'
+        redirect_to dashboard_path(current_user), notice: 'Booking successfully created!'
       else
         render :new, status: :unprocessable_entity
       end
@@ -38,7 +51,7 @@ class BookingsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-
+  
   def edit
     # find the booking to edit
     @booking = Booking.find(params[:id])
@@ -103,8 +116,6 @@ class BookingsController < ApplicationController
 
   private
 
-  private
-
   def available_for_booking?(booking)
     # Fetch availability for the current user
     availabilities = Availability.where(user: booking.user)
@@ -126,8 +137,7 @@ class BookingsController < ApplicationController
   end
 
   def booking_params
-    # these are strong params or security params, it makes sure only these attributes are changed. Any edits to a model has to be modified here also.
-    params.require(:booking).permit(:start_time, :end_time, :client_id, :status)
+    params.require(:booking).permit(:title, :description, :client_id)
   end
 end
 # t.datetime "start_time"
