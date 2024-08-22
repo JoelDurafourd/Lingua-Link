@@ -18,7 +18,7 @@
   flex: 1;
 }
 
-/* Center the title */
+
 .booking-title-container {
   text-align: center;
   margin-bottom: 10px;
@@ -51,7 +51,6 @@
   text-decoration: underline;
 }
 
-/* Description and Times styling */
 .booking-description {
   font-size: 16px;
   color: #666666;
@@ -71,7 +70,6 @@
   margin-bottom: 20px;
 }
 
-/* Center the action buttons */
 .booking-actions-container {
   display: flex;
   justify-content: center;
@@ -110,6 +108,7 @@
   color: orange;
   border-color: orange;
   border: orange solid 1px;
+  border-radius: 30px;
   font-weight: bold;
   padding: 10px 20px;
   font-size: 1.1em;
