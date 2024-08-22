@@ -3,6 +3,7 @@ class UsersController < ApplicationController
     # references the user in the params, NOT NECESSARILY THE CURRENT USER
     # current user will be referenced by current_user, not @user
     @users = User.all
+    @users = policy_scope(User)
   end
 
   def show
