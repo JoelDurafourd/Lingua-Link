@@ -14,26 +14,26 @@
   <%# Navigation links for the user dashboard %>
   <div>
     <%# Link to the user's profile page %>
-    <%= link_to "My Profile", user_path(@user), class: "btn btn-info buttons-dash" %>
+    <%= link_to "My Profile", user_path(@user), class: "buttons-dash" %>
   </div>
 
   <div>
     <%# Link to the user's list of clients %>
-    <%= link_to "My Clients", user_clients_path(@user), class: "btn btn-info buttons-dash" %>
+    <%= link_to "My Clients", user_clients_path(@user), class: "buttons-dash" %>
   </div>
 
   <div>
     <%# Link to the chat messages page %>
-    <%= link_to "My Messages", chat_index_path, class: "btn btn-info buttons-dash" %>
+    <%= link_to "My Messages", chat_index_path, class: "buttons-dash" %>
   </div>
 
   <div>
     <%# Link to create a new booking %>
-    <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "btn btn-info buttons-dash" %>
+    <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "buttons-dash" %>
   </div>
 
   <div>
     <%# Link to set new availabilities %>
-    <%= link_to "Set Availabilities", new_user_availability_path(@user), class: "btn btn-info buttons-dash" %>
+    <%= link_to "Set Availabilities", new_user_availability_path(@user), class: "buttons-dash" %>
   </div>
 </div>
