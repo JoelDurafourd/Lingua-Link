@@ -1,0 +1,10 @@
+<%= form_with(model: [current_user, @client, @note], local: true) do |form| %>
+  <div class="field">
+    <%= form.label :text %>
+    <%= form.text_area :text, rows: 5 %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

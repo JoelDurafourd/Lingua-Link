@@ -52,6 +52,7 @@
           <div class="card-notes">
             <div class="card-product-infos">
               <h2>NOTES</h2>
+              <%= link_to 'New note', new_user_client_note_path(current_user, @client), class: "btn btn-success" %>
               <p><strong>8/20/2024</strong> - <%= @client.name %> wants to work on pages 20-23 in the textbook.</p>
               <p><strong>8/09/2024</strong>  - Make a lesson 4 test for <%= @client.name %> before next Tuesday.</p>
               <p><strong>7/15/2024</strong>  - <%= @client.name %> wants to practice her pronunciation for lesson 3 vocab.</p>
