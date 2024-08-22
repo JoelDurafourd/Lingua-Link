@@ -1,14 +1,31 @@
-<h1><%= @booking %></h1>
-    <h2>start_time <%= @booking.start_time %></h2>
-    <h2>end_time <%= @booking.end_time %></h2>
-    <h2>status <%= @booking.status %></h2>
+<div class="booking-card">
+  <div class="booking-card-left">
+    <%= link_to user_path(@booking.client) do %>
+      <%# <%= image_tag @booking.client.profile_picture_url, alt: @booking.client.name, class: "user-picture" %>
+    <% end %>
+  </div>
+  <div class="booking-card-right">
+    <div class="booking-title-container">
+      <h1 class="booking-title"><b><%= @booking.title %></b></h1>
     </div>
+    <h2 class="booking-client">
+      <b>User:</b> <%= link_to @booking.client.name, user_path(@booking.client), class: "profile-link" %>
+    </h2>
+    <p class="booking-description"><b>Description:</b> <%= @booking.description %></p>
+    <div class="booking-times">
+      <p><b>Start Time:</b> <%= @booking.start_time %></p>
+      <p><b>End Time:</b> <%= @booking.end_time %></p>
+    </div>
+    <h2 class="booking-status"><b>Status:</b> <%= @booking.status.capitalize %></h2>
 
-<% if @booking.user == current_user %>
-  <% if @booking.status == "pending" %>
-    <%= link_to 'Accept', accept_user_booking_path(user_id: @booking.user_id, id: @booking.id), class: "btn btn-success" %>
-    <%= link_to 'Decline', decline_user_booking_path(user_id: @booking.user_id, id: @booking.id), class: "btn btn-danger" %>
-  <% end %>
-<% end %>
-
-<%= link_to 'Edit', edit_user_booking_path(user_id: @booking.user_id, id: @booking.id), class: "btn btn-danger" %>
+    <div class="booking-actions-container">
+      <div class="booking-actions">
+        <% if @booking.user == current_user && @booking.status == "pending" %>
+          <%= link_to 'Accept', accept_user_booking_path(user_id: @booking.user_id, id: @booking.id), class: "btn btn-success" %>
+          <%= link_to 'Decline', decline_user_booking_path(user_id: @booking.user_id, id: @booking.id), class: "btn btn-danger" %>
+        <% end %>
+        <%= link_to 'Edit', edit_user_booking_path(user_id: @booking.user_id, id: @booking.id), class: "btn-outline-orange" %>
+      </div>
+    </div>
+  </div>
+</div>
