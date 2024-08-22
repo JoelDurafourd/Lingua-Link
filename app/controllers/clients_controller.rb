@@ -13,6 +13,7 @@ class ClientsController < ApplicationController
     @client = Client.find(params[:id])
     authorize @client
     @user = User.find(params[:user_id])
+    @note = Note.new
   end
 
   def set_client
