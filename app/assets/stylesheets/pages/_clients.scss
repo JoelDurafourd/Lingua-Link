@@ -111,3 +111,30 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 2px;
   }
+
+
+  .table.payment {
+    font-size: larger;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table.payment th, .table td {
+    padding: 8px;
+  }
+
+  .table.payment th {
+    background-color: #ffd3b2;
+    border: none;
+    color: #3f3f49;
+
+  }
+
+  .table.payment td {
+    width: 400px;
+    border-bottom: 1px solid #cecece;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    color: #5d5c6a;
+  }

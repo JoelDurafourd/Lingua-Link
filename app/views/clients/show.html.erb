@@ -52,9 +52,6 @@
           <div class="card-notes">
             <div class="card-notes-infos">
               <h2>NOTES</h2>
-              <div class="new-notes-container">
-              <%= render partial: "notes/new_form", note: @note %>
-              </div>
               <div class="displayed_notes">
               <% if @client.notes.any? %>
                 <% client_notes = @client.notes.last(3) %>
@@ -62,6 +59,9 @@
                 <p><strong><%= note.created_at.to_date %></strong> - <%= note.text %> </p>
                 <% end %>
               <% end %>
+              </div>
+                            <div class="new-notes-container">
+              <%= render partial: "notes/new_form", note: @note %>
               </div>
             </div>
           </div>
@@ -86,25 +86,25 @@
                   <tbody>
                     <tr>
                       <td>August 20, 2024</td>
-                      <td>PayPay</td>
+                      <td>Bank Transfer</td>
                       <td>¥6000</td>
                       <td>PAID</td>
                     </tr>
                     <tr>
                       <td>August 09, 2024</td>
-                      <td>PayPay</td>
+                      <td>Bank Transfer</td>
                       <td>¥6000</td>
                       <td>PAID</td>
                     </tr>
                     <tr>
                       <td>July 15, 2024</td>
-                      <td>PayPay</td>
+                      <td>Bank Transfer</td>
                       <td>¥6000</td>
                       <td>PAID</td>
                     </tr>
                     <tr>
                       <td>July 07, 2024</td>
-                      <td>PayPay</td>
+                      <td>Bank Transfer</td>
                       <td>¥6000</td>
                       <td>PAID</td>
                     </tr>
