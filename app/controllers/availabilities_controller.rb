@@ -30,36 +30,33 @@ class AvailabilitiesController < ApplicationController
     end_hour = params[:end_time_hour].to_i
     end_minute = params[:end_time_minute].to_i
 
-    # Initialize start_time and end_time with the start_date's year, month, and day
-    start_time = Time.new(start_date.year, start_date.month, start_date.day, start_hour, start_minute)
-    end_time = Time.new(start_date.year, start_date.month, start_date.day, end_hour, end_minute)
+    # Get the recurrence option
+    recurrence = params[:recurrence] || 'once'
 
-    # Initialize current_date and array to store created availabilities
-    current_date = start_date
+    # Initialize array to store created availabilities
     created_availabilities = []
 
-    while current_date <= end_date
-      # Combine current_date with start_time and end_time
-      availability_start = current_date.to_datetime.change(hour: start_time.hour, min: start_time.min)
-      availability_end = current_date.to_datetime.change(hour: end_time.hour, min: end_time.min)
+    # Function to create availability records for a specific start_date and end_date
+    create_availabilities_for_range(start_date, end_date, start_hour, start_minute, end_hour, end_minute, created_availabilities)
 
-      # Ensure availability_end is after availability_start
-      if availability_end > availability_start
-        availability = Availability.new(user: current_user, start_time: availability_start, end_time: availability_end)
-
-        # Authorize the availability record
-        authorize availability
-
-        if availability.save
-          created_availabilities << availability
-        else
-          flash[:alert] = "There was an issue saving one or more availabilities."
-          render :new and return
-        end
+    # Determine the recurrence interval
+    case recurrence
+    when 'weekly'
+      current_date = start_date + 1.week
+      while current_date <= end_date + 1.year
+        create_availabilities_for_range(start_date + (current_date - start_date).to_i.days, end_date + (current_date - start_date).to_i.days, start_hour, start_minute, end_hour, end_minute, created_availabilities)
+        current_date += 1.week
       end
 
-      # Move to the next day
-      current_date += 1.day
+    when 'monthly'
+      current_date = start_date.next_month
+      while current_date <= end_date + 1.year
+        create_availabilities_for_range(start_date.next_month(current_date.month - start_date.month), end_date.next_month(current_date.month - start_date.month), start_hour, start_minute, end_hour, end_minute, created_availabilities)
+        current_date = current_date.next_month
+      end
+
+    else
+      # 'once' or any other value; nothing more to do here since it’s already handled
     end
 
     # Redirect to the dashboard with a success notice
@@ -103,5 +100,27 @@ class AvailabilitiesController < ApplicationController
   def availability_params
     # these are strong params or security params, it makes sure only these attributes are changed. Any edits to a model has to be modified here also.
     params.require(:availability).permit(:start_time, :end_time, :client_id)
+  end
+
+  def create_availabilities_for_range(start_date, end_date, start_hour, start_minute, end_hour, end_minute, created_availabilities)
+    local_time_zone = Time.zone || 'UTC'  # Use Rails time zone if set, otherwise default to UTC
+
+    (start_date..end_date).each do |date|
+      # Convert to local time zone
+      availability_start = Time.zone.local(date.year, date.month, date.day, start_hour, start_minute)
+      availability_end = Time.zone.local(date.year, date.month, date.day, end_hour, end_minute)
+
+      if availability_end > availability_start
+        availability = Availability.new(user: current_user, start_time: availability_start, end_time: availability_end)
+        authorize availability
+
+        if availability.save
+          created_availabilities << availability
+        else
+          flash[:alert] = "There was an issue saving one or more availabilities."
+          render :new and return
+        end
+      end
+    end
   end
 end
