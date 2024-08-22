@@ -1,10 +1,10 @@
 <%= form_with(model: [current_user, @client, @note], local: true) do |form| %>
   <div class="field">
-    <%= form.label :text %>
-    <%= form.text_area :text, rows: 5 %>
+    <%# <%= form.label :text %>
+    <%= form.text_area :text, rows: 1, class: "text-area" %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-warning see-more" %>
   </div>
 <% end %>

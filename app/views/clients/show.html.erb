@@ -8,9 +8,9 @@
     <%# START USER CARD %>
     <div class="three-cards d-flex flex-row justify-content-between flex-wrap">
       <div class="">
-        <div class="card-product">
+        <div class="card-client-profile">
           <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
-          <div class="card-product-infos">
+          <div class="card-client-profile-infos">
             <h2><%= @client.name %></h2>
             <%# <h3>Nickname</h3> %>
             <p><strong>LineID:</strong> <%= @client.lineid %> </p>
@@ -27,7 +27,7 @@
               <p><i class="fa-solid fa-clock"></i>
                 <%= @client.bookings.last.start_time.strftime("%I:%M%p") %> -
                 <%= @client.bookings.last.end_time.strftime("%I:%M%p") %> </div>
-              <div class="card-body">
+              <div class="card-body text-center">
                 <h5 class="card-title"><i class="fa-solid fa-user"></i> w/ <strong><%= @client.bookings.last.client.name %></strong></h5>
                 <p class="card-text">
                   <%= @client.bookings.last.status.capitalize %>
@@ -50,11 +50,8 @@
         <%# START NOTES%>
         <div class="">
           <div class="card-notes">
-            <div class="card-product-infos">
+            <div class="card-notes-infos">
               <h2>NOTES</h2>
-              <div class="new-notes-container">
-              <%= render partial: "notes/new_form", note: @note %>
-              </div>
               <div class="displayed_notes">
               <% if @client.notes.any? %>
                 <% client_notes = @client.notes.last(3) %>
@@ -63,18 +60,21 @@
                 <% end %>
               <% end %>
               </div>
+                            <div class="new-notes-container">
+              <%= render partial: "notes/new_form", note: @note %>
+              </div>
             </div>
           </div>
         </div>
         <%# END NOTES%>
         <%# START PAYMENTS%>
         <div class="col-12 col-lg-8 flex-grow-1">
-          <div class="card-product flex-grow-1 w-100 h-100">
-            <div class="card-product-infos">
+          <div class="card-client-profile flex-grow-1 w-100 h-100">
+            <div class="card-client-profile-infos">
               <h2>PAYMENT</h2>
               <br>
               <div class="table-responsive">
-                <table class="table">
+                <table class="table payment">
                   <thead>
                     <tr>
                       <th scope="col">Payment Date</th>
@@ -86,19 +86,25 @@
                   <tbody>
                     <tr>
                       <td>August 20, 2024</td>
-                      <td>PayPay</td>
+                      <td>Bank Transfer</td>
                       <td>¥6000</td>
                       <td>PAID</td>
                     </tr>
                     <tr>
                       <td>August 09, 2024</td>
-                      <td>PayPay</td>
+                      <td>Bank Transfer</td>
                       <td>¥6000</td>
                       <td>PAID</td>
                     </tr>
                     <tr>
                       <td>July 15, 2024</td>
-                      <td>PayPay</td>
+                      <td>Bank Transfer</td>
+                      <td>¥6000</td>
+                      <td>PAID</td>
+                    </tr>
+                    <tr>
+                      <td>July 07, 2024</td>
+                      <td>Bank Transfer</td>
                       <td>¥6000</td>
                       <td>PAID</td>
                     </tr>
