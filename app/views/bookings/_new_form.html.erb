@@ -1,7 +1,7 @@
 <div class="new-bookings-form">
   <h1 class="form-title"><b>New Booking</b></h1>
 
-  <%= form_with(model: @booking, url: user_bookings_path(current_user), local: true, url: user_bookings_path(@user), html: { class: 'availability-form' }) do |form| %>
+  <%= form_with(model: @booking, url: user_bookings_path(current_user), local: true, html: { class: 'availability-form' }) do |form| %>
 
     <div class="form-field">
       <%= form.label :title, "Title", class: 'form-label' %>

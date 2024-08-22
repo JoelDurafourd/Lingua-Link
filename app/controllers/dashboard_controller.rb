@@ -10,6 +10,7 @@ class DashboardController < ApplicationController
     @day_names = day_names
     @prev_month = @date - 1.month
     @prev_week = @date - 1.week
+    @booking = Booking.new
     @bookings = Booking.where(user_id: @user.id, start_time: @date.all_month)
   end
 
