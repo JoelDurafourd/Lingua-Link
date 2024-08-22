@@ -1,4 +1,4 @@
-.card-product {
+.card-client-profile {
   overflow: hidden;
   height: 200px;
   width: 450px;
@@ -9,21 +9,21 @@
   border-radius: 20px;
 }
 
-.card-product img {
+.card-client-profile img {
   height: 100%;
   width: 120px;
   object-fit: cover;
   padding-left: 10px;
 }
 
-.card-product h2 {
+.card-client-profile h2 {
   color: #fe6456;
   font-size: 28px;
   font-weight: bold;
   margin: 0;
 }
 
-.card-product h3 {
+.card-client-profile h3 {
   font-weight: bolder;
   font-style: italic;
   font-size: 22px;
@@ -33,7 +33,7 @@
   margin-top: 8px;
 }
 
-.card-product p {
+.card-client-profile p {
   font-size: 20px;
   line-height: 1.4;
   opacity: .7;
@@ -41,7 +41,7 @@
   margin-top: 8px;
 }
 
-.card-product .card-product-infos {
+.card-client-profile .card-client-profile-infos {
   padding: 16px;
 }
 
@@ -95,7 +95,7 @@
   margin-top: 8px;
 }
 
-.card-notes .card-product-infos {
+.card-notes .card-notes-infos {
   padding: 16px;
 }
 
@@ -110,4 +110,31 @@
   // display:grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 2px;
+  }
+
+
+  .table.payment {
+    font-size: larger;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table.payment th, .table td {
+    padding: 8px;
+  }
+
+  .table.payment th {
+    background-color: #ffd3b2;
+    border: none;
+    color: #3f3f49;
+
+  }
+
+  .table.payment td {
+    width: 400px;
+    border-bottom: 1px solid #cecece;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    color: #5d5c6a;
   }
