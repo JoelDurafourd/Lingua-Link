@@ -48,6 +48,10 @@
                 <% @user.availabilities.where(start_time: day.all_day).each do |availability| %>
                   <div class="availability-div bg-info">
                     <p><strong>Availability:</strong> <%= availability.start_time.strftime("%I:%M %p") %></p>
+                    <div class="b+-btn+container">
+                      <%= link_to "B+", new_user_booking_path(@user), class: "a-bookings-btn",
+                    data: { action: "click->dashboard-forms#bookingsFormToggle" } %>
+                </div>
                     <%# Display bookings for the current availability %>
                     <% @bookings.where(start_time: availability.start_time..availability.end_time).each do |booking| %>
                       <div class="d-flex justify-content-center">

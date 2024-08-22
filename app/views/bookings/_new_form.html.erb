@@ -1,0 +1,52 @@
+<div class="new-bookings-form">
+  <h1 class="form-title"><b>New Booking</b></h1>
+
+  <%= form_with(model: @booking, url: user_bookings_path(current_user), local: true, html: { class: 'availability-form' }) do |form| %>
+
+    <div class="form-field">
+      <%= form.label :title, "Title", class: 'form-label' %>
+      <%= form.text_field :title, required: true, class: 'form-input' %>
+    </div>
+
+    <div class="form-field">
+      <%= form.label :description, "Description", class: 'form-label' %>
+      <%= form.text_area :description, class: 'form-input' %>
+    </div>
+    <div class="form-field">
+      <%= form.label :date, "Date", class: 'form-label' %>
+      <%= form.date_field :date, class: 'form-input' %>
+    </div>
+
+    <div class="form-field">
+      <%= form.label :start_time_hour, "Start Time Hour", class: 'form-label' %>
+      <%= form.select :start_time_hour, options_for_select((0..23).map { |h| ["%02d" % h, h] }), {}, class: 'form-input' %>
+    </div>
+
+    <div class="form-field">
+      <%= form.label :start_time_minute, "Start Time Minute", class: 'form-label' %>
+      <%= form.select :start_time_minute, options_for_select((0..3).map { |m| ["%02d" % (m * 15), m * 15] }), {}, class: 'form-input' %>
+    </div>
+
+    <div class="form-field">
+      <%= form.label :end_time_hour, "End Time Hour", class: 'form-label' %>
+      <%= form.select :end_time_hour, options_for_select((0..23).map { |h| ["%02d" % h, h] }), {}, class: 'form-input' %>
+    </div>
+
+    <div class="form-field">
+      <%= form.label :end_time_minute, "End Time Minute", class: 'form-label' %>
+      <%= form.select :end_time_minute, options_for_select((0..3).map { |m| ["%02d" % (m * 15), m * 15] }), {}, class: 'form-input' %>
+    </div>
+
+    <div class="form-field">
+      <%= form.label :client_id, "Client", class: 'form-label' %>
+      <%= form.collection_select :client_id, Client.all, :id, :name, { prompt: 'Select a client' }, { class: 'form-input' } %>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit 'Create Booking', class: 'form-submit' %>
+    </div>
+
+  <% end %>
+
+  <%= link_to "Back to dashboard", dashboard_path(@user), class: "nav-button col-12" %>
+</div>

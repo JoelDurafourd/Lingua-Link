@@ -14,8 +14,12 @@
         </div>
         <div id="calendar-render-space" class="calendar-render" data-weekly-calendar-target="calendarRenderSpace">
           <%= render partial: "calendars/week" %>
+        </div>
         <div class="availabilities-render-space d-none" data-dashboard-forms-target="availabilitiesForm">
-        <%= render partial: "availabilities/new_form", availability: @availability %>
+          <%= render partial: "availabilities/new_form", availability: @availability %>
+        </div>
+        <div class="bookings-render-space d-none" data-dashboard-forms-target="bookingsForm">
+          <%= render partial: "bookings/new_form", booking: @booking %>
         </div>
         <h2 class="dash-h2">Most Recent Client Message</h2>
               <div class="d-flex justify-content-center">
