@@ -1,0 +1,130 @@
+.booking-card {
+  background-color: #ffffff;
+  border-radius: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.booking-card-left {
+  margin-right: 20px;
+}
+
+.booking-card-right {
+  flex: 1;
+}
+
+/* Center the title */
+.booking-title-container {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.user-picture {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.booking-title {
+  font-size: 35px;
+  color: #ff990a;
+}
+
+.booking-client {
+  font-size: 18px;
+  color: #555555;
+  margin-bottom: 10px;
+}
+
+.profile-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.profile-link:hover {
+  text-decoration: underline;
+}
+
+/* Description and Times styling */
+.booking-description {
+  font-size: 16px;
+  color: #666666;
+  margin-bottom: 10px;
+}
+
+.booking-times p {
+  font-size: 14px;
+  color: #777777;
+  margin-bottom: 5px;
+}
+
+.booking-status {
+  font-size: 18px;
+  font-weight: bold;
+  color: #008080;
+  margin-bottom: 20px;
+}
+
+/* Center the action buttons */
+.booking-actions-container {
+  display: flex;
+  justify-content: center;
+}
+
+.booking-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.btn-success {
+  background-color: #28a745;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.btn-primary {
+  background-color: #007bff;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-outline-orange {
+  color: orange;
+  border-color: orange;
+  border: orange solid 1px;
+  font-weight: bold;
+  padding: 10px 20px;
+  font-size: 1.1em;
+
+  &:hover {
+    color: white;
+    background-color: orange;
+    border-color: orange;
+  }
+
+  &:focus,
+  &:active {
+    color: white;
+    background-color: orange;
+    border-color: orange;
+    box-shadow: 0 0 0 0.2rem rgba(255, 165, 0, 0.5);
+  }
+}
