@@ -2,10 +2,12 @@
   <div class="row sidebar-container" data-controller="dashboard-forms">
       <%= render partial: "dashboard/sidebar" %>
     <div class="col-10">
-      <div class="alert alert-warning alert-dismissible fade show row col-3" role="alert">
-        Welcome to your dashboard, <%= @user.email %>!
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <% if @show_welcome_message %>
+  <div class="alert alert-warning alert-dismissible fade show row col-3" role="alert">
+    Welcome to your dashboard, <%= @user.email %>!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
+<% end %>
       <h2 class="dash2-h2">My Dashboard</h2>
         <div>
         <%= link_to "View My Monthly Calendar", user_calendars_month_path(@user), class: "btn btn-info rounded-pill buttons-dash-month-view" %>

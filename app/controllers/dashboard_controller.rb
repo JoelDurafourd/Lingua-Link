@@ -1,4 +1,5 @@
 class DashboardController < ApplicationController
+  before_action :show_welcome_message, only: %i[show week]
   def day_names
     ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
   end
@@ -20,5 +21,10 @@ class DashboardController < ApplicationController
     @date = Date.parse(params.fetch(:date, Date.today.to_s))
     @prev_week = @date - 1.week
     @bookings = Booking.where(user_id: @user.id, start_time: @date.all_week)
+  end
+
+  def show_welcome_message
+    @show_welcome_message = !session[:welcome_message_shown]
+    session[:welcome_message_shown] = true if @show_welcome_message
   end
 end
