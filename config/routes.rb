@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   resources :chat
 
-  resources :users, only: [:show] do
+  resources :users, only: [:show, :index] do
     get "calendars/month", to: "calendars#month"
     get "calendars/week", to: "calendars#week"
     resources :availabilities
