@@ -3,7 +3,7 @@
   <div style="width: 25%; padding: 10px; border-right: 1px solid #ccc;">
     <h2>Your Students</h2>
     <ul>
-      <% Client.all.each do |client| %>
+      <% current_user.clients.each do |client| %>
         <li>
           <%= link_to client.name, chat_path(id: client.id) %>
         </li>

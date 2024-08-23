@@ -38,8 +38,9 @@ class ChatController < ApplicationController
       key: ENV.fetch("GOOGLE_TRANSLATE_API_KEY")
     )
 
-    translation = translate.translate(message_text, to: "ja")
-    translated_message = translation.text
+    client_message = message_text
+
+    client_message = translate.translate(message_text, to: client_obj.language).text if client_obj.enable_translations?
 
     # Save the message to the database
     Message.create!(
@@ -52,7 +53,7 @@ class ChatController < ApplicationController
 
     line_message = {
       type: "text",
-      text: "#{teacher_first_name}: #{translated_message}"
+      text: "#{teacher_first_name}: #{client_message}"
     }
 
     @line_service.push_message(client_line_id, line_message)
