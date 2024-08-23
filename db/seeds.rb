@@ -20,7 +20,7 @@ Client.destroy_all
 
 
 joel = User.create!(email: "joel.durafourd@gmail.com", password: "123456", first_name: "Joel", last_name: "Durafourd")
-joel.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1723853860/production/fhhqf66coc61478cvs7743b4dfx2.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
+# joel.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1723853860/production/fhhqf66coc61478cvs7743b4dfx2.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
 puts "Created #{joel}!"
 
 nakia = User.create!(email: "n@mail.com", password: "123456", first_name: "Bo Wen", last_name: "Zhong")
