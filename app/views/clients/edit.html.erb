@@ -1,0 +1,19 @@
+<%= simple_form_for [@user, @client], html: { class: 'client-form' } do |f| %>
+  <div class="form-card">
+    <div class="form-group">
+      <%= f.input :lineid, label_html: { class: 'bold-label' } %>
+    </div>
+    <div class="form-group">
+      <%= f.input :phone_number, label_html: { class: 'bold-label' } %>
+    </div>
+    <div class="form-group">
+      <%= f.input :name, label_html: { class: 'bold-label' } %>
+    </div>
+    <div class="form-group">
+      <%= f.input :nickname, label_html: { class: 'bold-label' } %>
+    </div>
+    <div class="form-group">
+      <%= f.submit 'Update Client', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

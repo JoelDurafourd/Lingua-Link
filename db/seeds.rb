@@ -48,34 +48,34 @@ user5 = User.create!(email: "david.brown@email.com", password: "david123", first
 puts "Created #{user5}!"
 
 
-client1 = Client.create!(lineid: "ABC1234", phone_number: "555-0101", name: "Alice Johnson")
+client1 = Client.create!(lineid: "ABC1234", phone_number: "555-0101", name: "Alice Johnson", nickname: "AliceJ1")
 puts "Created #{client1}!"
 
-client2 = Client.create!(lineid: "XYZ5678", phone_number: "555-0102", name: "Bob Smith")
+client2 = Client.create!(lineid: "XYZ5678", phone_number: "555-0102", name: "Bob Smith", nickname: "BobS2")
 puts "Created #{client2}!"
 
-client3 = Client.create!(lineid: "LMN9101", phone_number: "555-0103", name: "Charlie Brown")
+client3 = Client.create!(lineid: "LMN9101", phone_number: "555-0103", name: "Charlie Brown", nickname: "CharlieB3")
 puts "Created #{client3}!"
 
-client4 = Client.create!(lineid: "DEF2345", phone_number: "555-0104", name: "Diana Ross")
+client4 = Client.create!(lineid: "DEF2345", phone_number: "555-0104", name: "Diana Ross", nickname: "DianaR4")
 puts "Created #{client4}!"
 
-client5 = Client.create!(lineid: "GHI6789", phone_number: "555-0105", name: "Edward White")
+client5 = Client.create!(lineid: "GHI6789", phone_number: "555-0105", name: "Edward White", nickname: "EdwardW5")
 puts "Created #{client5}!"
 
-client6 = Client.create!(lineid: "JKL0123", phone_number: "555-0106", name: "Fiona Green")
+client6 = Client.create!(lineid: "JKL0123", phone_number: "555-0106", name: "Fiona Green", nickname: "FionaG6")
 puts "Created #{client6}!"
 
-client7 = Client.create!(lineid: "MNO4567", phone_number: "555-0107", name: "George Black")
+client7 = Client.create!(lineid: "MNO4567", phone_number: "555-0107", name: "George Black", nickname: "GeorgeB7")
 puts "Created #{client7}!"
 
-client8 = Client.create!(lineid: "PQR8901", phone_number: "555-0108", name: "Hannah Blue")
+client8 = Client.create!(lineid: "PQR8901", phone_number: "555-0108", name: "Hannah Blue", nickname: "HannahB8")
 puts "Created #{client8}!"
 
-client9 = Client.create!(lineid: "STU2345", phone_number: "555-0109", name: "Ian Gray")
+client9 = Client.create!(lineid: "STU2345", phone_number: "555-0109", name: "Ian Gray", nickname: "IanG9")
 puts "Created #{client9}!"
 
-client10 = Client.create!(lineid: "VWX6789", phone_number: "555-0110", name: "Jane White")
+client10 = Client.create!(lineid: "VWX6789", phone_number: "555-0110", name: "Jane White", nickname: "JaneW10")
 puts "Created #{client10}!"
 
 start_date = Date.new(2024, 8, 19) # Monday of the week
