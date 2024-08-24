@@ -61,6 +61,16 @@
   max-width: 70px;
 }
 
+.recurrence-options {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.recurrence-label {
+  margin-left: 0.5rem;
+}
+
 .form-actions {
   text-align: center;
 }
