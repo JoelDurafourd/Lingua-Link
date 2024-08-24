@@ -1,7 +1,7 @@
 .card-client-profile {
   overflow: hidden;
   height: 200px;
-  width: 450px;
+  width: 475px;
   background: white;
   box-shadow: 0 0 6px rgba(0,0,0,0.3);
   display: flex;
@@ -12,6 +12,7 @@
 .card-client-profile img {
   height: 100%;
   width: 120px;
+  height: 120px;
   object-fit: cover;
   padding-left: 10px;
 }
@@ -48,7 +49,7 @@
 .card-notes {
   overflow: hidden;
   height: 200px;
-  width: 840px;
+  width: 815px;
   background: white;
   box-shadow: 0 0 6px rgba(0,0,0,0.3);
   display: flex;
