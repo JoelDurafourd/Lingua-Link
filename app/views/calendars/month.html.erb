@@ -1,2 +1,9 @@
-<%= @user.email %>'s calendar
-<%= render partial: "month" %>
+<div class="d-flex justify-content-between gap-2" data-controller="weekly-calendar">
+  <div class="sidebar-container">
+    <%= render partial: "dashboard/sidebar" %>
+  </div>
+  <%# END SIDEBAR %>
+  <div class="col-10">
+    <h2 class="dash2-h2"><%= @user.email %>'s calendar</h2>
+    <%= render partial: "month" %>
+  </div>
