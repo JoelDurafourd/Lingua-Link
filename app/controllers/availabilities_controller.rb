@@ -17,6 +17,10 @@ class AvailabilitiesController < ApplicationController
   end
 
   def create
+    @availability = Availability.new(user: current_user, start_time: params[:start_time], end_time: params[:end_time])
+
+    authorize @availability
+
     start_date = Date.parse(params[:start_time])
     end_date = Date.parse(params[:end_time])
     start_hour = params[:start_time_hour].to_i
