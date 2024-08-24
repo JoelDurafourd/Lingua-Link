@@ -9,7 +9,11 @@
     <div class="three-cards d-flex flex-row justify-content-between flex-wrap">
       <div class="">
         <div class="card-client-profile">
-          <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
+<% if @client.photo.present? %>
+                <%= cl_image_tag(@client.photo.key, class: "avatar img-fluid rounded-circle", alt: "User Avatar" ) %>
+              <% else %>
+                <%= image_tag("default_avatar.png", class: "avatar img-fluid rounded-circle", alt: "Default Avatar") %>
+              <% end %>
           <div class="card-client-profile-infos">
             <h2><%= @client.name %></h2>
             <%# <h3>Nickname</h3> %>
@@ -56,15 +60,15 @@
             <div class="card-notes-infos">
               <h2>NOTES</h2>
               <div class="displayed_notes">
-              <% if @client.notes.any? %>
-                <% client_notes = @client.notes.last(3) %>
-                <% client_notes.each do |note| %>
-                <p><strong><%= note.created_at.to_date %></strong> - <%= note.text %> </p>
+                <% if @client.notes.any? %>
+                  <% @client_notes = @client.notes.order(created_at: :desc).first(3) %>
+                  <% @client_notes.each do |note| %>
+                    <p><strong><%= note.created_at.to_date %></strong> - <%= note.text %> </p>
+                  <% end %>
                 <% end %>
-              <% end %>
               </div>
-                            <div class="new-notes-container">
-              <%= render partial: "notes/new_form", note: @note %>
+              <div class="new-notes-container">
+                <%= render partial: "notes/new_form", note: @note %>
               </div>
             </div>
           </div>

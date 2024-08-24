@@ -1,4 +1,6 @@
 class ClientsController < ApplicationController
+  include LineBotConcern
+
   def index
     @user = User.find(params[:user_id])
     if params[:user_id]
@@ -14,6 +16,8 @@ class ClientsController < ApplicationController
     authorize @client
     @user = User.find(params[:user_id])
     @note = Note.new
+    @client_notes = @client.notes.order(created_at: :desc).first(3)
+    # @line_client = @line_service.get_profile(@client.lineid)
   end
 
   def edit
@@ -39,9 +43,9 @@ class ClientsController < ApplicationController
     @user = User.find(params[:user_id])
   end
 
-  def set_client
-    @client = @user.clients.find(params[:id])
-  end
+  # def set_client
+  #   @client = @user.clients.find(params[:id])
+  # end
 
   def client_params
     params.require(:client).permit(:lineid, :phone_number, :name, :nickname)

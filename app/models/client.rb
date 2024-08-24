@@ -6,6 +6,8 @@ class Client < ApplicationRecord
 
   has_many :bookings, dependent: :destroy
   has_many :notes, dependent: :destroy
+  
+  has_one_attached :photo
 
   scope :with_translations_enabled, -> { where(enable_translations: true) }
 
