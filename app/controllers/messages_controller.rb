@@ -4,7 +4,7 @@ require 'line/bot' # gem 'line-bot-api'
 USER_IDS_FILE = Rails.root.join('storage', 'user_ids.txt') unless defined?(USER_IDS_FILE)
 
 class MessagesController < ApplicationController
-  include LineBotConcern
+  before_action :set_client
 
   # Skip CSRF protection for webhook
   skip_before_action :verify_authenticity_token, only: %i[callback update_all_users_rich_menu]
@@ -28,25 +28,16 @@ class MessagesController < ApplicationController
     end
 
     events = @line_service.parse_events_from(body)
-    process_events(events)
+    line_menu_service = LineMenuService.new(@line_service)
+
+    line_menu_service.handle_events(events)
 
     head :ok
   end
 
-  # Debug route for testing Rich Menu Update(s)
-  def update_all_users_rich_menu
-    user_ids = load_user_ids
+  private
 
-    user_ids.each do |user_id|
-      # Re-assign teachers to user. For simplicity, let's assign all teachers.
-      assigned_teacher_ids = @teachers.map { |t| t[:id] }
-
-      # Update the USERS hash with the assigned teachers
-      USERS[user_id] ||= {}
-      USERS[user_id][:teachers] = assigned_teacher_ids
-
-      update_user_rich_menu(user_id)
-    end
-    render json: { message: "Rich menu updated for all users" }, status: :ok
+  def set_client
+    @line_service = LineService.new
   end
 end
