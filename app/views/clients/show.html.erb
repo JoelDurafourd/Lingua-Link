@@ -61,7 +61,7 @@
               <h2>NOTES</h2>
               <div class="displayed_notes">
                 <% if @client.notes.any? %>
-                  <% @client_notes = @client.notes.order(created_at: :desc).first(3) %>
+                  <% @client_notes = @client.notes.order(created_at: :desc).first(5) %>
                   <% @client_notes.each do |note| %>
                     <p><strong><%= note.created_at.to_date %></strong> - <%= note.text %> </p>
                   <% end %>
