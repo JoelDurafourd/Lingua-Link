@@ -1,10 +1,10 @@
 .availability-form {
   max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
   background: #ffffff;
   border-radius: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 40px;
-
 }
 
 .form-title {
@@ -15,8 +15,26 @@
   margin-bottom: 1.5rem;
 }
 
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
 .form-field {
   margin-bottom: 1rem;
+}
+.form-field-client{
+  padding-left: 10px;
+}
+.col-md-6 {
+  flex: 1 1 50%;
+}
+
+.time-fields {
+  display: flex;
+  gap: 1rem;
+  padding-left: 10px;
 }
 
 .form-label {
@@ -40,6 +58,11 @@
   box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
 }
 
+.time-field {
+  width: 100%;
+  max-width: 70px;
+}
+
 .form-actions {
   text-align: center;
 }
@@ -58,18 +81,4 @@
 .form-submit:hover {
   background-color: #d86705;
   transform: scale(1.05);
-}
-
-.nav-button.col-12 {
-  color: #ff000000;
-  border: none;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border-radius: 30px;
-  display: block;
-  text-align: center;
-  margin: 1rem 0;
-  cursor: pointer;
-  width: 20%;
-  transition: background-color 0.3s ease, transform 0.3s ease;
 }
