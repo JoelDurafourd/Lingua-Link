@@ -17,7 +17,7 @@ class ClientsController < ApplicationController
     @user = User.find(params[:user_id])
     @note = Note.new
     @client_notes = @client.notes.order(created_at: :desc).first(3)
-    @line_client = @line_service.get_profile(@client.lineid)
+    # @line_client = @line_service.get_profile(@client.lineid)
   end
 
   def edit

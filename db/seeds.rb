@@ -49,9 +49,11 @@ puts "Created #{user5}!"
 
 
 client1 = Client.create!(lineid: "ABC1234", phone_number: "555-0101", name: "Alice Johnson", nickname: "AliceJ1")
+client3.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721389003/download_xpmy4i.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
 puts "Created #{client1}!"
 
 client2 = Client.create!(lineid: "XYZ5678", phone_number: "555-0102", name: "Bob Smith", nickname: "BobS2")
+client1.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721389003/download_xpmy4i.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
 puts "Created #{client2}!"
 
 client3 = Client.create!(lineid: "LMN9101", phone_number: "555-0103", name: "Charlie Brown", nickname: "CharlieB3")
@@ -210,3 +212,42 @@ booking10 = Booking.create!(
   description: 'Meeting with Jane White to discuss project goals.'
 )
 puts "Created #{booking10}!"
+
+
+
+
+# user2 = User.create!(email: "jane.smith@email.com", password: "password123", first_name: "Jane", last_name: "Smith", description: "Passionate about cooking and exploring new recipes.")
+# user2.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721388471/jane_smith_jf19ib.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
+# puts "Created #{user2}!"
+
+# user3 = User.create!(email: "michael.jones@email.com", password: "securepass", first_name: "Michael", last_name: "Jones", description: "Tech enthusiast and avid gamer.")
+# user3.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721389002/download_17_qasdmi.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
+# puts "Created #{user3}!"
+
+# user4 = User.create!(email: "emily.wilson@email.com", password: "p@ssw0rd", first_name: "Emily", last_name: "Wilson", description: "Fitness coach helping people achieve their goals.")
+# user4.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721389003/download_19_eeri0z.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
+# puts "Created #{user4}!"
+
+# user5 = User.create!(email: "david.brown@email.com", password: "david123", first_name: "David", last_name: "Brown", description: "Travel blogger exploring hidden gems around the world.")
+# user5.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721389001/download_13_ach1fx.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
+# puts "Created #{user5}!"
+
+# user6 = User.create!(email: "anna.johnson@email.com", password: "password456", first_name: "Anna", last_name: "Johnson", description: "Art enthusiast and painter.")
+# user6.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721389001/download_12_s3mq6f.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
+# puts "Created #{user6}!"
+
+# user7 = User.create!(email: "matthew.wilson@email.com", password: "securepassword", first_name: "Matthew", last_name: "Wilson", description: "Nature lover and hiking guide.")
+# user7.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721388991/download_10_osrm3v.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
+# puts "Created #{user7}!"
+
+# user8 = User.create!(email: "sarah.davis@email.com", password: "p@ssw0rd123", first_name: "Sarah", last_name: "Davis", description: "Yoga instructor promoting wellness.")
+# user8.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721389002/download_15_scg5fl.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
+# puts "Created #{user8}!"
+
+# user9 = User.create!(email: "peter.jackson@email.com", password: "peter123", first_name: "Peter", last_name: "Jackson", description: "Photographer capturing moments.")
+# user9.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721389002/download_14_ppqbeb.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
+# puts "Created #{user9}!"
+
+# user10 = User.create!(email: "elizabeth.moore@email.com", password: "lizzie456", first_name: "Elizabeth", last_name: "Moore", description: "History buff and tour guide.")
+# user10.photo.attach(io: URI.open(Cloudinary::Utils.cloudinary_url("https://res.cloudinary.com/dxljoz6af/image/upload/v1721388990/download_7_xu1g2a.jpg", size: '300x300', format: 'png')), filename: 'avatar.png')
+# puts "Created #{user10}!"

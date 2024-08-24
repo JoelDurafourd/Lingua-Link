@@ -9,11 +9,11 @@
     <div class="three-cards d-flex flex-row justify-content-between flex-wrap">
       <div class="">
         <div class="card-client-profile">
-          <% if @line_client[:picture_url].nil? %>
-            <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
-          <% else %>
-            <img src= "<%= @line_client[:picture_url]%>" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
-          <% end %>
+<% if @client.photo.present? %>
+                <%= cl_image_tag(@client.photo.key, class: "avatar img-fluid rounded-circle", alt: "User Avatar" ) %>
+              <% else %>
+                <%= image_tag("default_avatar.png", class: "avatar img-fluid rounded-circle", alt: "Default Avatar") %>
+              <% end %>
           <div class="card-client-profile-infos">
             <h2><%= @client.name %></h2>
             <%# <h3>Nickname</h3> %>
