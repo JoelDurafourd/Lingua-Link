@@ -43,12 +43,11 @@
                 <% if @client.bookings.last.user == current_user %>
                   <% if @client.bookings.last.status == "pending" %>
                     <div>
-                      <%= link_to 'Accept', accept_user_booking_path(user_id: @client.bookings.last.user_id, id: @client.bookings.last.id), class: "btn btn-success" %>
-                      <%= link_to 'Decline', decline_user_booking_path(user_id: @client.bookings.last.user_id, id: @client.bookings.last.id), class: "btn btn-danger" %>
+                      <%= link_to 'Accept', accept_user_booking_path(@client.bookings.last.user, @client.bookings.last), class: "btn btn-success" %>
+                      <%= link_to 'Decline', decline_user_booking_path(@client.bookings.last.user, @client.bookings.last), class: "btn btn-danger" %>
                     </div>
                   <% end %>
                 <% end %>
-                <p></p>
                 <button type="button" class="btn btn-warning"><%= link_to 'See more...', user_booking_path(user_id: @client.bookings.last.user_id, id: @client.bookings.last.id), class: "see-more" %></button>
               </div>
             </div>
