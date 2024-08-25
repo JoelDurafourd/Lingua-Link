@@ -47,65 +47,71 @@
 
 <div id="availabilityModal" class="modal">
   <div class="modal-content">
-    <span class="close">&times;</span>
-   <div class="availabilities-new-form">
-  <h1 class="form-title"><b>New Availability</b></h1>
-  <%= form_with(model: @availability, url: user_availabilities_path(current_user), local: true, html: { class: 'availability-form' }) do |form| %>
 
-    <div class="form-row">
-      <div class="col-md-6 form-field">
-        <%= form.label :start_time, "Daily Start Date", class: 'form-label' %>
-        <%= form.date_field :start_time, class: 'form-input' %>
-      </div>
-      <div class="col-md-6 form-field">
-        <%= form.label :start_time_hour, "Start Time", class: 'form-label' %>
-        <div class="time-fields">
-          <div class="form-field">
-            <%= form.select :start_time_hour, options_for_select((0..23).map { |h| ["%02d" % h, h] }), {}, class: 'form-input time-field' %>
-          </div>
-          <div class="form-field">
-            <%= form.select :start_time_minute, options_for_select((0..3).map { |m| ["%02d" % (m * 15), m * 15] }), {}, class: 'form-input time-field' %>
+
+<div class="availabilities-modal-overlay">
+  <div class="availabilities-new-form">
+    <h1 class="form-title"><b>New Availability</b></h1>
+    <%= form_with(model: @availability, url: user_availabilities_path(current_user), local: true, html: { class: 'availability-form' }) do |form| %>
+
+      <div class="form-row">
+        <div class="col-md-6 form-field">
+          <%= form.label :start_time, "Daily Start Date", class: 'form-label' %>
+          <%= form.date_field :start_time, class: 'form-input' %>
+        </div>
+        <div class="col-md-6 form-field">
+          <%= form.label :start_time_hour, "Start Time", class: 'form-label' %>
+          <div class="time-fields">
+            <div class="form-field">
+              <%= form.select :start_time_hour, options_for_select((0..23).map { |h| ["%02d" % h, h] }), {}, class: 'form-input time-field' %>
+            </div>
+            <div class="form-field">
+              <%= form.select :start_time_minute, options_for_select((0..3).map { |m| ["%02d" % (m * 15), m * 15] }), {}, class: 'form-input time-field' %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="form-row">
-      <div class="col-md-6 form-field">
-        <%= form.label :end_time, "Daily End Date", class: 'form-label' %>
-        <%= form.date_field :end_time, class: 'form-input' %>
-      </div>
-      <div class="col-md-6 form-field">
-        <%= form.label :end_time_hour, "End Time", class: 'form-label' %>
-        <div class="time-fields">
-          <div class="form-field">
-            <%= form.select :end_time_hour, options_for_select((0..23).map { |h| ["%02d" % h, h] }), {}, class: 'form-input time-field' %>
-          </div>
-          <div class="form-field">
-            <%= form.select :end_time_minute, options_for_select((0..3).map { |m| ["%02d" % (m * 15), m * 15] }), {}, class: 'form-input time-field' %>
+      <div class="form-row">
+        <div class="col-md-6 form-field">
+          <%= form.label :end_time, "Daily End Date", class: 'form-label' %>
+          <%= form.date_field :end_time, class: 'form-input' %>
+        </div>
+        <div class="col-md-6 form-field">
+          <%= form.label :end_time_hour, "End Time", class: 'form-label' %>
+          <div class="time-fields">
+            <div class="form-field">
+              <%= form.select :end_time_hour, options_for_select((0..23).map { |h| ["%02d" % h, h] }), {}, class: 'form-input time-field' %>
+            </div>
+            <div class="form-field">
+              <%= form.select :end_time_minute, options_for_select((0..3).map { |m| ["%02d" % (m * 15), m * 15] }), {}, class: 'form-input time-field' %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="form-field">
-      <%= form.label :recurrence, "Recurrence", class: 'form-label' %>
-      <div class="recurrence-options">
-        <%= form.radio_button :recurrence, 'once', checked: true, id: 'recurrence_once' %>
-        <%= form.label :recurrence_once, "Only once", class: 'recurrence-label' %>
+      <div class="form-field">
+        <%= form.label :recurrence, "Recurrence", class: 'form-label' %>
+        <div class="recurrence-options">
+          <%= form.radio_button :recurrence, 'once', checked: true, id: 'recurrence_once' %>
+          <%= form.label :recurrence_once, "Only once", class: 'recurrence-label' %>
 
-        <%= form.radio_button :recurrence, 'weekly', id: 'recurrence_weekly' %>
-        <%= form.label :recurrence_weekly, "Weekly", class: 'recurrence-label' %>
+          <%= form.radio_button :recurrence, 'weekly', id: 'recurrence_weekly' %>
+          <%= form.label :recurrence_weekly, "Weekly", class: 'recurrence-label' %>
 
-        <%= form.radio_button :recurrence, 'monthly', id: 'recurrence_monthly' %>
-        <%= form.label :recurrence_monthly, "Monthly", class: 'recurrence-label' %>
+          <%= form.radio_button :recurrence, 'monthly', id: 'recurrence_monthly' %>
+          <%= form.label :recurrence_monthly, "Monthly", class: 'recurrence-label' %>
+        </div>
       </div>
-    </div>
 
-    <div class="form-actions">
-      <%= form.submit 'Create Availability', class: 'form-submit' %>
-    </div>
-  <% end %>
+      <div class="form-actions">
+        <%= form.submit 'Create Availability', class: 'form-submit' %>
+      </div>
+    <% end %>
+    <%= link_to "Back to dashboard", dashboard_path(@user), class: "nav-button col-12" %>
+  </div>
+</div>
+
 </div>
 
   </div>
@@ -121,8 +127,9 @@
 
 <div id="bookingModal" class="modal">
   <div class="modal-content">
-    <span class="close">&times;</span>
+<div class="booking-modal-overlay">
    <div class="bookings-new-form">
+
   <h1 class="form-title"><b>New Booking</b></h1>
 
   <%= form_with(model: @booking, url: user_bookings_path(current_user), local: true, html: { class: 'availability-form' }) do |form| %>
@@ -176,7 +183,8 @@
 
   <%= link_to "Back to dashboard", dashboard_path(@user), class: "nav-button col-12" %>
 </div>
-
+</div>
+  </div>
   </div>
 </div>
 
