@@ -22,12 +22,12 @@ class BookingsController < ApplicationController
   def create
     @user = current_user # Ensure @user is set
     # Extract the date and time parameters
-    date_string = params[:date]
+    date_string = params[:booking][:date]
 
-    start_hour = params[:start_time_hour].to_i
-    start_minute = params[:start_time_minute].to_i
-    end_hour = params[:end_time_hour].to_i
-    end_minute = params[:end_time_minute].to_i
+    start_hour = params[:booking][:start_time_hour].to_i
+    start_minute = params[:booking][:start_time_minute].to_i
+    end_hour = params[:booking][:end_time_hour].to_i
+    end_minute = params[:booking][:end_time_minute].to_i
 
     # Convert the date string to a Date object
     date = Date.parse(date_string)
