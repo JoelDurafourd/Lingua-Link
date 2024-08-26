@@ -90,7 +90,7 @@ puts "Created #{client10}!"
 # Joel's seeds
 
 start_date = Date.new(2024, 8, 26) # Monday of the week
-end_date = start_date + 4 # Friday of the week
+end_date = start_date + 3 # thrusday of the week
 
 # Loop through each day from Monday to Friday
 (start_date..end_date).each do |date|
@@ -222,10 +222,143 @@ booking10 = Booking.create!(
 )
 puts "Created #{booking10}!"
 
+start_date = Date.new(2024, 9, 2) # Monday of the week
+end_date = start_date + 3 # thrusday of the week
+
+# Loop through each day from Monday to Friday
+(start_date..end_date).each do |date|
+  # Create morning shift availability
+  morning_availability = Availability.create!(
+    start_time: DateTime.new(date.year, date.month, date.day, 8, 0, 0),
+    end_time: DateTime.new(date.year, date.month, date.day, 12, 0, 0),
+    user_id: joel.id
+  )
+  puts "Created morning availability for #{date.strftime('%Y-%m-%d')}!"
+
+  # Create afternoon shift availability
+  afternoon_availability = Availability.create!(
+    start_time: DateTime.new(date.year, date.month, date.day, 13, 0, 0),
+    end_time: DateTime.new(date.year, date.month, date.day, 18, 0, 0),
+    user_id: joel.id
+  )
+  puts "Created afternoon availability for #{date.strftime('%Y-%m-%d')}!"
+end
+
+# Create Bookings
+booking1 = Booking.create!(
+  start_time: DateTime.new(2024, 9, 2, 8, 0, 0), # Example time slot within the availability
+  end_time: DateTime.new(2024, 9, 2, 9, 0, 0),
+  status: 1, # Assuming 1 corresponds to a status like 'confirmed'
+  user_id: joel.id,
+  client_id: client1.id,
+  title: 'Consultation with Alice',
+  description: 'Discussing project details with Alice Johnson.'
+)
+puts "Created #{booking1}!"
+
+booking2 = Booking.create!(
+  start_time: DateTime.new(2024, 9, 2, 9, 0, 0), # Example time slot within the availability
+  end_time: DateTime.new(2024, 9, 2, 10, 0, 0),
+  status: 1,
+  user_id: joel.id,
+  client_id: client2.id,
+  title: 'Consultation with Bob',
+  description: 'Discussion with Bob Smith about upcoming tasks.'
+)
+puts "Created #{booking2}!"
+
+booking3 = Booking.create!(
+  start_time: DateTime.new(2024, 9, 28, 10, 0, 0), # Example time slot within the availability
+  end_time: DateTime.new(2024, 9, 28, 11, 0, 0),
+  status: 1,
+  user_id: joel.id,
+  client_id: client3.id,
+  title: 'Consultation with Charlie',
+  description: 'Meeting with Charlie Brown to review progress.'
+)
+puts "Created #{booking3}!"
+
+booking4 = Booking.create!(
+  start_time: DateTime.new(2024, 9, 5, 13, 0, 0), # Example time slot within the availability
+  end_time: DateTime.new(2024, 9, 5, 14, 0, 0),
+  status: 1,
+  user_id: joel.id,
+  client_id: client4.id,
+  title: 'Consultation with Diana',
+  description: 'Discussing contract terms with Diana Ross.'
+)
+puts "Created #{booking4}!"
+
+# booking5 = Booking.create!(
+#   start_time: DateTime.new(2024, 8, 30, 14, 0, 0), # Example time slot within the availability
+#   end_time: DateTime.new(2024, 8, 30, 15, 0, 0),
+#   status: 1,
+#   user_id: joel.id,
+#   client_id: client5.id,
+#   title: 'Consultation with Edward',
+#   description: 'Meeting with Edward White for project planning.'
+# )
+# puts "Created #{booking5}!"
+
+# booking6 = Booking.create!(
+#   start_time: DateTime.new(2024, 8, 30, 15, 0, 0), # Example time slot within the availability
+#   end_time: DateTime.new(2024, 8, 30, 16, 0, 0),
+#   status: 1,
+#   user_id: joel.id,
+#   client_id: client6.id,
+#   title: 'Consultation with Fiona',
+#   description: 'Consultation with Fiona Green on upcoming deliverables.'
+# )
+# puts "Created #{booking6}!"
+
+booking7 = Booking.create!(
+  start_time: DateTime.new(2024, 9, 4, 16, 0, 0), # Example time slot within the availability
+  end_time: DateTime.new(2024, 9, 4, 17, 0, 0),
+  status: 1,
+  user_id: joel.id,
+  client_id: client7.id,
+  title: 'Consultation with George',
+  description: 'Discussing project milestones with George Black.'
+)
+puts "Created #{booking7}!"
+
+booking8 = Booking.create!(
+  start_time: DateTime.new(2024, 9, 5, 17, 0, 0), # Example time slot within the availability
+  end_time: DateTime.new(2024, 9, 5, 18, 0, 0),
+  status: 1,
+  user_id: joel.id,
+  client_id: client8.id,
+  title: 'Consultation with Hannah',
+  description: 'Meeting with Hannah Blue to finalize project details.'
+)
+puts "Created #{booking8}!"
+
+booking9 = Booking.create!(
+  start_time: DateTime.new(2024, 9, 3, 8, 0, 0), # Example time slot on the next day
+  end_time: DateTime.new(2024, 9, 3, 9, 0, 0),
+  status: 1,
+  user_id: joel.id,
+  client_id: client9.id,
+  title: 'Consultation with Ian',
+  description: 'Consultation with Ian Gray to review project status.'
+)
+puts "Created #{booking9}!"
+
+booking10 = Booking.create!(
+  start_time: DateTime.new(2024, 9, 3, 9, 0, 0), # Example time slot on the next day
+  end_time: DateTime.new(2024, 9, 3, 10, 0, 0),
+  status: 1,
+  user_id: joel.id,
+  client_id: client10.id,
+  title: 'Consultation with Jane',
+  description: 'Meeting with Jane White to discuss project goals.'
+)
+puts "Created #{booking10}!"
+
 # Emilie's seeds
 
 start_date = Date.new(2024, 8, 26) # Monday of the week
-end_date = start_date + 4 # Friday of the week
+end_date = start_date + 3 # thrusday of the week
 
 # Loop through each day from Monday to Friday
 (start_date..end_date).each do |date|
@@ -360,7 +493,7 @@ puts "Created #{booking10}!"
 # emilie's seeds
 
 start_date = Date.new(2024, 8, 26) # Monday of the week
-end_date = start_date + 4 # Friday of the week
+end_date = start_date + 3 # thrusday of the week
 
 # Loop through each day from Monday to Friday
 (start_date..end_date).each do |date|
