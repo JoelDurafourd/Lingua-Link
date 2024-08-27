@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class LineMenuService
   attr_accessor :client, :online_translation, :redis, :menu_manager
 
@@ -586,7 +588,10 @@ class LineMenuService
       client.name = display_name
       client.phone_number = "" # Assuming phone_number is optional or blank by default
       client.language = user_language
-      client.photo_url = user_profile[:picture_url]
+      image_url = user_profile[:picture_url]
+      downloaded_image = URI.open(image_url) # 画像のURLを開く
+      client.photo.attach(io: downloaded_image, filename: "#{display_name}_#{user_language}_picture.jpg") # 画像を添付
+
       client.save!
       Rails.logger.info "New client created: #{client.inspect}"
     else
