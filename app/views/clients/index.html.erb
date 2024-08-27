@@ -1,52 +1,30 @@
-<div class="container-c" data-controller="weekly-calendar">
-  <div class="row-i">
-    <div class="col-2 left-nav">
-  <%# Container for the user avatar %>
-  <div class="container-img">
-    <%# Check if the current user has a profile photo %>
-    <% if current_user.photo.present? %>
-      <%# Display the user's photo %>
-      <%= cl_image_tag(current_user.photo.key, class: "avatar-dash", alt: "User Avatar") %>
-    <% else %>
-      <%# Display a default avatar if no user photo is present %>
-      <%= image_tag("default_avatar.png", class: "avatar-dash", alt: "Default Avatar") %>
-    <% end %>
+<div class="dashboard-row d-flex">
+  <div class="sidebar-container">
+    <%= render partial: "dashboard/sidebar" %>
   </div>
 
-  <%# Navigation links for the user dashboard %>
-  <div>
-    <%# Link to the user's profile page %>
-    <%= link_to "My Profile", user_path(@user), class: "buttons-dash" %>
-  </div>
-
-  <div>
-    <%# Link to the user's list of clients %>
-    <%= link_to "My Clients", user_clients_path(@user), class: "buttons-dash" %>
-  </div>
-
-  <div>
-    <%# Link to the chat messages page %>
-    <%= link_to "My Messages", chat_index_path, class: "buttons-dash" %>
-  </div>
-
-  <div>
-    <%# Link to create a new booking %>
-    <%= link_to "Book A Lesson", new_user_booking_path(@user), class: "buttons-dash" %>
-  </div>
-
-  <div>
-    <%# Link to set new availabilities %>
-    <%= link_to "Set Availabilities", new_user_availability_path(@user), class: "buttons-dash" %>
-  </div>
-</div>
-
-
-    <div class="clients-list">
-      <% @clients.each do |client| %>
-        <div class="client-card-i">
-          <%= link_to client.name, user_client_path(params[:user_id], client), class: "client-link" %>
-        </div>
-      <% end %>
+  <div class="container-c mx-3" data-controller="weekly-calendar">
+    <div class="row-i">
+      <div class="clients-list">
+        <% @clients.each do |client| %>
+          <%= link_to user_client_path(params[:user_id], client), class: "client-card-i-link" do %>
+            <div class="client-card-i">
+              <% if client.photo.present? %>
+                <%= cl_image_tag(client.photo.key, class: "avatar-i img-fluid rounded-circle", alt: "User Avatar") %>
+              <% else %>
+                <%= image_tag("default_avatar.png", class: "avatar-i img-fluid rounded-circle", alt: "Default Avatar") %>
+              <% end %>
+              <div class="card-client-profile-infos-i font-i">
+                <h2><b><%= client.name %></b></h2>
+                <% if client.nickname.present? %>
+                  <p><strong class="font-i">Nickname:</strong> <%= client.nickname %></p>
+                <% end %>
+                <p><strong class="font-i">LineID:</strong> <%= client.lineid %></p>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
