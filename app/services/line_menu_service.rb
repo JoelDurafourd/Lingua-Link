@@ -135,8 +135,16 @@ class LineMenuService
       enable_auto_translation(user_id, event)
     when 'chat'
       handle_chat(user_id, teacher_id, event)
-    else
-      Rails.logger.error "Unknown postback action: #{action}"
+
+    when 'your_booking'
+      _booking(user_id, event)
+
+    when 'cancel_booking'
+      cancel_booking(user_id, param, event)
+
+      # else
+      #   Rails.logger.error "Unknown postback action: #{action}"
+
     end
   end
 
@@ -578,6 +586,7 @@ class LineMenuService
       client.name = display_name
       client.phone_number = "" # Assuming phone_number is optional or blank by default
       client.language = user_language
+      client.photo_url = user_profile[:picture_url]
       client.save!
       Rails.logger.info "New client created: #{client.inspect}"
     else
@@ -606,45 +615,32 @@ class LineMenuService
       },
       selected: true,
       name: "MainMenu",
-      chatBarText: "Selection Menu",
+      chatBarText: "Selection Men",
       areas: [
         {
           bounds: {
-            x: 45,
-            y: 45,
-            width: 2400,
+            x: 41,
+            y: 54,
+            width: 777,
             height: 785
           },
           action: {
             type: "postback",
-            data: "action=your_teachers",
-            displayText: "Your Teachers"
+            text: "Find Teachers",
+            data: "action=find_teachers"
           }
         },
         {
           bounds: {
-            x: 45,
+            x: 856,
             y: 860,
             width: 780,
             height: 780
           },
           action: {
             type: "postback",
-            data: "action=find_teachers",
-            displayText: "Find Teachers"
-          }
-        },
-        {
-          bounds: {
-            x: 860,
-            y: 860,
-            width: 780,
-            height: 780
-          },
-          action: {
-            type: "postback",
-            data: "action=chat_session_end",
-            displayText: "Chat Session Ended"
+            text: "Chat Session Ended",
+            data: "action=chat_session_end"
           }
         },
         {
@@ -656,8 +652,34 @@ class LineMenuService
           },
           action: {
             type: "postback",
-            data: "action=auto_translation",
-            displayText: "Auto Translation"
+            text: "action=auto_translation",
+            data: "Auto Translation"
+          }
+        },
+        {
+          bounds: {
+            x: 868,
+            y: 45,
+            width: 780,
+            height: 780
+          },
+          action: {
+            type: "postback",
+            text: "Your Teachers",
+            data: "action=your_teachers"
+          }
+        },
+        {
+          bounds: {
+            x: 1679,
+            y: 54,
+            width: 780,
+            height: 780
+          },
+          action: {
+            type: "postback",
+            text: "Your Booking",
+            data: "action=your_booking"
           }
         }
       ]
@@ -687,7 +709,7 @@ class LineMenuService
 
     rich_menu_id = rich_menu['richMenuId']
 
-    upload_response = upload_rich_menu_image(rich_menu_id, 'll-richmenu-03.png')
+    upload_response = upload_rich_menu_image(rich_menu_id, 'll-richmenu-04.png')
     return unless upload_response
 
     def_response = @client.set_default_rich_menu(rich_menu_id)
@@ -867,5 +889,97 @@ class LineMenuService
         ]
       }
     }
+  end
+
+  def your_booking(user_id, event)
+    booking_id = extract_booking_id_from_postback(event)
+    client = Client.find_by(lineid: user_id)
+    booking = client.bookings.find_by(id: booking_id)
+
+    if booking
+      booking.destroy
+      message = { type: 'text', text: "Your booking has been cancelled successfully." }
+    else
+      message = { type: 'text', text: "Booking not found or already cancelled." }
+    end
+
+    @client.reply_message(event['replyToken'], message)
+  end
+
+  def extract_booking_id_from_postback(event)
+    postback_data = event['postback']['data']
+    Rack::Utils.parse_nested_query(postback_data)['booking_id']
+  end
+
+  def show_bookings(user_id, event)
+    client = Client.find_by(lineid: user_id)
+    bookings = client.bookings.where('start_time > ?', Time.current).order(:start_time).limit(5)
+
+    if bookings.any?
+      message = {
+        type: 'flex',
+        altText: 'Your Bookings',
+        contents: {
+          type: 'bubble',
+          body: {
+            type: 'box',
+            layout: 'vertical',
+            contents: [
+              { type: 'text', text: 'Your Bookings', weight: 'bold', size: 'xl' },
+              *bookings.map { |booking| booking_box(booking) }
+            ]
+          }
+        }
+      }
+    else
+      message = { type: 'text', text: 'You have no upcoming bookings.' }
+    end
+
+    @client.reply_message(event['replyToken'], message)
+  end
+
+  def booking_box(booking)
+    {
+      type: 'box',
+      layout: 'horizontal',
+      contents: [
+        {
+          type: 'box',
+          layout: 'vertical',
+          contents: [
+            { type: 'text', text: "#{booking.user.first_name} #{booking.user.last_name}", size: 'sm', weight: 'bold' },
+            { type: 'text', text: booking.start_time.strftime("%Y-%m-%d %H:%M"), size: 'xs', color: '#888888' }
+          ],
+          flex: 4
+        },
+        {
+          type: 'button',
+          action: {
+            type: 'postback',
+            label: 'Cancel',
+            data: "action=cancel_booking&id=#{booking.id}"
+          },
+          style: 'primary',
+          color: '#ff3333',
+          flex: 1
+        }
+      ],
+      margin: 'md'
+    }
+  end
+
+  def your_booking(user_id, event)
+    booking_id = extract_booking_id_from_postback(event)
+    client = Client.find_by(lineid: user_id)
+    booking = client.bookings.find_by(id: booking_id)
+
+    if booking
+      booking.destroy
+      message = { type: 'text', text: "Your booking has been cancelled successfully." }
+    else
+      message = { type: 'text', text: "Booking not found or already cancelled." }
+    end
+
+    @client.reply_message(event['replyToken'], message)
   end
 end
