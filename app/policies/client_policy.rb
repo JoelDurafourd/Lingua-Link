@@ -13,4 +13,12 @@ class ClientPolicy < ApplicationPolicy
   def show?
     true # or your authorization logic here
   end
+
+  def edit?
+    true # or your authorization logic here
+  end
+
+  def update?
+    true # or your authorization logic here
+  end
 end

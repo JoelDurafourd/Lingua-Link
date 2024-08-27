@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_27_121638) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_23_221459) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -75,7 +75,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_27_121638) do
     t.boolean "enable_translations", default: true, null: false
     t.bigint "user_chat_id"
     t.string "language", default: "en", null: false
-    t.string "photo_url"
   end
 
   create_table "clients_users", id: false, force: :cascade do |t|
