@@ -102,13 +102,16 @@
 
 .left-nav {
   background: linear-gradient(45deg, #ff6259, #e67e22);
-  height: 53vh;
+  height: 350px;
   border-radius: 0 14px 14px 0;
   padding-left: 0px;
   padding-right: 0px;
   align-content: center;
   width: 300px;
+  position: sticky;
+  top: 0;
 }
+
 
 .calander-months-links {
   // color: #ff6259;
