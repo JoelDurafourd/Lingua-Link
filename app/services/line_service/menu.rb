@@ -408,7 +408,7 @@ module LineService
 
         if teachers.any?
           bubbles = teachers.map do |teacher|
-            image_url = teacher.photo.url.presence || "#{ENV.fetch('APP_BASE_URL')}/images/default-neutral-placeholder.png"
+            image_url = teacher.photo.url.presence || "#{ENV.fetch('APP_BASE_URL')}/images/default-netural-placeholder.png"
             @message_builder.teacher_bubble(
               "#{teacher.first_name} #{teacher.last_name}",
               "English",

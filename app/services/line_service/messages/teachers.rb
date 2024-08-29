@@ -180,7 +180,7 @@ module LineService
           interaction_bubble(
             teacher.name,
             teacher.language,
-            teacher.photo.url || "#{ENV.fetch('APP_BASE_URL')}/images/default-female-placeholder.png",
+            teacher.photo.url || "#{ENV.fetch('APP_BASE_URL')}/images/default-netural-placeholder.png",
             teacher.id
           )
         end
