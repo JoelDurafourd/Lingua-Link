@@ -1,5 +1,3 @@
-require 'open-uri'
-
 module LineService
   class Menu
     include ::ActionCableHelper
@@ -121,6 +119,8 @@ module LineService
         case action_type
         when "cancel_booking"
           handle_cancel_booking(user_id, booking_id, event)
+        else
+          Rails.logger.error "Unknown postback action: #{action}, action_type #{action_type}"
         end
       when 'pagination'
         case action_type
@@ -183,72 +183,57 @@ module LineService
 
     def handle_show_bookings(user_id, event, page: 1)
       client = ::Client.find_by(lineid: user_id)
-
-      if client.nil?
+      unless client
         Rails.logger.error "Client not found with LINE ID #{user_id}"
         return
       end
 
-      # Get the current time
       current_time = Time.current
-
-      # Filter bookings by status and start_time
       bookings = ::Booking
-                   .where(client_id: client.id)
-                   .where(status: [:pending, :accepted])
+                   .where(client_id: client.id, status: [:pending, :accepted])
                    .where('start_time > ?', current_time)
                    .order(:start_time)
 
       if bookings.any?
         bookings_by_date = bookings.group_by { |booking| booking.start_time.to_date }
+        Rails.logger.debug "Grouped and sorted bookings by date: #{bookings_by_date.inspect}"
 
-        Rails.logger.debug "Grouped and sorted availabilities by date: #{bookings_by_date.inspect}"
-
-        # Flatten the availabilities by date into a list of bubbles
         all_bubbles = bookings_by_date.flat_map do |date, slots_for_date|
-          # Format the time slots for that date
           time_slots = slots_for_date.map do |booking|
             {
               time_range: "#{booking.start_time.strftime('%I:%M %p')} - #{booking.end_time.strftime('%I:%M %p')}",
               booking_id: booking.id
             }
           end
-
           Rails.logger.debug "Formatted time slots for date #{date}: #{time_slots.inspect}"
-
           @message_builder.bookings_bubble(client.name, date.strftime('%B %d, %Y'), time_slots)
         end
 
         per_page = 5
+        total_pages = (all_bubbles.size.to_f / per_page).ceil
+        page = [[page, 1].max, total_pages].min
         offset = (page - 1) * per_page
 
-        # Paginate the bubbles
-        paginated_bubbles = all_bubbles.slice(offset, per_page) || []
+        paginated_bubbles = all_bubbles[offset, per_page] || []
 
         if paginated_bubbles.any?
-          # Add a pagination bubble if there are more availabilities
-          paginated_bubbles << @message_builder.pagination_bubble(page + 1, "bookings") if all_bubbles.size > offset + per_page
+          if page < total_pages
+            paginated_bubbles << @message_builder.pagination_bubble(page + 1, "bookings")
+          end
 
-          # Create the carousel message with the paginated bubbles
           message = {
             type: "flex",
-            altText: "Here are your available booking slots.",
+            altText: "Here are your upcoming bookings.",
             contents: {
               type: "carousel",
               contents: paginated_bubbles
             }
           }
         else
-          message = {
-            type: "text",
-            text: "There are no available booking slots for this teacher at the moment."
-          }
+          message = { type: "text", text: "There are no upcoming bookings at the moment." }
         end
       else
-        message = {
-          type: "text",
-          text: "There are no available booking slots for this teacher at the moment."
-        }
+        message = { type: "text", text: "There are no upcoming bookings at the moment." }
       end
 
       reply_message(event['replyToken'], message, is_chatting: client.user_chat_id)
@@ -291,10 +276,6 @@ module LineService
         client.name = display_name
         client.phone_number = "" # Assuming phone_number is optional or blank by default
         client.language = user_language
-        image_url = user_profile[:picture_url]
-        downloaded_image = ::URI.open(image_url) # 画像のURLを開く
-        client.photo.attach(io: downloaded_image, filename: "#{display_name}_#{user_language}_picture.jpg") # 画像を添付
-
         client.save!
         Rails.logger.info "New client created: #{client.inspect}"
       else
@@ -360,20 +341,21 @@ module LineService
 
     def show_your_teachers(user_id, event, page: 1)
       Rails.logger.info "Displaying teachers for user #{user_id}."
-
       student = ::Client.find_by(lineid: user_id)
 
-      if !student.nil? && student.users.exists?
-
+      if student&.users&.exists?
         per_page = 5
+        total_teachers = student.users.count
+        total_pages = (total_teachers.to_f / per_page).ceil
+
+        # Ensure page is within bounds
+        page = [[page, 1].max, total_pages].min
         offset = (page - 1) * per_page
 
-        teachers = student.users.offset(offset).limit(per_page + 1)
+        teachers = student.users.offset(offset).limit(per_page)
 
-        bubbles = teachers.first(per_page).map do |teacher|
-          image_url = "https://static.vecteezy.com/system/resources/thumbnails/003/337/634/small/profile-placeholder-default-avatar-vector.jpg"
-          image_url = teacher.photo.url if teacher.photo.url.present?
-
+        bubbles = teachers.map do |teacher|
+          image_url = teacher.photo.url.presence || "https://static.vecteezy.com/system/resources/thumbnails/003/337/634/small/profile-placeholder-default-avatar-vector.jpg"
           @message_builder.teacher_interaction_bubble(
             "#{teacher.first_name} #{teacher.last_name}",
             "English",
@@ -382,8 +364,9 @@ module LineService
           )
         end
 
-        bubbles << @message_builder.pagination_bubble(page + 1, "show") if teachers.size > per_page
-        # Create the carousel message
+        # Add pagination bubble if there's a next page
+        bubbles << @message_builder.pagination_bubble(page + 1, "show") if page < total_pages
+
         message = {
           type: "flex",
           altText: "Here are your teachers you can interact with.",
@@ -392,10 +375,9 @@ module LineService
             contents: bubbles
           }
         }
-        # Display the carousel of teachers
+
         reply_message(event['replyToken'], message, is_chatting: student.user_chat_id)
       else
-        # Send a message indicating no teachers are associated with the client
         no_teachers_message = {
           type: 'text',
           text: 'You currently have no teachers associated with your account.'
@@ -406,26 +388,27 @@ module LineService
 
     def find_teachers(user_id, event, page: 1)
       Rails.logger.info "Finding teachers for user #{user_id} on page #{page}."
-
-      per_page = 5
-      offset = (page - 1) * per_page
-
-      # Find the student (client) by lineid
       student = ::Client.find_by(lineid: user_id)
 
       if student
-        # Get the IDs of the teachers already associated with the student
+        per_page = 5
         excluded_teacher_ids = student.users.pluck(:id)
 
-        # Fetch teachers excluding the ones the student already has, with pagination
-        teachers = ::User.where.not(id: excluded_teacher_ids).offset(offset).limit(per_page + 1) # Fetch one extra to check for next page
+        # Get total count of available teachers
+        total_teachers = ::User.where.not(id: excluded_teacher_ids).count
+        total_pages = (total_teachers.to_f / per_page).ceil
+
+        # Ensure page is within bounds
+        page = [[page, 1].max, total_pages].min
+        offset = (page - 1) * per_page
+
+        teachers = ::User.where.not(id: excluded_teacher_ids)
+                         .offset(offset)
+                         .limit(per_page)
 
         if teachers.any?
-          # Create bubbles for the current page of teachers
-          bubbles = teachers.first(per_page).map do |teacher|
-            image_url = "#{ENV.fetch('APP_BASE_URL')}/images/default-netural-placeholder.png"
-            image_url = teacher.photo.url if teacher.photo.url.present?
-
+          bubbles = teachers.map do |teacher|
+            image_url = teacher.photo.url.presence || "#{ENV.fetch('APP_BASE_URL')}/images/default-neutral-placeholder.png"
             @message_builder.teacher_bubble(
               "#{teacher.first_name} #{teacher.last_name}",
               "English",
@@ -434,8 +417,8 @@ module LineService
             )
           end
 
-          # Add a pagination bubble if there are more teachers available
-          bubbles << @message_builder.pagination_bubble(page + 1, "add") if teachers.size > per_page
+          # Add pagination bubble if there's a next page
+          bubbles << @message_builder.pagination_bubble(page + 1, "add") if page < total_pages
 
           # Create the carousel message
           message = {
@@ -501,158 +484,63 @@ module LineService
 
     end
 
-    # def handle_availabilities(teacher_id, user_id, event, page: 1)
-    #   teacher = ::User.find_by(id: teacher_id)
-    #   client = ::Client.find_by(lineid: user_id)
-
-    #   if teacher && client
-    #     Rails.logger.info "Booking request received for teacher #{teacher.id} - #{teacher.first_name} #{teacher.last_name}"
-
-    #     # Fetch the teacher's availabilities, excluding those that overlap with the student's bookings
-    #     booked_time_ranges = client.bookings.where(user_id: teacher.id).map do |booking|
-    #       booking.start_time..booking.end_time
-    #     end
-
-    #     availabilities = teacher.availabilities.select do |availability|
-    #       booked_time_ranges.none? do |range|
-    #         range.overlaps?(availability.start_time..availability.end_time)
-    #       end
-    #     end
-
-    #     Rails.logger.debug "Availabilities after filtering: #{availabilities.inspect}"
-
-    #     if availabilities.any?
-    #       # Group availabilities by date and sort by start_time
-    #       availabilities_by_date = availabilities.group_by { |availability| availability.start_time.to_date }
-    #       availabilities_by_date.each do |date, slots|
-    #         availabilities_by_date[date] = slots.sort_by(&:start_time)
-    #       end
-    #       Rails.logger.debug "Grouped and sorted availabilities by date: #{availabilities_by_date.inspect}"
-
-    #       # Flatten the availabilities by date into a list of bubbles
-    #       all_bubbles = availabilities_by_date.flat_map do |date, slots_for_date|
-    #         # Format the time slots for that date
-    #         time_slots = slots_for_date.map do |availability|
-    #           {
-    #             time_range: "#{availability.start_time.strftime('%I:%M %p')} - #{availability.end_time.strftime('%I:%M %p')}",
-    #             availability_id: availability.id
-    #           }
-    #         end
-
-    #         Rails.logger.debug "Formatted time slots for date #{date}: #{time_slots.inspect}"
-
-    #         # Create the availability bubble for the current date
-    #         @message_builder.availability_bubble(
-    #           "#{teacher.first_name} #{teacher.last_name}",
-    #           date.strftime('%B %d, %Y'),
-    #           time_slots,
-    #           teacher.id
-    #         )
-    #       end
-
-    #       per_page = 5
-    #       offset = (page - 1) * per_page
-
-    #       # Paginate the bubbles
-    #       paginated_bubbles = all_bubbles.slice(offset, per_page) || []
-
-    #       if paginated_bubbles.any?
-    #         # Add a pagination bubble if there are more availabilities
-    #         paginated_bubbles << @message_builder.pagination_bubble(page + 1, "availability", extra_params: { teacher_id: teacher_id }) if all_bubbles.size > offset + per_page
-
-    #         # Create the carousel message with the paginated bubbles
-    #         message = {
-    #           type: "flex",
-    #           altText: "Here are your available booking slots.",
-    #           contents: {
-    #             type: "carousel",
-    #             contents: paginated_bubbles
-    #           }
-    #         }
-    #       else
-    #         message = @message_builder.text_message(
-    #           "There are no available booking slots for this teacher at the moment."
-    #         )
-    #       end
-    #     else
-    #       message = @message_builder.text_message(
-    #         "There are no available booking slots for this teacher at the moment."
-    #       )
-    #     end
-
-    #     reply_message(event['replyToken'], message, is_chatting: client.user_chat_id)
-    #   else
-    #     Rails.logger.error "Teacher not found with ID #{teacher_id} or Client not found with lineid #{user_id}"
-    #   end
-    # end
-
     def handle_availabilities(teacher_id, user_id, event, page: 1)
       teacher = ::User.find_by(id: teacher_id)
       client = ::Client.find_by(lineid: user_id)
+
       if teacher && client
         Rails.logger.info "Booking request received for teacher #{teacher.id} - #{teacher.first_name} #{teacher.last_name}"
-        # Fetch the teacher's availabilities, excluding those that overlap with the student's bookings
-        booked_time_ranges = client.bookings.where(user_id: teacher.id).map do |booking|
-          booking.start_time..booking.end_time
-        end
-        availabilities = teacher.availabilities.select do |availability|
-          booked_time_ranges.none? do |range|
-            range.overlaps?(availability.start_time..availability.end_time)
-          end
-        end
-        Rails.logger.debug "Availabilities after filtering: #{availabilities.inspect}"
-        if availabilities.any?
-          # Group availabilities by date and sort by start_time
-          availabilities_by_date = availabilities.group_by { |availability| availability.start_time.to_date }
-          availabilities_by_date.each do |date, slots|
-            availabilities_by_date[date] = slots.sort_by(&:start_time)
-          end
-          Rails.logger.debug "Grouped and sorted availabilities by date: #{availabilities_by_date.inspect}"
-          # Flatten the availabilities by date into a list of bubbles
-          all_bubbles = availabilities_by_date.flat_map do |date, slots_for_date|
-            # Format the time slots for that date
-            time_slots = slots_for_date.map do |availability|
-              {
-                time_range: "#{availability.start_time.strftime('%I:%M %p')} - #{availability.end_time.strftime('%I:%M %p')}",
-                availability_id: availability.id
-              }
-            end
-            Rails.logger.debug "Formatted time slots for date #{date}: #{time_slots.inspect}"
-            # Create the availability bubble for the current date
-            @message_builder.availability_bubble(
-              "#{teacher.first_name} #{teacher.last_name}",
-              date.strftime('%B %d, %Y'),
-              time_slots,
-              teacher.id
-            )
-          end
-          per_page = 5
-          offset = (page - 1) * per_page
-          # Paginate the bubbles
-          paginated_bubbles = all_bubbles.slice(offset, per_page) || []
-          if paginated_bubbles.any?
-            # Add a pagination bubble if there are more availabilities
-            paginated_bubbles << @message_builder.pagination_bubble(page + 1, "availability", extra_params: { teacher_id: teacher_id }) if all_bubbles.size > offset + per_page
-            # Create the carousel message with the paginated bubbles
-            message = {
-              type: "flex",
-              altText: "Here are your available booking slots.",
-              contents: {
-                type: "carousel",
-                contents: paginated_bubbles
-              }
-            }
-          else
-            message = @message_builder.text_message(
-              "There are no available booking slots for this teacher at the moment."
-            )
-          end
-        else
-          message = @message_builder.text_message(
-            "There are no available booking slots for this teacher at the moment."
+
+        per_page = 5
+        start_date = Date.today.beginning_of_day
+        end_date = start_date + 30.days
+        availabilities_by_day = teacher.availabilities
+                                       .select("availabilities.*, DATE(start_time) AS date")
+                                       .where(start_time: start_date..end_date.end_of_day)
+                                       .order(:start_time)
+                                       .group_by { |a| a.date.to_date }
+
+        sorted_dates = availabilities_by_day.keys.sort
+        total_pages = (sorted_dates.size.to_f / per_page).ceil
+        offset = (page - 1) * per_page
+
+        # Paginate the dates
+        paginated_dates = sorted_dates[offset, per_page]
+
+        if paginated_dates.present?
+          # Retrieve availabilities for the current page's dates in order
+          paginated_availabilities = paginated_dates.map { |date| availabilities_by_day[date] }.flatten
+
+          # Create bubbles for the current page of dates
+          bubbles = ::AvailabilityBubbleCreator.create_bubbles(
+            paginated_availabilities,
+            teacher,
+            @message_builder
           )
+          Rails.logger.debug "Created bubbles: #{bubbles.count}"
+
+          # Check if there's a next page
+          has_next_page = page < total_pages
+
+          if has_next_page
+            bubbles << @message_builder.pagination_bubble(page + 1, "availability", extra_params: { teacher_id: teacher_id })
+          end
+
+          Rails.logger.debug "Total bubbles (including pagination): #{bubbles.count}"
+
+          message = {
+            type: "flex",
+            altText: "Here are your available booking slots.",
+            contents: {
+              type: "carousel",
+              contents: bubbles
+            }
+          }
+        else
+          message = { type: "text", text: "There are no available booking slots for this teacher at the moment." }
         end
-        reply_message(event['replyToken'], message, is_chatting: client.user_chat_id)
+
+        reply_message(event['replyToken'], message)
       else
         Rails.logger.error "Teacher not found with ID #{teacher_id} or Client not found with lineid #{user_id}"
       end
