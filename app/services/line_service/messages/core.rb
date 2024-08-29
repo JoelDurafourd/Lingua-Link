@@ -136,7 +136,7 @@ module LineService
         {
           type: "bubble",
           direction: "ltr",
-          hero: LineService::Messages::Core.hero("/images/default-group-placeholder.png", aspect_ratio: "1:1"),
+          hero: LineService::Messages::Core.hero("#{ENV.fetch('APP_BASE_URL')}/images/default-group-placeholder.png", aspect_ratio: "1:1"),
           body: {
             type: "box",
             layout: "vertical",
