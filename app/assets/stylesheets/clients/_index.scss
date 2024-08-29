@@ -1,10 +1,7 @@
 .container-c {
-  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
 }
 
 .row-i {
@@ -15,7 +12,7 @@
   flex: 1;
   margin-left: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
 }
 
@@ -26,6 +23,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 250px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .client-card-i:hover {
@@ -33,18 +36,22 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.client-link {
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: bold;
-  color: #007bff;
-  padding: 10px 20px;
-  border-radius: 25px;
-  background-color: #e9f5ff;
-  transition: background-color 0.2s ease, color 0.2s ease;
+
+.avatar-i {
+  width: 200px;
+  height: 200px;
 }
 
-.client-link:hover {
-  background-color: #007bff;
-  color: #ffffff;
+.card-client-profile-infos-i {
+  color: black;
+}
+
+.dashboard-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.sidebar-container {
+  flex: 0 0 auto;
 }

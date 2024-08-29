@@ -41,7 +41,10 @@
               <td class="text-center p-2 <%= today_highlighter(day) %>">
                 <%# Add availabilities button  %>
                 <div class="a+-btn+container">
-                  <%= link_to "+Availability", "#", class: "a-availabilities-btn", data: { "bs-toggle": "modal", "bs-target": "#availabilityModal" } %>
+                 <%= link_to "#", class: "", data: { "bs-toggle": "modal", "bs-target": "#availabilityModal" } do %>
+  <button type="button" class="btn btn-outline custom-availability-btn"> <b>Availability</b></button>
+<% end %>
+
 
 
 
