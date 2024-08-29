@@ -423,7 +423,7 @@ module LineService
         if teachers.any?
           # Create bubbles for the current page of teachers
           bubbles = teachers.first(per_page).map do |teacher|
-            image_url = "https://static.vecteezy.com/system/resources/thumbnails/003/337/634/small/profile-placeholder-default-avatar-vector.jpg"
+            image_url = "#{ENV.fetch('APP_BASE_URL')}/images/default-netural-placeholder.png"
             image_url = teacher.photo.url if teacher.photo.url.present?
 
             @message_builder.teacher_bubble(
