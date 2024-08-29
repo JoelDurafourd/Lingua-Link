@@ -1,4 +1,6 @@
 class BookingsController < ApplicationController
+  include MessageHelper
+
   def index
     # Fetch the current date or use the provided start_date parameter
     start_date = params.fetch(:start_date, Date.today).to_date
@@ -81,26 +83,24 @@ class BookingsController < ApplicationController
     # change the bookings status to accepted, redirect to the booking path
     @booking = Booking.find(params[:id])
     authorize @booking
-    # return unless @booking.update(status: :accepted)
 
-    line_service = LineService.new
+    return unless @booking.update(status: :accepted)
+
     teacher = User.find_by(id: @booking.user_id)
-    student = @booking.client
 
-    line_service.push_message(
-      student.lineid,
-      {
-        type: "text",
-        text: "Your booked a lesson on #{@booking.start_time.strftime('%A, %B %d, %Y')} at #{@booking.start_time.strftime('%I:%M %p')} has been Accepted by #{teacher.first_name}."
-      }
-    )
+    accept_booking_message(teacher, @booking)
+
     redirect_to user_path(@booking.user)
   end
 
   def decline
     # change the bookings status to declined, redirect to the booking path
     @booking = Booking.find(params[:id])
-    # return unless @booking.update(status: :declined)
+    return unless @booking.update(status: :declined)
+
+    teacher = User.find_by(id: @booking.user_id)
+
+    decline_booking_message(teacher, @booking)
 
     redirect_to user_path(@booking.user)
   end
