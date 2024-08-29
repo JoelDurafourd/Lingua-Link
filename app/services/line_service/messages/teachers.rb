@@ -140,7 +140,7 @@ module LineService
           contents: [
             {
               type: "text",
-              text: date,
+              text: slot[:time_range],
               weight: "bold",
               flex: 2,
               align: "start",
