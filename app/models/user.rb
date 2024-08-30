@@ -14,7 +14,6 @@ class User < ApplicationRecord
   has_one_attached :photo
   belongs_to :current_teacher, class_name: 'User', optional: true
   attribute :language, :integer
-  has_many :messages, dependent: :destroy
 
   enum state: {
     initial: 0,

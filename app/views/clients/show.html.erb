@@ -9,18 +9,18 @@
     <div class="three-cards d-flex flex-row justify-content-between flex-wrap">
       <div class="">
         <div class="card-client-profile">
-          <% if @client.photo.present? %>
-            <%= cl_image_tag(@client.photo.key, class: "avatar img-fluid rounded-circle", alt: "User Avatar" ) %>
-          <% else %>
-            <%= image_tag("default_avatar.png", class: "avatar img-fluid rounded-circle", alt: "Default Avatar") %>
-          <% end %>
+<% if @client.photo.present? %>
+                <%= cl_image_tag(@client.photo.key, class: "avatar img-fluid rounded-circle", alt: "User Avatar" ) %>
+              <% else %>
+                <%= image_tag("default_avatar.png", class: "avatar img-fluid rounded-circle", alt: "Default Avatar") %>
+              <% end %>
           <div class="card-client-profile-infos">
             <h2><%= @client.name %></h2>
             <%# <h3>Nickname</h3> %>
             <% if @client.nickname %>
               <p><strong>Nickname:</strong> <%= @client.nickname %> </p>
             <% end %>
-            <p><strong>LineID:</strong> <%= @client.lineid.slice(0..6) %> </p>
+            <p><strong>LineID:</strong> <%= @client.lineid %> </p>
             <p><strong>Phone Number:</strong> <%= @client.phone_number %> </p>
             <%= link_to "Edit Client Information...", edit_user_client_path(@user, @client), class: "nil" %>
           </div>

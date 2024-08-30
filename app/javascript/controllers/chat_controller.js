@@ -4,10 +4,6 @@ import consumer from "channels/consumer";
 // Connects to data-controller="chat"
 export default class extends Controller {
     static targets = ["input", "output"]
-    static values = {
-        roomId: String,
-        currentUser: Object
-    }
 
     connect() {
         console.log("Chat controller connected");
@@ -19,12 +15,6 @@ export default class extends Controller {
         console.log("Chat ID:", this.chatId);
 
         this.checkOutputTarget();
-
-        if (!this.roomIdValue) {
-            console.error("Room ID is missing")
-            return
-        }
-
         this.sub = this.createActionCableChannel();
         console.log(this.sub);
     }
@@ -64,21 +54,15 @@ export default class extends Controller {
 
     createActionCableChannel() {
         const controller = this;  // Store reference to the controller instance
-        const channelName = `chat_room_${this.roomIdValue}`
-        console.log("Attempting to subscribe to channel:", channelName)
-
-        // RoomID
-        // ClientID
-        // TeacherID
 
         return consumer.subscriptions.create(
             {
                 channel: "ChatChannel",
-                room_id: this.roomIdValue
+                id: this.chatId
             },
             {
                 connected() {
-                    console.log("Connected to ChatChannel with ID:", channelName)
+                    console.log("Connected to ChatChannel with ID:", controller.chatId)
                 },
 
                 disconnected() {
@@ -148,24 +132,19 @@ export default class extends Controller {
                 messageElement.id = `message-${data.message_id}`;
 
                 // Add the appropriate class based on the sender
+                const currentUser = this.currentUser; // Assumes you have a method to get the current user
                 messageElement.classList.add('message');
-                if (data.sender === this.currentUser.first_name) {
+                if (data.sender === currentUser.first_name) {
                     messageElement.classList.add('message-outgoing');
                 } else {
                     messageElement.classList.add('message-incoming');
                 }
 
-                // Find the messages container inside the output target
-                const messagesContainer = this.outputTarget.querySelector('#messages-container');
-                if (messagesContainer) {
-                    // Append the <p> element to the messages container
-                    messagesContainer.appendChild(messageElement);
+                // Append the <p> element to the output target
+                this.outputTarget.appendChild(messageElement);
 
-                    // Scroll to the new message
-                    messageElement.scrollIntoView({behavior: 'smooth'});
-                } else {
-                    console.error("Messages container not found");
-                }
+                // this.outputTarget.scrollTop = this.outputTarget.scrollHeight;
+                messageElement.scrollIntoView({ behavior: 'smooth' })
             }
         } catch (error) {
             console.error("Error displaying message:", error);

@@ -1,8 +1,4 @@
-require 'digest'
-require 'base64'
-
 class ChatController < ApplicationController
-  include ActionCableHelper
   include LineBotConcern
 
   # Skip Pundit authorization checks for the index action
@@ -14,9 +10,8 @@ class ChatController < ApplicationController
 
   def show
     @client = Client.find_by(id: params[:id])
-    @room_id = Utilities.generate_room_id(@client.id, current_user.id)
     @line_client = @line_service.get_profile(@client.lineid)
-    @messages = current_user.messages.where(client_id: @client.id).order(created_at: :asc)
+    @messages = Message.where(client_id: @client.id).order(created_at: :asc)
   end
 
   # line_message
@@ -56,50 +51,25 @@ class ChatController < ApplicationController
       contents: message_text
     )
 
-    items = []
-
     line_message = {
       type: "text",
-      text: client_message.to_s,
-      sender: {
-        name: teacher_first_name.to_s,
-        iconUrl: teacher_obj.photo.url
-      },
-      quickReply: {
-        items:
-      }
+      text: "#{teacher_first_name}: #{client_message}"
     }
-
-    if client_obj.chatting_with_teacher?(teacher_obj.id)
-      items << LineService::Actions.chat_action(
-        "End Chat",
-        LineService::Actions.end_chat,
-        "https://www.svgrepo.com/show/1113/inkwell.svg"
-      )
-    elsif client_obj.chatting_with_another_teacher?(teacher_obj.id)
-      items.push(
-        LineService::Actions.chat_action(
-          "Start Chat",
-          LineService::Actions.start_chat(teacher_obj.id),
-          "https://www.svgrepo.com/show/1113/inkwell.svg"
-        ),
-        LineService::Actions.chat_action(
-          "End Current Chat",
-          LineService::Actions.end_chat,
-          "https://www.svgrepo.com/show/1113/inkwell.svg"
-        )
-      )
-    else
-      items << LineService::Actions.chat_action(
-        "Start Chat",
-        LineService::Actions.start_chat(teacher_obj.id),
-        "https://www.svgrepo.com/show/1113/inkwell.svg"
-      )
-    end
 
     @line_service.push_message(client_line_id, line_message)
 
-    broadcast_to_chat_room(client_obj.id, current_user.id, message_uuid, teacher_first_name, message_text, is_teacher: true)
+    # Broadcast the message to the ActionCable channel
+    ActionCable.server.broadcast(
+      "chat_channel",
+      {
+        message_id: message_uuid,
+        is_teacher: true,
+        sender: teacher_first_name,
+        user_id: teacher_obj.id,
+        client_id: client_obj.id,
+        message: message_text
+      }
+    )
 
     # Respond with a JSON response
     render json: { status: "Message sent", message: message_text }, status: :ok
