@@ -84,7 +84,7 @@ class BookingsController < ApplicationController
     @booking = Booking.find(params[:id])
     authorize @booking
 
-    return unless @booking.update(status: :accepted)
+    # return unless @booking.update(status: :accepted)
 
     teacher = User.find_by(id: @booking.user_id)
 
@@ -96,7 +96,7 @@ class BookingsController < ApplicationController
   def decline
     # change the bookings status to declined, redirect to the booking path
     @booking = Booking.find(params[:id])
-    return unless @booking.update(status: :declined)
+    # return unless @booking.update(status: :declined)
 
     teacher = User.find_by(id: @booking.user_id)
 
