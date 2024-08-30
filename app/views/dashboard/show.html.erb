@@ -1,6 +1,7 @@
 <div class="container-dash" data-controller="weekly-calendar">
   <div class="row sidebar-container" data-controller="dashboard-forms">
       <%= render partial: "dashboard/sidebar" %>
+      <div class="container-dash-1">
     <div class="col-10">
   <% if @show_welcome_message %>
     <div class="alert alert-warning alert-dismissible fade show row col-3" role="alert">
@@ -25,6 +26,7 @@
               <div class="d-flex justify-content-center">
         <i>You don't have any recent messages at this time.</i> %>
         </div>
+      </div>
       </div>
     </div>
   </div>
