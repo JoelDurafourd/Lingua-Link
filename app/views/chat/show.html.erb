@@ -15,7 +15,7 @@
           </div>
           <h5 class="card-title mb-2"><%= @line_client[:display_name] %></h5>
           <ul class="list-unstyled">
-            <li><strong>User ID:</strong> <%= @line_client[:user_id] %></li>
+            <li><strong>User ID:</strong> <%= @line_client[:user_id].slice(0..6) %></li>
             <li><strong>Language:</strong> <%= @line_client[:language] %></li>
           </ul>
         </div>
