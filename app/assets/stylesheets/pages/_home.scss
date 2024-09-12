@@ -13,6 +13,7 @@
     color: #ffbd44;
     margin: 0;
 
+
     &.highlight {
       color: rgb(255, 146, 250);
       font-size: 40px;
@@ -392,6 +393,7 @@
       font-size: 70px;
       font-weight: bold;
       margin: 0;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     }
   }
 }
