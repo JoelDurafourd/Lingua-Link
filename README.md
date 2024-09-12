@@ -1,5 +1,4 @@
-Rails app generated with [lewagon/rails-templates](https://github.com/lewagon/rails-templates), created by the [Le Wagon coding bootcamp](https://www.lewagon.com) team.
-
+Lingua-Link is an app for scheduling, but with a twist. The aim is to connect professionals and freelancers with their clients regardless of language, with automatic translation and line integration.
 
 <!-- Install Required System Files -->
 ```shell
